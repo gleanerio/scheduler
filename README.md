@@ -10,15 +10,10 @@ A simple scheduler for running
 
 This is not a heavy weight approach.  For that you could use something like Apache Airflow.
 
-Rather, this is just a "good enough" approach.  
+Rather, this is just a "good enough" approach that can be used early on in a project to get a 
+feel for the frequency and types of events that need to be run.
 
-## Docker CLI
-
-Combined with this is the concept of deploying Gleaner and Nabu as docker CLI scripts
-in a manner similar to the following.
-
-https://spin.atomicobject.com/2015/11/30/command-line-tools-docker/
-
+As a project continues you would likely replace this with a more robust scheduler.
 
 ## References
 
