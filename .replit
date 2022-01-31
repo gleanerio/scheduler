@@ -1,2 +1,8 @@
-language = "python3"
-run = "python simple1.py"
+run = ["go", "run", "main.go"]
+entrypoint = "main.go"
+
+[languages.go]
+pattern = "**/*.go"
+
+[languages.go.languageServer]
+start = "gopls"

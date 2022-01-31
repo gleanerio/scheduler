@@ -1,0 +1,23 @@
+2022/01/30 01:28:14 This is a test log entry
+2022/01/30 01:31:21 This is a test log entry
+2022/01/30 01:31:21 Call sparql and load results to minio
+2022/01/30 01:31:21 total 20
+-rw-r--r-- 1 runner runner  188 Jan 23 05:13 README.md
+drwxr-xr-x 1 runner runner   12 Jan 23 05:27 cmd
+-rw-r--r-- 1 runner runner  192 Jan 30 00:34 go.mod
+-rw-r--r-- 1 runner runner 3498 Jan 30 00:34 go.sum
+drwxr-xr-x 1 runner runner   10 Jan 23 05:24 internal
+-rw-r--r-- 1 runner runner   68 Nov 11 23:06 replit.nix
+-rw-r--r-- 1 runner runner  148 Jan 30 01:31 testlogfile.txt
+
+2022/01/30 01:32:21 Call sparql and load results to minio
+2022/01/30 01:33:21 Call sparql and load results to minio
+2022/01/30 01:33:21 total 20
+-rw-r--r-- 1 runner runner  188 Jan 23 05:13 README.md
+drwxr-xr-x 1 runner runner   12 Jan 23 05:27 cmd
+-rw-r--r-- 1 runner runner  192 Jan 30 00:34 go.mod
+-rw-r--r-- 1 runner runner 3498 Jan 30 00:34 go.sum
+drwxr-xr-x 1 runner runner   10 Jan 23 05:24 internal
+-rw-r--r-- 1 runner runner   68 Nov 11 23:06 replit.nix
+-rw-r--r-- 1 runner runner  673 Jan 30 01:33 testlogfile.txt
+
