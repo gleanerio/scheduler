@@ -1,0 +1,3 @@
+EarthCube Gleaner
+Calling cleanUp on a successful run
+On success, will, if flagged, copy the log file to object store and delete it
