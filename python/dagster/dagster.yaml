@@ -8,3 +8,8 @@ ops:
     config:
       sgurl: https://raw.githubusercontent.com/iodepo/odis-arch/schema-dev-df/code/notebooks/validation/shapes/oih_search.ttl
 
+resources:
+    io_manager:
+      config:
+        s3_bucket: oih.dagster
+        s3_prefix: iofiles/v1

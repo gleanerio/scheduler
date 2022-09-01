@@ -8,6 +8,17 @@
  export DAGSTER_HOME=/home/fils/src/Projects/gleaner.io/scheduler/python/dagster
 ```
 
+```
+dagster-daemon run
+```
+
+```
+dagit --host 192.168.202.159
+```
+
+
+
+
 ## Cron Notes
 
 A useful on-line tool:  [https://crontab.cronhub.io/](https://crontab.cronhub.io/)
@@ -43,8 +54,5 @@ We can then use the docker approach
 ```
 
 to run indexes on specific sources in these configuration files.  
-
-
-
 
 

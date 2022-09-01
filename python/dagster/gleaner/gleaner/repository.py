@@ -26,7 +26,7 @@ from gleaner.jobs.oih_jobs_invemarvessel import oih_job_invemarvessel
 from gleaner.jobs.oih_jobs_marinetraining import oih_job_marinetraining
 from gleaner.jobs.oih_jobs_obis import oih_job_obis
 from gleaner.jobs.oih_jobs_obps import oih_job_obps
-from gleaner.jobs.oih_jobs_oceanexperts   import oih_job_oceanexperts 
+from gleaner.jobs.oih_jobs_oceanexperts   import oih_job_oceanexperts
 
 from gleaner.schedules.oih_queue_sch_benguelacc import oih_queue_schedule_benguelacc
 from gleaner.schedules.oih_queue_sch_cioos import oih_queue_schedule_cioos
@@ -54,8 +54,7 @@ from gleaner.schedules.oih_sch_invemarvessel import oih_sch_invemarvessel
 from gleaner.schedules.oih_sch_marinetraining import oih_sch_marinetraining
 from gleaner.schedules.oih_sch_obis import oih_sch_obis
 from gleaner.schedules.oih_sch_obps import oih_sch_obps
-from gleaner.schedules.oih_sch_oceanexperts  import oih_sch_oceanexperts 
-
+from gleaner.schedules.oih_sch_oceanexperts  import oih_sch_oceanexperts
 
 # from gleaner.sensors.my_sensor import my_sensor
 
@@ -68,21 +67,21 @@ def gleaner():
     For hints on building your Dagster repository, see our documentation overview on Repositories:
     https://docs.dagster.io/overview/repositories-workspaces/repositories
     """
-    jobs = [oih_job_aquadocs, oih_job_edmerp, oih_job_edmo, oih_job_euroceanevents, 
-        oih_job_euroceanexpert, oih_job_euroceanorgs, oih_job_euroceanprojects, 
-        oih_job_euroceantraining, oih_job_euroceanvessels, oih_job_invemardocuments, 
-        oih_job_invemarexpert, oih_job_invemarinstitution, oih_job_invemartraining, 
-        oih_job_invemarvessel, oih_job_marinetraining, oih_job_obis, oih_job_obps, 
-        oih_job_oceanexperts, oih_queue_job_benguelacc, oih_queue_job_cioos, oih_queue_job_cma, 
-        oih_queue_job_emodnet, oih_queue_job_inanodc, oih_queue_job_maspawio, 
+    jobs = [oih_job_aquadocs, oih_job_edmerp, oih_job_edmo, oih_job_euroceanevents,
+        oih_job_euroceanexpert, oih_job_euroceanorgs, oih_job_euroceanprojects,
+        oih_job_euroceantraining, oih_job_euroceanvessels, oih_job_invemardocuments,
+        oih_job_invemarexpert, oih_job_invemarinstitution, oih_job_invemartraining,
+        oih_job_invemarvessel, oih_job_marinetraining, oih_job_obis, oih_job_obps,
+        oih_job_oceanexperts, oih_queue_job_benguelacc, oih_queue_job_cioos, oih_queue_job_cma,
+        oih_queue_job_emodnet, oih_queue_job_inanodc, oih_queue_job_maspawio,
         oih_queue_job_pdh, oih_queue_job_pogo]
-    schedules = [oih_sch_aquadocs, oih_sch_edmerp, oih_sch_edmo, oih_sch_euroceanevents, 
-        oih_sch_euroceanexpert, oih_sch_euroceanorgs, oih_sch_euroceanprojects, 
-        oih_sch_euroceantraining, oih_sch_euroceanvessels, oih_sch_invemardocuments, 
-        oih_sch_invemarexpert, oih_sch_invemarinstitution, oih_sch_invemartraining, 
-        oih_sch_invemarvessel, oih_sch_marinetraining, oih_sch_obis, oih_sch_obps, 
-        oih_sch_oceanexperts, oih_queue_schedule_benguelacc, oih_queue_schedule_cioos, 
+    schedules = [oih_sch_aquadocs, oih_sch_edmerp, oih_sch_edmo, oih_sch_euroceanevents,
+        oih_sch_euroceanexpert, oih_sch_euroceanorgs, oih_sch_euroceanprojects,
+        oih_sch_euroceantraining, oih_sch_euroceanvessels, oih_sch_invemardocuments,
+        oih_sch_invemarexpert, oih_sch_invemarinstitution, oih_sch_invemartraining,
+        oih_sch_invemarvessel, oih_sch_marinetraining, oih_sch_obis, oih_sch_obps,
+        oih_sch_oceanexperts, oih_queue_schedule_benguelacc, oih_queue_schedule_cioos,
         oih_queue_schedule_cma, oih_queue_schedule_emodnet, oih_queue_schedule_inanodc, oih_queue_schedule_maspawio, oih_queue_schedule_pdh, oih_queue_schedule_pogo]
     # sensors = [my_sensor]
 
-    return jobs + schedules    #+ sensors
+    return jobs + schedules   #+ sensors
