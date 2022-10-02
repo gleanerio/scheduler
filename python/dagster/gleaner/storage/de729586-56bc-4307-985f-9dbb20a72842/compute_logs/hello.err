@@ -1,6 +1,0 @@
-[32m2022-08-05 03:53:17 -0500[0m - dagster - [34mDEBUG[0m - say_hello_job - de729586-56bc-4307-985f-9dbb20a72842 - 1639608 - hello - LOGS_CAPTURED - Started capturing logs for step: hello.
-[32m2022-08-05 03:53:17 -0500[0m - dagster - [34mDEBUG[0m - say_hello_job - de729586-56bc-4307-985f-9dbb20a72842 - 1639608 - hello - STEP_START - Started execution of step "hello".
-[32m2022-08-05 03:53:17 -0500[0m - dagster - [34mDEBUG[0m - say_hello_job - de729586-56bc-4307-985f-9dbb20a72842 - 1639608 - hello - STEP_OUTPUT - Yielded output "result" of type "Any". (Type check passed).
-[32m2022-08-05 03:53:17 -0500[0m - dagster - [34mDEBUG[0m - say_hello_job - de729586-56bc-4307-985f-9dbb20a72842 - hello - Writing file at: /home/fils/src/Projects/gleaner.io/scheduler/python/dagster/gleaner/storage/de729586-56bc-4307-985f-9dbb20a72842/hello/result
-[32m2022-08-05 03:53:17 -0500[0m - dagster - [34mDEBUG[0m - say_hello_job - de729586-56bc-4307-985f-9dbb20a72842 - 1639608 - hello - HANDLED_OUTPUT - Handled output "result" using IO manager "io_manager"
-[32m2022-08-05 03:53:17 -0500[0m - dagster - [34mDEBUG[0m - say_hello_job - de729586-56bc-4307-985f-9dbb20a72842 - 1639608 - hello - STEP_SUCCESS - Finished execution of step "hello" in 39ms.
