@@ -1,6 +1,7 @@
 # Dagster Project Example
 
-This is an example on how to structure a [Dagster] project in order to organize
+This ([https://github.com/sharmasagar25/dagster-docker-example](https://github.com/sharmasagar25/dagster-docker-example)) 
+is an example on how to structure a [Dagster] project in order to organize
 the jobs, repositories, schedules, and ops. The example also contains
 examples on unit-tests and a docker-compose deployment file that utilizes a
 Postgresql database for the run, event_log and schedule storage.
@@ -37,6 +38,16 @@ Then run the `main.py` script from the `src/` folder.
 ```bash
 cd src/
 python -m main
+```
+
+## Building
+
+```bash
+ podman build  -t  docker.io/fils/dagster:0.0.24  .
+```
+
+```bash
+ podman push docker.io/fils/dagster:0.0.24
 ```
 
 ## Other Examples

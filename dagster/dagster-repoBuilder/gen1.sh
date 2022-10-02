@@ -19,7 +19,7 @@ do
 
    mv $tmp_dir/implnet_ops_$SOURCE.py ./output/ops
    mv $tmp_dir/implnet_jobs_$SOURCE.py ./output/jobs
-   mv $tmp_dir/implnet_sch_$SOURCE.py ./output/sch
+   mv $tmp_dir/implnet_sch_$SOURCE.py ./output/schedules
 done
 
 rm -rf $tmp_dir

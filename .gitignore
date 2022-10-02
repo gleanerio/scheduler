@@ -3,6 +3,5 @@ __pycache__/
 *.py[cod]
 secret/**
 .idea/**
-
-
-
+/dagster/.logs_queue/
+/dagster/.telemetry/
