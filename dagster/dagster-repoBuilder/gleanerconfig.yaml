@@ -21,7 +21,7 @@ summoner:
   mode: full  # full || diff:  If diff compare what we have currently in gleaner to sitemap, get only new, delete missing
   threads: 10
   delay: 0  # milliseconds (1000 = 1 second) to delay between calls (will FORCE threads to 1) 
-  headless: http://0.0.0.0:9222  # URL for headless see docs/headless
+  headless: http://ghost.lan:9222  # URL for headless see docs/headless
 millers:
   graph: false
 sources:
@@ -172,21 +172,4 @@ sources:
   propername: EurOcean training
   domain: https://infohub.eurocean.net/data/training
   active: true
-- sourcetype: sitemap
-  name: euroceanorgs
-  logo: ""
-  url: https://www.oceanexpert.org/assets/sitemaps/sitemapInstitutions.xml
-  headless: false
-  pid: http://example.org/eurocean/orgs
-  propername: EurOcean Organizations
-  domain: https://infohub.eurocean.net/data/organizations
-  active: true
-- sourcetype: sitemap
-  name: nodcid
-  logo: ""
-  url: https://geonode.nodc.id/sitemap.xml
-  headless: false
-  pid: http://example.org/nodc/orgs
-  propername: NODC Indonesia
-  domain: https://geonode.nodc.id
-  active: true
+
