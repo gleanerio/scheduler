@@ -7,7 +7,8 @@ echo "---  building src diretory "
 # take the output directory as a CLI arg
 
 # set up vars
-REPOFILE="./output/repository.py"
+REPOFILE="./output/repositories/repository.py"
+WORKSPACEFILE="./output/workspace.yaml"
 HOUR=0
 
 # set up temp directory
@@ -41,6 +42,7 @@ done
 rm -rf $tmp_dir
 
 echo "---  building repository file "
+mkdir --parents ./output/repositories/;
 
 # single > to erase old files...
 echo "from dagster import repository" > $REPOFILE
@@ -48,8 +50,8 @@ echo "from dagster import repository" > $REPOFILE
 ## now loop through the source array
 for SOURCE in "${arr[@]}"
 do
-   echo "from gleaner.jobs.implnet_jobs_$SOURCE import implnet_job_$SOURCE"   >> $REPOFILE
-   echo "from gleaner.schedules.implnet_sch_$SOURCE  import implnet_sch_$SOURCE"   >> $REPOFILE
+   echo "from jobs.implnet_jobs_$SOURCE import implnet_job_$SOURCE"   >> $REPOFILE
+   echo "from schedules.implnet_sch_$SOURCE  import implnet_sch_$SOURCE"   >> $REPOFILE
    ja+=("implnet_job_$SOURCE")
    sa+=("implnet_sch_$SOURCE")
 done
@@ -63,3 +65,11 @@ echo "def gleaner():"   >> $REPOFILE
 echo " "   >> $REPOFILE
 echo -e "\treturn jobs + schedules"   >> $REPOFILE
 
+
+# Build workspace file
+
+echo "load_from:
+  - python_file:
+      relative_path: \"repositories/repository.py\"
+      working_directory: .
+">> $WORKSPACEFILE

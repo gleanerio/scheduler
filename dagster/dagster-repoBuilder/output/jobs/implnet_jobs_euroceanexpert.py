@@ -1,6 +1,6 @@
 from dagster import job
 
-from gleaner.ops.implnet_euroceanexpert import harvest_euroceanexpert
+from ops.implnet_ops_euroceanexpert import harvest_euroceanexpert
 
 @job
 def implnet_job_euroceanexpert():

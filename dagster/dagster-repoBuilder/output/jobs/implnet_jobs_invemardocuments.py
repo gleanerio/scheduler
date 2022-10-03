@@ -1,6 +1,6 @@
 from dagster import job
 
-from gleaner.ops.implnet_invemardocuments import harvest_invemardocuments
+from ops.implnet_ops_invemardocuments import harvest_invemardocuments
 
 @job
 def implnet_job_invemardocuments():

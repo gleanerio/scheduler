@@ -1,6 +1,6 @@
 from dagster import job
 
-from gleaner.ops.implnet_euroceanorgs import harvest_euroceanorgs
+from ops.implnet_ops_euroceanorgs import harvest_euroceanorgs
 
 @job
 def implnet_job_euroceanorgs():

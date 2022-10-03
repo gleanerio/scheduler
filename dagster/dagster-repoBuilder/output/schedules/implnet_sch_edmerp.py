@@ -1,6 +1,6 @@
 from dagster import schedule
 
-from gleaner.jobs.implnet_jobs_edmerp import implnet_job_edmerp
+from jobs.implnet_jobs_edmerp import implnet_job_edmerp
 
 @schedule(cron_schedule="0 1 * * 0", job=implnet_job_edmerp, execution_timezone="US/Central")
 def implnet_sch_edmerp(_context):

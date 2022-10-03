@@ -4,11 +4,13 @@
 
 Script to buil the dagster files based on templates and a Gleaner config file.
 
-
 ```
 sed -i  's|0 15 \* \* \*|0 1 \* \* \*|g' implnet_sch_aquadocs.py
 ```
 
+We do not do assets or sensors at this time so they are not involved here.
+Thy would be their oen directories in the output and then need to be 
+represented in the repository.py file. 
 
 ## Cron Notes
 
