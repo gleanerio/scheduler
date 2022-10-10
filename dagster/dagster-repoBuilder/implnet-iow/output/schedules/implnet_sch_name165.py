@@ -1,0 +1,8 @@
+from dagster import schedule
+
+from jobs.implnet_jobs_name165 import implnet_job_name165
+
+@schedule(cron_schedule="0 3 * * 0", job=implnet_job_name165, execution_timezone="US/Central")
+def implnet_sch_name165(_context):
+    run_config = {}
+    return run_config
