@@ -11,6 +11,6 @@ RUN pip install -r requirements.txt
 # Copy source code
 COPY ./dagster.yaml .
 COPY ./src/implnet_oih .
-COPY ./bin .
+COPY ./bin/implnet_oih .
 
 CMD ["dagit", "-w", "workspace.yaml", "-h", "0.0.0.0", "-p", "3000"]
