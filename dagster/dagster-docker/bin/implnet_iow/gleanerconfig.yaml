@@ -12,6 +12,7 @@ gleaner:
   mill: false
 context:
   cache: true
+  strict: true
 contextmaps:
 - prefix: "https://schema.org/"
   file: "./jsonldcontext.json"  # wget http://schema.org/docs/jsonldcontext.jsonld
