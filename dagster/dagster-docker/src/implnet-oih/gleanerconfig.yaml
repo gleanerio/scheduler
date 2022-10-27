@@ -1,10 +1,10 @@
 minio:
-  address: 192.168.202.114
-  port: 49155
+  address:
+  port:
   accessKey:
   secretKey:
-  ssl: false
-  bucket: gleaner.oih
+  ssl:
+  bucket:
 gleaner:
   runid: oih 
   summon: true # do we want to visit the web sites and pull down the files

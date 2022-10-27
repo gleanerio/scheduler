@@ -27,5 +27,10 @@ build-eco:
 	podman build  --tag="docker.io/fils/dagster_eco:$(VERSION)"  --file=./build/Dockerfile.eco  .
 
 push-eco:
-	podman push docker.io/fils/dagster_eco:$(VERSION) 
+	podman push docker.io/fils/dagster_eco:$(VERSION)
 
+all-eco: generate-eco build-eco push-eco
+
+all-oih: generate-oih build-oih push-oih
+
+all-iow: generate-iow build-iow push-iow

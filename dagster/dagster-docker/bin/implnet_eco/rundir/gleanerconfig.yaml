@@ -1,183 +1,457 @@
-minio:
-  address: 192.168.202.114
-  port: 49155
-  accessKey:
-  secretKey:
-  ssl: false
-  bucket: gleaner.oih
-gleaner:
-  runid: oih 
-  summon: true # do we want to visit the web sites and pull down the files
-  mill:  false
 context:
   cache: true
 contextmaps:
-- prefix: "https://schema.org/"
-  file: "./jsonldcontext.json"  # wget http://schema.org/docs/jsonldcontext.jsonld
-- prefix: "http://schema.org/"
-  file: "./jsonldcontext.json"  # wget http://schema.org/docs/jsonldcontext.jsonld
-summoner:
-  after: ""      # "21 May 20 10:00 UTC"   
-  mode: full  # full || diff:  If diff compare what we have currently in gleaner to sitemap, get only new, delete missing
-  threads: 10
-  delay: 0  # milliseconds (1000 = 1 second) to delay between calls (will FORCE threads to 1) 
-  headless: http://ghost.lan:9222  # URL for headless see docs/headless
+- file: ./configs/schemaorg-current-https.jsonld
+  prefix: https://schema.org/
+- file: ./configs/schemaorg-current-https.jsonld
+  prefix: http://schema.org/
+gleaner:
+  mill: true
+  runid: runX
+  summon: true
 millers:
-  graph: false
+  graph: true
+minio:
+  address:
+  port:
+  ssl: false
+  accesskey:
+  secretkey:
+  bucket:
 sources:
-- sourcetype: sitegraph
-  name: obps
-  url: https://oih.oceanbestpractices.org/obps.json
-  headless: false
-  pid: http://example.org/invemar/obps
-  propername: Ocean Best Practices
-  domain: https://oih.oceanbestpractices.org
-  active: true
 - sourcetype: sitemap
-  name: edmerp
-  url: https://edmerp.seadatanet.org/sitemap.xml
+  name: balto
+  logo: http://balto.opendap.org/opendap/docs/images/logo.png
+  url: http://balto.opendap.org/opendap/site_map.txt
   headless: false
-  pid: https://www.re3data.org/repository/seadatanet/edmerp
-  propername: EDMERP SeaDataNet
-  domain: https://edmerp.seadatanet.org
-  active: true
+  pid: http://balto.opendap.org
+  propername: Balto
+  domain: http://balto.opendap.org
+  active: false
+  credentialsfile: ""
+  other: {}
+  headlesswait: 0
+  delay: 0
 - sourcetype: sitemap
-  name: edmo
-  url: https://edmo.seadatanet.org/sitemap.xml
+  name: neotomadb
+  logo: https://www.neotomadb.org/images/site_graphics/Packrat.png
+  url: http://data.neotomadb.org/sitemap.xml
+  headless: true
+  pid: http://www.re3data.org/repository/r3d100011761
+  propername: Neotoma
+  domain: http://www.neotomadb.org/
+  active: false
+  credentialsfile: ""
+  other: {}
+  headlesswait: 0
+  delay: 0
+- sourcetype: sitemap
+  name: decade
+  logo: ""
+  url: ""
   headless: false
-  pid: https://www.re3data.org/repository/seadatanet/edmo
-  propername: EDMO SeaDataNet
-  domain: https://edmo.seadatanet.org
-  active: true
-- sourcetype: sitegraph
-  name: invemarexpert
-  url: http://portete.invemar.org.co/chm/api/oih/expert?format=json
+  pid: ""
+  propername: ""
+  domain: https://decade.earthchem.org/
+  active: false
+  credentialsfile: ""
+  other: {}
+  headlesswait: 0
+  delay: 0
+- sourcetype: sitemap
+  name: renci
+  logo: ""
+  url: ""
   headless: false
-  pid: http://example.org/invemar/experts
-  propername: INVEMAR Experts
-  domain: http://portete.invemar.org.co/chm/api/oih/expert
-  active: true
-- sourcetype: sitegraph
-  name: invemardocuments
-  url: http://portete.invemar.org.co/chm/api/oih/documents?format=json
+  pid: ""
+  propername: ""
+  domain: renci.org
+  active: false
+  credentialsfile: ""
+  other: {}
+  headlesswait: 0
+  delay: 0
+- sourcetype: sitemap
+  name: c4rsois
+  logo: ""
+  url: ""
   headless: false
-  pid: http://example.org/invemar/documents
-  propername: INVEMAR documents
-  domain: http://portete.invemar.org.co/chm/api/oih/documents
-  active: true
-- sourcetype: sitegraph
-  name: invemarinstitution
-  url: http://portete.invemar.org.co/chm/api/oih/institution?format=json
+  pid: ""
+  propername: ""
+  domain: https://data.cresis.ku.edu/
+  active: false
+  credentialsfile: ""
+  other: {}
+  headlesswait: 0
+  delay: 0
+- sourcetype: sitemap
+  name: resource_registry
+  logo: https://www.earthcube.org/sites/default/files/doc-repository/logo_earthcube_full_horizontal.png
+  url: https://object.cloud.sdsc.edu/v1/AUTH_85f46aa78936477d8e71b186269414e8/gleaner-summoned
   headless: false
-  pid: http://example.org/invemar/institution
-  propername: INVEMAR institution
-  domain: http://portete.invemar.org.co/chm/api/oih/institution
-  active: true
-- sourcetype: sitegraph
-  name: invemarvessel
-  url: http://portete.invemar.org.co/chm/api/oih/vessel?format=json
+  pid: ""
+  propername: Resource Registry
+  domain: http://www.earthcube.org/resourceregistry/
+  active: false
+  credentialsfile: ""
+  other: {}
+  headlesswait: 0
+  delay: 0
+- sourcetype: sitemap
+  name: datadiscoverystudio
+  logo: http://datadiscoverystudio.org/geoportal/images/DataDiscoveryStudioBufferedWhite.png
+  url: http://datadiscoverystudio.org/sitemap/CinergiSiteIndex.xml
   headless: false
-  pid: http://example.org/invemar/vessel
-  propername: INVEMAR vessel
-  domain: http://portete.invemar.org.co/chm/api/oih/vessel
-  active: true
-- sourcetype: sitegraph
-  name: invemartraining
-  url: http://portete.invemar.org.co/chm/api/oih/training?format=json
+  pid: ""
+  propername: ""
+  domain: http://datadiscoverystudio.org/geoportal
+  active: false
+  credentialsfile: ""
+  other: {}
+  headlesswait: 0
+  delay: 0
+- sourcetype: sitemap
+  name: unidata
+  logo: ""
+  url: https://www.unidata.ucar.edu/sitemap.xml
   headless: false
-  pid: http://example.org/invemar/training
-  propername: INVEMAR training
-  domain: http://portete.invemar.org.co/chm/api/oih/training
-  active: true
+  pid: https://www.re3data.org/repository/r3d100010355
+  propername: UNIDATA
+  domain: http://www.unidata.ucar.edu/
+  active: false
+  credentialsfile: ""
+  other: {}
+  headlesswait: 0
+  delay: 0
 - sourcetype: sitegraph
   name: aquadocs
+  logo: ""
   url: https://oih.aquadocs.org/aquadocs.json
   headless: false
   pid: http://hdl.handle.net/1834/41372
   propername: AquaDocs
   domain: https://aquadocs.org
-  active: true
+  active: false
+  credentialsfile: ""
+  other: {}
+  headlesswait: 0
+  delay: 0
 - sourcetype: sitemap
-  name: marinetraining
-  url: https://www.marinetraining.eu/sitemap.xml
+  name: opentopography
+  logo: https://opentopography.org/sites/opentopography.org/files/ot_transp_logo_2.png
+  url: https://portal.opentopography.org/sitemap.xml
   headless: false
-  pid: https://www.re3data.org/repository/marinetraining
-  propername: Marine Training EU
-  domain: https://marinetraining.eu/
+  pid: https://www.re3data.org/repository/r3d100010655
+  propername: OpenTopography
+  domain: http://www.opentopography.org/
   active: true
+  credentialsfile: ""
+  other: {}
+  headlesswait: 0
+  delay: 0
 - sourcetype: sitemap
-  name: euroceanprojects
-  url: https://infohub.eurocean.net/sitemap/projects
+  name: iris
+  logo: http://ds.iris.edu/static/img/layout/logos/iris_logo_shadow.png
+  url: http://ds.iris.edu/files/sitemap.xml
   headless: false
-  pid: http://example.org/eurocean/projects
-  propername: EurOcean Projects
-  domain: https://infohub.eurocean.net/data/projects
+  pid: https://www.re3data.org/repository/r3d100010268
+  propername: IRIS
+  domain: http://iris.edu
   active: true
+  credentialsfile: ""
+  other: {}
+  headlesswait: 0
+  delay: 0
 - sourcetype: sitemap
-  name: euroceanvessels
-  url: https://infohub.eurocean.net/sitemap/vessels
+  name: edi
+  logo: https://portal.edirepository.org/nis/images/EDI-logo-300DPI_5.png
+  url: https://portal.edirepository.org/sitemap_index.xml
   headless: false
-  pid: http://example.org/invemar/documents
-  propername: EurOcean vessels
-  domain: https://infohub.eurocean.net/data/vessels
+  pid: https://www.re3data.org/repository/r3d100010272
+  propername: Environmental Data Initiative
+  domain: 'http://environmentaldatainitiative.org/ '
   active: true
+  credentialsfile: ""
+  other: {}
+  headlesswait: 0
+  delay: 0
 - sourcetype: sitemap
-  name: euroceanorgs
-  url: https://infohub.eurocean.net/sitemap/organizations
+  name: bco-dmo
+  logo: https://www.bco-dmo.org/sites/all/themes/bcodmo/logo.png
+  url: https://www.bco-dmo.org/sitemap.xml
   headless: false
-  pid: http://example.org/invemar/documents
-  propername: EurOcean Organizations
-  domain: https://infohub.eurocean.net/data/organizations
+  pid: https://www.re3data.org/repository/r3d100000012
+  propername: Biological and Chemical Oceanography Data Management Office
+  domain: http://www.bco-dmo.org/
   active: true
+  credentialsfile: ""
+  other: {}
+  headlesswait: 0
+  delay: 0
 - sourcetype: sitemap
-  name: obis
-  url: https://obis.org/sitemap/sitemap_datasets.xml
+  name: hydroshare
+  logo: https://www.hydroshare.org/static/img/logo-lg.png
+  url: https://www.hydroshare.org/sitemap-resources.xml
   headless: false
-  pid: https://www.re3data.org/repository/obis
-  propername: Ocean Biodiversity Information System
-  domain: https://obis.org
+  pid: https://www.re3data.org/repository/r3d100012625
+  propername: Consortium of Universities for the Advancement of Hydrologic Science,
+    Inc.¬†(CUAHSI)
+  domain: https://www.cuahsi.org/
   active: true
+  credentialsfile: ""
+  other: {}
+  headlesswait: 0
+  delay: 0
 - sourcetype: sitemap
-  name: oceanexperts
-  url: https://oceanexpert.org/assets/sitemaps/sitemapIndex.xml
+  name: iedadata
+  logo: https://www.iedadata.org/wp-content/themes/IEDA/assets/img/logo.png
+  url: http://get.iedadata.org/doi/xml-sitemap.php
   headless: false
-  pid: https://www.re3data.org/repository/oceanexpert
-  propername: OceanExpert UNESCO/IOC Project Office for IODE
-  domain: https://oceanexpert.org/
+  pid: https://www.re3data.org/repository/r3d100010578
+  propername: IEDA (Integrated Earth Data Applications)
+  domain: http://www.iedadata.org/
   active: true
+  credentialsfile: ""
+  other: {}
+  headlesswait: 0
+  delay: 0
 - sourcetype: sitemap
-  name: euroceanexpert
+  name: opentopography
+  logo: https://opentopography.org/sites/opentopography.org/files/ot_transp_logo_2.png
+  url: https://opentopography.org/sitemap.xml
+  headless: false
+  pid: https://www.re3data.org/repository/r3d100010655
+  propername: OpenTopography
+  domain: http://www.opentopography.org/
+  active: true
+  credentialsfile: ""
+  other: {}
+  headlesswait: 0
+  delay: 0
+- sourcetype: sitemap
+  name: unavco
+  logo: https://www.unavco.org/lib/images/banner/uv-logo.png
+  url: https://www.unavco.org/data/doi/sitemap.xml
+  headless: false
+  pid: http://www.re3data.org/repository/r3d100010872
+  propername: UNAVCO
+  domain: http://www.unavco.org/
+  active: true
+  credentialsfile: ""
+  other: {}
+  headlesswait: 0
+  delay: 0
+- sourcetype: sitemap
+  name: ssdb.iodp
+  logo: http://ssdb.iodp.org/images/head_logo_PRO.gif
+  url: https://ssdb.iodp.org/dataset/sitemap.xml
+  headless: false
+  pid: https://www.re3data.org/repository/r3d100010267
+  propername: IODP Site Survey Databank
+  domain: https://ssdb.iodp.org/
+  active: true
+  credentialsfile: ""
+  other: {}
+  headlesswait: 0
+  delay: 0
+- sourcetype: sitemap
+  name: linked.earth
+  logo: http://wiki.linked.earth/wiki/images/thumb/5/51/EarthLinked_Banner_blue_NoShadow.jpg/440px-EarthLinked_Banner_blue_NoShadow.jpg
+  url: http://wiki.linked.earth/sitemap.xml
+  headless: false
+  pid: http://wiki.linked.earth
+  propername: Linked Earth
+  domain: http://wiki.linked.earth
+  active: true
+  credentialsfile: ""
+  other: {}
+  headlesswait: 0
+  delay: 0
+- sourcetype: sitemap
+  name: lipdverse
   logo: ""
-  url: https://www.oceanexpert.org/assets/sitemaps/sitemapExperts.xml
+  url: https://lipdverse.org/sitemap.xml
   headless: false
-  pid: http://example.org/eurocean/experts
-  propername: EurOcean Experts
-  domain: https://infohub.eurocean.net/data/experts
+  pid: https://lipdverse.org
+  propername: Linked PaleoData
+  domain: https://lipdverse.org/
   active: true
+  credentialsfile: ""
+  other: {}
+  headlesswait: 0
+  delay: 0
 - sourcetype: sitemap
-  name: euroceanevents
-  logo: ""
-  url: https://www.oceanexpert.org/assets/sitemaps/sitemapEvents.xml
+  name: iris
+  logo: http://ds.iris.edu/static/img/layout/logos/iris_logo_shadow.png
+  url: http://ds.iris.edu/files/sitemap.xml
   headless: false
-  pid: http://example.org/eurocean/events
-  propername: EurOcean Events
-  domain: https://infohub.eurocean.net/data/events
+  pid: https://www.re3data.org/repository/r3d100010268
+  propername: IRIS
+  domain: http://iris.edu
   active: true
+  credentialsfile: ""
+  other: {}
+  headlesswait: 0
+  delay: 0
 - sourcetype: sitemap
-  name: euroceantraining
-  logo: ""
-  url: https://www.oceanexpert.org/assets/sitemaps/sitemapTraining.xml
+  name: ucar
+  logo: https://opensky.ucar.edu/islandora/object/opensky%3Aucommunity/datastream/TN/view
+  url: https://data.ucar.edu/sitemap.xml
   headless: false
-  pid: http://example.org/eurocean/training
-  propername: EurOcean training
-  domain: https://infohub.eurocean.net/data/training
+  pid: https://www.re3data.org/repository/r3d100010791
+  propername: UCAR
+  domain: https://data.ucar.edu
   active: true
+  credentialsfile: ""
+  other: {}
+  headlesswait: 0
+  delay: 0
 - sourcetype: sitemap
-  name: euroceanorgs
-  logo: ""
-  url: https://www.oceanexpert.org/assets/sitemaps/sitemapInstitutions.xml
+  name: opencoredata
+  logo: https://opencoredata.org/img/logo22small.png
+  url: http://opencoredata.org/sitemap.xml
   headless: false
-  pid: http://example.org/eurocean/orgs
-  propername: EurOcean Organizations
-  domain: https://infohub.eurocean.net/data/organizations
+  pid: https://www.re3data.org/repository/r3d100012874
+  propername: opencoredata
+  domain: https://opencoredata.org/
+  active: false
+  credentialsfile: ""
+  other: {}
+  headlesswait: 0
+  delay: 0
+- sourcetype: sitemap
+  name: magic
+  logo: http://mbobak.ncsa.illinois.edu/ext/ec/magic/MagIC.png
+  url: https://www2.earthref.org/MagIC/contributions.sitemap.xml
+  headless: true
+  pid: http://www.re3data.org/repository/r3d100011910
+  propername: Magnetics Information Consortium (MagIC)
+  domain: https://www.earthref.org/MagIC
   active: true
+  credentialsfile: ""
+  other: {}
+  headlesswait: 0
+  delay: 0
+- sourcetype: sitemap
+  name: earthchem
+  logo: http://www.earthchem.org/sites/default/files/files/EC_0-1.png
+  url: https://ecl.earthchem.org/sitemap.xml
+  headless: false
+  pid: https://www.re3data.org/repository/r3d100011538
+  propername: earthchem
+  domain: https://ecl.earthchem.org/home.php
+  active: true
+  credentialsfile: ""
+  other: {}
+  headlesswait: 0
+  delay: 0
+- sourcetype: sitemap
+  name: xdomes
+  logo: https://xdomes.tamucc.edu/images/xdomes_logo.png
+  url: https://xdomes.tamucc.edu/srr/sensorML/sitemap.xml
+  headless: false
+  pid: https://xdomes.tamucc.edu/
+  propername: xdomes
+  domain: https://xdomes.tamucc.edu/
+  active: false
+  credentialsfile: ""
+  other: {}
+  headlesswait: 0
+  delay: 0
+- sourcetype: sitemap
+  name: neon
+  logo: https://www.neonscience.org/themes/custom/neon/logo.svg
+  url: https://geodex.org/neon_prodcodes_sm.xml
+  headless: false
+  pid: http://www.re3data.org/repository/r3d100010290
+  propername: National Ecological Observatory Network (NEON)
+  domain: http://www.neonscience.org/
+  active: true
+  credentialsfile: ""
+  other: {}
+  headlesswait: 0
+  delay: 0
+- sourcetype: sitemap
+  name: designsafe
+  logo: ""
+  url: https://www.designsafe-ci.org/sitemap.xml
+  headless: false
+  pid: ""
+  propername: ""
+  domain: https://www.designsafe-ci.org/data/browser/public/
+  active: true
+  credentialsfile: ""
+  other: {}
+  headlesswait: 0
+  delay: 0
+- sourcetype: sitemap
+  name: r2r
+  logo: https://www.rvdata.us/images/Logo.4b1519be.png
+  url: https://service-dev.rvdata.us/api/sitemap/
+  headless: true
+  pid: http://www.re3data.org/repository/r3d100010735
+  propername: Rolling Deck to Repository Program (R2R)
+  domain: https://www.rvdata.us/
+  active: true
+  credentialsfile: ""
+  other: {}
+  headlesswait: 2
+  delay: 0
+- sourcetype: sitemap
+  name: geocodes_demo_datasets
+  logo: ""
+  url: https://earthcube.github.io/GeoCODES-Metadata/metadata/Dataset/allgood/sitemap.xml
+  headless: false
+  pid: https://github.com/earthcube/GeoCODES-Metadata/metadata/OtherResources
+  propername: Geocodes Demo Datasets
+  domain: https://www.earthcube.org/datasets/
+  active: true
+  credentialsfile: ""
+  other: {}
+  headlesswait: 0
+  delay: 0
+- sourcetype: sitemap
+  name: usap-dc
+  logo: https://www.usap-dc.org/
+  url: https://www.usap-dc.org/view/dataset/sitemap.xml
+  headless: true
+  pid: https://www.re3data.org/repository/r3d100010660
+  propername: U.S. Antarctic Program Data Center
+  domain: https://www.usap-dc.org/
+  active: true
+  credentialsfile: ""
+  other: {}
+  headlesswait: 0
+  delay: 0
+- sourcetype: sitemap
+  name: cchdo
+  logo: https://cchdo.ucsd.edu/static/svg/logo_cchdo.svg
+  url: https://cchdo.ucsd.edu/sitemap.xml
+  headless: false
+  pid: https://www.re3data.org/repository/r3d100010831
+  propername: CLIVAR and Carbon Hydrographic Data Office
+  domain: https://cchdo.ucsd.edu/
+  active: true
+  credentialsfile: ""
+  other: {}
+  headlesswait: 0
+  delay: 0
+- sourcetype: sitemap
+  name: amgeo
+  logo: https://amgeo.colorado.edu/static/img/amgeosmall.svg
+  url: https://amgeo-dev.colorado.edu/sitemap.xml
+  headless: false
+  pid: ""
+  propername: Assimilative Mapping of Geospace Observations
+  domain: https://amgeo.colorado.edu/
+  active: true
+  credentialsfile: ""
+  other: {}
+  headlesswait: 0
+  delay: 0
+summoner:
+  after: ""
+  delay: null
+  headless: http://127.0.0.1:9222
+  mode: full
+  threads: 5
