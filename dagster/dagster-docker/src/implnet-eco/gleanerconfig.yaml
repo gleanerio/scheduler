@@ -1,14 +1,20 @@
 context:
   cache: true
 contextmaps:
-- file: ./configs/schemaorg-current-https.jsonld
-  prefix: https://schema.org/
-- file: ./configs/schemaorg-current-https.jsonld
-  prefix: http://schema.org/
+  - prefix: "https://schema.org/"
+    file: "./jsonldcontext.json"  # wget http://schema.org/docs/jsonldcontext.jsonld
+  - prefix: "http://schema.org/"
+    file: "./jsonldcontext.json"  # wget http://schema.org/docs/jsonldcontext.jsonld
 gleaner:
   mill: true
   runid: runX
   summon: true
+summoner:
+    after: ""
+    delay: null
+    headless: http://10.0.5.2:9222
+    mode: full
+    threads: 5
 millers:
   graph: true
 minio:
@@ -423,9 +429,4 @@ sources:
   other: {}
   headlesswait: 0
   delay: 0
-summoner:
-  after: ""
-  delay: null
-  headless: http://127.0.0.1:9222
-  mode: full
-  threads: 5
+

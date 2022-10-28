@@ -21,7 +21,7 @@ summoner:
   mode: full  # full || diff:  If diff compare what we have currently in gleaner to sitemap, get only new, delete missing
   threads: 10
   delay: 0  # milliseconds (1000 = 1 second) to delay between calls (will FORCE threads to 1) 
-  headless: http://ghost.lan:9222  # URL for headless see docs/headless
+  headless: http://localhost:9222  # URL for headless see docs/headless
 millers:
   graph: false
 sources:
