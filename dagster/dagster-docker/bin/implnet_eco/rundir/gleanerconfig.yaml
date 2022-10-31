@@ -1,20 +1,27 @@
 context:
   cache: true
+  strict: true
 contextmaps:
-- file: ./configs/schemaorg-current-https.jsonld
-  prefix: https://schema.org/
-- file: ./configs/schemaorg-current-https.jsonld
-  prefix: http://schema.org/
+  - prefix: "https://schema.org/"
+    file: "./jsonldcontext.json"  # wget http://schema.org/docs/jsonldcontext.jsonld
+  - prefix: "http://schema.org/"
+    file: "./jsonldcontext.json"  # wget http://schema.org/docs/jsonldcontext.jsonld
 gleaner:
   mill: true
   runid: runX
   summon: true
+summoner:
+    after: ""
+    delay:  # milliseconds (1000 = 1 second) to delay between calls (will FORCE threads to 1)
+    headless: http://geocodes-dev.earthcube.org:9222
+    mode: full
+    threads: 5
 millers:
   graph: true
 minio:
   address:
   port:
-  ssl: false
+  ssl:
   accesskey:
   secretkey:
   bucket:
@@ -137,19 +144,6 @@ sources:
   headlesswait: 0
   delay: 0
 - sourcetype: sitemap
-  name: opentopography
-  logo: https://opentopography.org/sites/opentopography.org/files/ot_transp_logo_2.png
-  url: https://portal.opentopography.org/sitemap.xml
-  headless: false
-  pid: https://www.re3data.org/repository/r3d100010655
-  propername: OpenTopography
-  domain: http://www.opentopography.org/
-  active: true
-  credentialsfile: ""
-  other: {}
-  headlesswait: 0
-  delay: 0
-- sourcetype: sitemap
   name: iris
   logo: http://ds.iris.edu/static/img/layout/logos/iris_logo_shadow.png
   url: http://ds.iris.edu/files/sitemap.xml
@@ -176,7 +170,7 @@ sources:
   headlesswait: 0
   delay: 0
 - sourcetype: sitemap
-  name: bco-dmo
+  name: bcodmo
   logo: https://www.bco-dmo.org/sites/all/themes/bcodmo/logo.png
   url: https://www.bco-dmo.org/sitemap.xml
   headless: false
@@ -242,7 +236,7 @@ sources:
   headlesswait: 0
   delay: 0
 - sourcetype: sitemap
-  name: ssdb.iodp
+  name: ssdbiodp
   logo: http://ssdb.iodp.org/images/head_logo_PRO.gif
   url: https://ssdb.iodp.org/dataset/sitemap.xml
   headless: false
@@ -255,7 +249,7 @@ sources:
   headlesswait: 0
   delay: 0
 - sourcetype: sitemap
-  name: linked.earth
+  name: linkedearth
   logo: http://wiki.linked.earth/wiki/images/thumb/5/51/EarthLinked_Banner_blue_NoShadow.jpg/440px-EarthLinked_Banner_blue_NoShadow.jpg
   url: http://wiki.linked.earth/sitemap.xml
   headless: false
@@ -275,19 +269,6 @@ sources:
   pid: https://lipdverse.org
   propername: Linked PaleoData
   domain: https://lipdverse.org/
-  active: true
-  credentialsfile: ""
-  other: {}
-  headlesswait: 0
-  delay: 0
-- sourcetype: sitemap
-  name: iris
-  logo: http://ds.iris.edu/static/img/layout/logos/iris_logo_shadow.png
-  url: http://ds.iris.edu/files/sitemap.xml
-  headless: false
-  pid: https://www.re3data.org/repository/r3d100010268
-  propername: IRIS
-  domain: http://iris.edu
   active: true
   credentialsfile: ""
   other: {}
@@ -411,7 +392,7 @@ sources:
   headlesswait: 0
   delay: 0
 - sourcetype: sitemap
-  name: usap-dc
+  name: usapdc
   logo: https://www.usap-dc.org/
   url: https://www.usap-dc.org/view/dataset/sitemap.xml
   headless: true
@@ -449,9 +430,4 @@ sources:
   other: {}
   headlesswait: 0
   delay: 0
-summoner:
-  after: ""
-  delay: null
-  headless: http://127.0.0.1:9222
-  mode: full
-  threads: 5
+

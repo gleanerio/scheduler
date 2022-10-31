@@ -1,5 +1,6 @@
 context:
   cache: true
+  strict: true
 contextmaps:
   - prefix: "https://schema.org/"
     file: "./jsonldcontext.json"  # wget http://schema.org/docs/jsonldcontext.jsonld
@@ -11,8 +12,8 @@ gleaner:
   summon: true
 summoner:
     after: ""
-    delay: null
-    headless: http://10.0.5.2:9222
+    delay:  # milliseconds (1000 = 1 second) to delay between calls (will FORCE threads to 1)
+    headless: http://geocodes-dev.earthcube.org:9222
     mode: full
     threads: 5
 millers:

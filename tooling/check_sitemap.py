@@ -3,15 +3,13 @@ import requests, sys, os
 import yaml
 from urllib.request import urlopen
 
-smurl = 'https://www.oceanexpert.org/assets/sitemaps/sitemapExperts.xml'
-sources = "https://raw.githubusercontent.com/iodepo/odis-arch/schema-dev-df/config/sources.yaml"
-
+# sources = "https://raw.githubusercontent.com/iodepo/odis-arch/schema-dev-df/config/sources.yaml"
+sources = "/home/fils/src/Projects/gleaner.io/scheduler/dagster/dagster-docker/src/implnet-eco/gleanerconfig.yaml"
 
 def check_sitemap(target: str) -> int:
-
-    f = urlopen(sources)
+    # f = urlopen(sources)
+    f = open(sources)
     fr = f.read()
-
     try:
         cfg = yaml.safe_load(fr)
         # cfg = yaml.load(file, Loader=yaml.FullLoader)
@@ -53,5 +51,6 @@ def check_sitemap(target: str) -> int:
         return 1 #  sys.exit(os.EX_SOFTWARE)
 
 
-r = check_sitemap("euroceanevent")
+r = check_sitemap("r2r")
 print(r)
+

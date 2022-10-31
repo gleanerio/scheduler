@@ -7,7 +7,7 @@ def resource_registry_index(context):
     cwd = os.getcwd()
     print(cwd)
     get_dagster_logger().info(f"CWD is {cwd} ")
-    returned_value = subprocess.run('./gleaner.bin -cfg gleanerconfig.yaml  --source resource_registry', shell=True, cwd='/usr/src/app')
+    returned_value = subprocess.run('./gleaner.bin -cfg gleanerconfig.yaml  --source resource_registry -rude', shell=True, cwd='/usr/src/app')
     # returned_value = subprocess.call('./gleanerDocker.sh -cfg /gleaner/wd/rundir/gleanerconfig.yaml  --source resource_registry', shell=True, cwd='/home/fils/src/gomods/gleaner/secret/dockercli')
     get_dagster_logger().info(f"Gleaner notes are  {returned_value} ")
     r = str('returned value:{}'.format(returned_value))
