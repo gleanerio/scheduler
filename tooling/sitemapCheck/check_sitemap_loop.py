@@ -4,22 +4,18 @@ import yaml, yaql
 from urllib.request import urlopen
 import logging
 
-# this script has an annoying stderr from advertools
-# run with
+# Usage:
+# python check_sitemap_loop.py ~/src/Projects/gleaner.io/scheduler/dagster/dagster-docker/src/implnet-oih/gleanerconfig.yaml
 
+# this script has an annoying stderr from advertools, run with
 # python check_sitemap_loop.py  2> /dev/null
+# to route stderr to dev/null if that works better for you
 
-# to route stderr to dev/null
-
-# Fun commands: grep " name:" gleanerconfig.yaml | awk '{print "\"" $2 "\""}' | tr '\n' ','
-# to get a list you can loop on if doing a manual test of many resources
-
-# smurl = 'https://www.oceanexpert.org/assets/sitemaps/sitemapExperts.xml'
 # sources = "https://raw.githubusercontent.com/iodepo/odis-arch/schema-dev-df/config/sources.yaml"
 # sources = "/home/fils/src/Projects/gleaner.io/scheduler/dagster/dagster-docker/src/implnet-eco/gleanerconfig.yaml"
-sources = "/home/fils/src/Projects/gleaner.io/scheduler/dagster/dagster-docker/src/implnet-oih/gleanerconfig.yaml"
+#sources = "/home/fils/src/Projects/gleaner.io/scheduler/dagster/dagster-docker/src/implnet-oih/gleanerconfig.yaml"
 
-def check_sitemap(target: str) -> int:
+def check_sitemap(sources, target: str) -> int:
 
     # 'NOTSET', 'DEBUG', 'INFO', 'WARNING', 'ERROR', 'CRITICAL']
     logging.getLogger('requests').setLevel(logging.ERROR)
@@ -72,20 +68,28 @@ def check_sitemap(target: str) -> int:
         print(exc)
         return 1 #  sys.exit(os.EX_SOFTWARE)
 
-#
-# r = check_sitemap("r2r")
-# print(r)
 
-# to test:  xdomes
+def main():
+    # Read the command line arguments
+    args = sys.argv[1:]
 
-data_source = yaml.safe_load(open(sources, 'r'))
-engine = yaql.factory.YaqlFactory().create()
-expression = engine( '$.sources.name')
-order = expression.evaluate(data=data_source)
+    # Print the arguments
+    print('Number of arguments:', len(args))
+    print('Arguments:', args)
 
-print(order)
+    sources = args[0]
 
-for n in order:
-    r = check_sitemap(n)
-    print(r)
+    data_source = yaml.safe_load(open(sources, 'r'))
+    engine = yaql.factory.YaqlFactory().create()
+    expression = engine( '$.sources.name')
+    order = expression.evaluate(data=data_source)
+
+    print(order)
+
+    for n in order:
+        r = check_sitemap(sources, n)
+        print(r)
+
+if __name__ == '__main__':
+    main()
 
