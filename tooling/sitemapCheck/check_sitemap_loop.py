@@ -2,10 +2,14 @@ import advertools as adv
 import requests, sys, os
 import yaml, yaql
 from urllib.request import urlopen
+import urllib.request
 import logging
 
 # Usage:
 # python check_sitemap_loop.py ~/src/Projects/gleaner.io/scheduler/dagster/dagster-docker/src/implnet-oih/gleanerconfig.yaml
+
+#  Shout out to OpenAI and ChatGPT (https://chat.openai.com/chat) for some fun pair programming :)
+#  I for one welcome our new AI overlords and can be useful idiot in your plans for world conquest....
 
 # this script has an annoying stderr from advertools, run with
 # python check_sitemap_loop.py  2> /dev/null
@@ -21,9 +25,12 @@ def check_sitemap(sources, target: str) -> int:
     logging.getLogger('requests').setLevel(logging.ERROR)
     logging.getLogger('advertools').setLevel(logging.ERROR)
 
-    # f = urlopen(sources)
-    f = open(sources)
+    if "://" in sources:
+        f = urlopen(sources)
+    else:
+        f = open(sources)
     fr = f.read()
+
     try:
         cfg = yaml.safe_load(fr)
         # cfg = yaml.load(file, Loader=yaml.FullLoader)
@@ -76,14 +83,18 @@ def check_sitemap(sources, target: str) -> int:
 def main():
     # Read the command line arguments
     args = sys.argv[1:]
-
-    # Print the arguments
-    print('Number of arguments:', len(args))
-    print('Arguments:', args)
-
     sources = args[0]
+    data_source = None
 
-    data_source = yaml.safe_load(open(sources, 'r'))
+    if "://" in sources:
+        # If the input is a URL, open it using urllib
+        f = urlopen(sources)
+        data_source = yaml.safe_load(f.read())
+    else:
+        # If the input is a file, open it
+        data_source = yaml.safe_load(open(sources, 'r'))
+
+
     engine = yaql.factory.YaqlFactory().create()
     expression = engine( '$.sources.name')
     order = expression.evaluate(data=data_source)
