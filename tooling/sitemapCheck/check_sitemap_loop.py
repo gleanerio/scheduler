@@ -43,7 +43,11 @@ def check_sitemap(sources, target: str) -> int:
                         print("VALID {} : {} Sitegraph URL code is {} ".format(s["name"], smurl, x.status_code))
                         return 0 # sys.exit(os.EX_OK)
                 else:
-                    r = requests.get(smurl)
+                    try:
+                        r = requests.get(smurl)
+                    except:
+                        print("ERROR making request, no further help at this time")
+                        return 1
                     if r.status_code == 404:
                         print("ERROR {} : {} Sitemap URL is 404".format(s["name"],smurl))
                         return 1 # sys.exit(os.EX_SOFTWARE)
