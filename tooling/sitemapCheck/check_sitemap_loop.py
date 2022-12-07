@@ -1,13 +1,13 @@
 import advertools as adv
 import requests, sys, os
-import yaml
+import yaml, yaql
 from urllib.request import urlopen
 import logging
 
 # this script has an annoying stderr from advertools
 # run with
 
-#   python check_sitemap_loop.py  2> /dev/null
+# python check_sitemap_loop.py  2> /dev/null
 
 # to route stderr to dev/null
 
@@ -16,7 +16,8 @@ import logging
 
 # smurl = 'https://www.oceanexpert.org/assets/sitemaps/sitemapExperts.xml'
 # sources = "https://raw.githubusercontent.com/iodepo/odis-arch/schema-dev-df/config/sources.yaml"
-sources = "/home/fils/src/Projects/gleaner.io/scheduler/dagster/dagster-docker/src/implnet-eco/gleanerconfig.yaml"
+# sources = "/home/fils/src/Projects/gleaner.io/scheduler/dagster/dagster-docker/src/implnet-eco/gleanerconfig.yaml"
+sources = "/home/fils/src/Projects/gleaner.io/scheduler/dagster/dagster-docker/src/implnet-oih/gleanerconfig.yaml"
 
 def check_sitemap(target: str) -> int:
 
@@ -77,12 +78,14 @@ def check_sitemap(target: str) -> int:
 
 # to test:  xdomes
 
-names = ["balto","neotomadb","resourceregistry",
-         "unidata","aquadocs","iris","edi","bcodmo","hydroshare","iedadata","opentopography",
-         "unavco","ssdbiodp","linkedearth","lipdverse","ucar","opencoredata","magic","earthchem",
-         "neon","designsafe","r2r","geocodes_demo_datasets","usapdc","cchdo","amgeo"]
+data_source = yaml.safe_load(open(sources, 'r'))
+engine = yaql.factory.YaqlFactory().create()
+expression = engine( '$.sources.name')
+order = expression.evaluate(data=data_source)
 
-for n in names:
+print(order)
+
+for n in order:
     r = check_sitemap(n)
-    # print(r)
+    print(r)
 
