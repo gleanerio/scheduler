@@ -9,7 +9,7 @@ import logging
 # python check_sitemap_loop.py ~/src/Projects/gleaner.io/scheduler/dagster/dagster-docker/src/implnet-oih/gleanerconfig.yaml
 
 #  Shout out to OpenAI and ChatGPT (https://chat.openai.com/chat) for some fun pair programming :)
-#  I for one welcome our new AI overlords and can be useful idiot in your plans for world conquest....
+#  I for one welcome our new AI overlords and can be a useful idiot in your plans for world conquest....
 
 # this script has an annoying stderr from advertools, run with
 # python check_sitemap_loop.py  2> /dev/null
