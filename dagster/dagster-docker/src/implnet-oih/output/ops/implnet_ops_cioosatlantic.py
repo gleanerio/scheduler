@@ -29,7 +29,7 @@ def cioosatlantic_prov(context, msg: str):
 @graph
 def harvest_cioosatlantic():
     harvest = cioosatlantic_index()
-    load1 = cioosatlantic_rdf(harvest)
-    load2 = cioosatlantic_prov(load1)
+    # load1 = cioosatlantic_rdf(harvest)
+    # load2 = cioosatlantic_prov(load1)
 
 

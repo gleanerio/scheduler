@@ -29,7 +29,7 @@ def edmerp_prov(context, msg: str):
 @graph
 def harvest_edmerp():
     harvest = edmerp_index()
-    load1 = edmerp_rdf(harvest)
-    load2 = edmerp_prov(load1)
+    # load1 = edmerp_rdf(harvest)
+    # load2 = edmerp_prov(load1)
 
 

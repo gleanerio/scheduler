@@ -29,7 +29,7 @@ def benguelacc_prov(context, msg: str):
 @graph
 def harvest_benguelacc():
     harvest = benguelacc_index()
-    load1 = benguelacc_rdf(harvest)
-    load2 = benguelacc_prov(load1)
+    # load1 = benguelacc_rdf(harvest)
+    # load2 = benguelacc_prov(load1)
 
 

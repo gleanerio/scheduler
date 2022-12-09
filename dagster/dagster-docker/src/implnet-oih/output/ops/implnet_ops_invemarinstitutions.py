@@ -29,7 +29,7 @@ def invemarinstitutions_prov(context, msg: str):
 @graph
 def harvest_invemarinstitutions():
     harvest = invemarinstitutions_index()
-    load1 = invemarinstitutions_rdf(harvest)
-    load2 = invemarinstitutions_prov(load1)
+    # load1 = invemarinstitutions_rdf(harvest)
+    # load2 = invemarinstitutions_prov(load1)
 
 

@@ -29,7 +29,7 @@ def maspawio_prov(context, msg: str):
 @graph
 def harvest_maspawio():
     harvest = maspawio_index()
-    load1 = maspawio_rdf(harvest)
-    load2 = maspawio_prov(load1)
+    # load1 = maspawio_rdf(harvest)
+    # load2 = maspawio_prov(load1)
 
 

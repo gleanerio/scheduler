@@ -29,7 +29,7 @@ def euroceantraining_prov(context, msg: str):
 @graph
 def harvest_euroceantraining():
     harvest = euroceantraining_index()
-    load1 = euroceantraining_rdf(harvest)
-    load2 = euroceantraining_prov(load1)
+    # load1 = euroceantraining_rdf(harvest)
+    # load2 = euroceantraining_prov(load1)
 
 

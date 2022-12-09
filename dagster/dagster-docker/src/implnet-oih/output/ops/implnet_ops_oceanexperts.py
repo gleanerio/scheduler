@@ -29,7 +29,7 @@ def oceanexperts_prov(context, msg: str):
 @graph
 def harvest_oceanexperts():
     harvest = oceanexperts_index()
-    load1 = oceanexperts_rdf(harvest)
-    load2 = oceanexperts_prov(load1)
+    # load1 = oceanexperts_rdf(harvest)
+    # load2 = oceanexperts_prov(load1)
 
 

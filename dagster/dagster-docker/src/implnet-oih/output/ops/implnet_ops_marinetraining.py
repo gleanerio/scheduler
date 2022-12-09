@@ -29,7 +29,7 @@ def marinetraining_prov(context, msg: str):
 @graph
 def harvest_marinetraining():
     harvest = marinetraining_index()
-    load1 = marinetraining_rdf(harvest)
-    load2 = marinetraining_prov(load1)
+    # load1 = marinetraining_rdf(harvest)
+    # load2 = marinetraining_prov(load1)
 
 

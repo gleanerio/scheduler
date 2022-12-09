@@ -29,7 +29,7 @@ def edmo_prov(context, msg: str):
 @graph
 def harvest_edmo():
     harvest = edmo_index()
-    load1 = edmo_rdf(harvest)
-    load2 = edmo_prov(load1)
+    # load1 = edmo_rdf(harvest)
+    # load2 = edmo_prov(load1)
 
 

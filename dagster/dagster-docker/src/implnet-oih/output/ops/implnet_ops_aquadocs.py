@@ -29,7 +29,7 @@ def aquadocs_prov(context, msg: str):
 @graph
 def harvest_aquadocs():
     harvest = aquadocs_index()
-    load1 = aquadocs_rdf(harvest)
-    load2 = aquadocs_prov(load1)
+    # load1 = aquadocs_rdf(harvest)
+    # load2 = aquadocs_prov(load1)
 
 

@@ -29,7 +29,7 @@ def invemarvessels_prov(context, msg: str):
 @graph
 def harvest_invemarvessels():
     harvest = invemarvessels_index()
-    load1 = invemarvessels_rdf(harvest)
-    load2 = invemarvessels_prov(load1)
+    # load1 = invemarvessels_rdf(harvest)
+    # load2 = invemarvessels_prov(load1)
 
 

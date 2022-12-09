@@ -29,7 +29,7 @@ def euroceanevents_prov(context, msg: str):
 @graph
 def harvest_euroceanevents():
     harvest = euroceanevents_index()
-    load1 = euroceanevents_rdf(harvest)
-    load2 = euroceanevents_prov(load1)
+    # load1 = euroceanevents_rdf(harvest)
+    # load2 = euroceanevents_prov(load1)
 
 

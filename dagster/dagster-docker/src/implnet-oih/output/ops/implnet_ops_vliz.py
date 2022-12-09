@@ -29,7 +29,7 @@ def vliz_prov(context, msg: str):
 @graph
 def harvest_vliz():
     harvest = vliz_index()
-    load1 = vliz_rdf(harvest)
-    load2 = vliz_prov(load1)
+    # load1 = vliz_rdf(harvest)
+    # load2 = vliz_prov(load1)
 
 

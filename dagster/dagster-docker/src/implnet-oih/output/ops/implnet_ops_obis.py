@@ -29,7 +29,7 @@ def obis_prov(context, msg: str):
 @graph
 def harvest_obis():
     harvest = obis_index()
-    load1 = obis_rdf(harvest)
-    load2 = obis_prov(load1)
+    # load1 = obis_rdf(harvest)
+    # load2 = obis_prov(load1)
 
 

@@ -29,7 +29,7 @@ def invemarexperts_prov(context, msg: str):
 @graph
 def harvest_invemarexperts():
     harvest = invemarexperts_index()
-    load1 = invemarexperts_rdf(harvest)
-    load2 = invemarexperts_prov(load1)
+    # load1 = invemarexperts_rdf(harvest)
+    # load2 = invemarexperts_prov(load1)
 
 

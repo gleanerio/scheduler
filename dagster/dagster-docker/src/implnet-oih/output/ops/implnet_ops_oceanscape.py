@@ -29,7 +29,7 @@ def oceanscape_prov(context, msg: str):
 @graph
 def harvest_oceanscape():
     harvest = oceanscape_index()
-    load1 = oceanscape_rdf(harvest)
-    load2 = oceanscape_prov(load1)
+    # load1 = oceanscape_rdf(harvest)
+    # load2 = oceanscape_prov(load1)
 
 

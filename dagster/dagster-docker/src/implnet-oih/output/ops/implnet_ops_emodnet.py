@@ -29,7 +29,7 @@ def emodnet_prov(context, msg: str):
 @graph
 def harvest_emodnet():
     harvest = emodnet_index()
-    load1 = emodnet_rdf(harvest)
-    load2 = emodnet_prov(load1)
+    # load1 = emodnet_rdf(harvest)
+    # load2 = emodnet_prov(load1)
 
 

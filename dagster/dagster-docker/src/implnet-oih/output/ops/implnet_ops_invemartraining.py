@@ -29,7 +29,7 @@ def invemartraining_prov(context, msg: str):
 @graph
 def harvest_invemartraining():
     harvest = invemartraining_index()
-    load1 = invemartraining_rdf(harvest)
-    load2 = invemartraining_prov(load1)
+    # load1 = invemartraining_rdf(harvest)
+    # load2 = invemartraining_prov(load1)
 
 

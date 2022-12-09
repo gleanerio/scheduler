@@ -29,7 +29,7 @@ def inanodc_prov(context, msg: str):
 @graph
 def harvest_inanodc():
     harvest = inanodc_index()
-    load1 = inanodc_rdf(harvest)
-    load2 = inanodc_prov(load1)
+    # load1 = inanodc_rdf(harvest)
+    # load2 = inanodc_prov(load1)
 
 

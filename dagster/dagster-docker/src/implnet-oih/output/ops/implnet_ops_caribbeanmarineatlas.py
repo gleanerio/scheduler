@@ -29,7 +29,7 @@ def caribbeanmarineatlas_prov(context, msg: str):
 @graph
 def harvest_caribbeanmarineatlas():
     harvest = caribbeanmarineatlas_index()
-    load1 = caribbeanmarineatlas_rdf(harvest)
-    load2 = caribbeanmarineatlas_prov(load1)
+    # load1 = caribbeanmarineatlas_rdf(harvest)
+    # load2 = caribbeanmarineatlas_prov(load1)
 
 

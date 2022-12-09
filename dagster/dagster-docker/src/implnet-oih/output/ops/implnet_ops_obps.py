@@ -29,7 +29,7 @@ def obps_prov(context, msg: str):
 @graph
 def harvest_obps():
     harvest = obps_index()
-    load1 = obps_rdf(harvest)
-    load2 = obps_prov(load1)
+    # load1 = obps_rdf(harvest)
+    # load2 = obps_prov(load1)
 
 

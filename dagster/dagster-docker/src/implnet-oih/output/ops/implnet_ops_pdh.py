@@ -29,7 +29,7 @@ def pdh_prov(context, msg: str):
 @graph
 def harvest_pdh():
     harvest = pdh_index()
-    load1 = pdh_rdf(harvest)
-    load2 = pdh_prov(load1)
+    # load1 = pdh_rdf(harvest)
+    # load2 = pdh_prov(load1)
 
 

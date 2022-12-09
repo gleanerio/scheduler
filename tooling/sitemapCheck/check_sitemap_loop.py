@@ -4,23 +4,19 @@ import yaml, yaql
 from urllib.request import urlopen
 import urllib.request
 import logging
+import argparse
 
 # Usage:
 # python check_sitemap_loop.py ~/src/Projects/gleaner.io/scheduler/dagster/dagster-docker/src/implnet-oih/gleanerconfig.yaml
+# python check_sitemap_loop.py https://raw.githubusercontent.com/iodepo/odis-arch/schema-dev-df/config/sources.yaml
+# python check_sitemap_loop.py --source=https://raw.githubusercontent.com/iodepo/odis-arch/master/config/sources.yaml  --name=obis
 
-#  Shout out to OpenAI and ChatGPT (https://chat.openai.com/chat) for some fun pair programming :)
-#  I for one welcome our new AI overlords and can be a useful idiot in your plans for world conquest....
-
-# this script has an annoying stderr from advertools, run with
-# python check_sitemap_loop.py  2> /dev/null
+# Shout out to OpenAI and ChatGPT (https://chat.openai.com/chat) for some fun pair programming :)
+# I for one welcome our new AI overlords and can be a useful idiot in your plans for world conquest....
+# This script has an annoying stderr from advertools, run with python check_sitemap_loop.py  2> /dev/null
 # to route stderr to dev/null if that works better for you
 
-# sources = "https://raw.githubusercontent.com/iodepo/odis-arch/schema-dev-df/config/sources.yaml"
-# sources = "/home/fils/src/Projects/gleaner.io/scheduler/dagster/dagster-docker/src/implnet-eco/gleanerconfig.yaml"
-#sources = "/home/fils/src/Projects/gleaner.io/scheduler/dagster/dagster-docker/src/implnet-oih/gleanerconfig.yaml"
-
 def check_sitemap(sources, target: str) -> int:
-
     # 'NOTSET', 'DEBUG', 'INFO', 'WARNING', 'ERROR', 'CRITICAL']
     logging.getLogger('requests').setLevel(logging.ERROR)
     logging.getLogger('advertools').setLevel(logging.ERROR)
@@ -53,7 +49,7 @@ def check_sitemap(sources, target: str) -> int:
                     try:
                         r = requests.get(smurl)
                     except:
-                        print("ERROR making request, no further help at this time")
+                        print("ERROR making request, no further information at this time")
                         return 1
                     if r.status_code == 404:
                         print("ERROR {} : {} Sitemap URL is 404".format(s["name"],smurl))
@@ -61,9 +57,9 @@ def check_sitemap(sources, target: str) -> int:
                     else:
                         try:
                             # adv.logs_to_df(log_file='data/sample_log.log',
-                                                          # output_file='data/adv_logs.parquet',
-                                                          # errors_file='data/adv_errors.txt',
-                                                          # log_format='combined')
+                            # output_file='data/adv_logs.parquet',
+                            # errors_file='data/adv_errors.txt',
+                            # log_format='combined')
                             iow_sitemap = adv.sitemap_to_df(smurl)
                             usm = iow_sitemap.sitemap.unique()
                             uloc = iow_sitemap["loc"].unique()
@@ -79,12 +75,20 @@ def check_sitemap(sources, target: str) -> int:
         print(exc)
         return 1 #  sys.exit(os.EX_SOFTWARE)
 
-
 def main():
     # Read the command line arguments
-    args = sys.argv[1:]
-    sources = args[0]
     data_source = None
+    # args = sys.argv[1:]
+    # sources = args[0]
+
+    # Initialize args  parser
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-s", "--source", help = "Source: URL or file")
+    parser.add_argument("-n", "--name", help = "Optional name of single source, by name, to check")
+    args = parser.parse_args()
+
+    sources = args.source
+    name = args.name
 
     if "://" in sources:
         # If the input is a URL, open it using urllib
@@ -94,15 +98,18 @@ def main():
         # If the input is a file, open it
         data_source = yaml.safe_load(open(sources, 'r'))
 
-
     engine = yaql.factory.YaqlFactory().create()
     expression = engine( '$.sources.name')
     order = expression.evaluate(data=data_source)
 
-    print(order)
+    # print(order)
 
-    for n in order:
-        r = check_sitemap(sources, n)
+    if name is None:
+        for n in order:
+            r = check_sitemap(sources, n)
+            print(r)
+    else:
+        r = check_sitemap(sources, name)
         print(r)
 
 if __name__ == '__main__':
