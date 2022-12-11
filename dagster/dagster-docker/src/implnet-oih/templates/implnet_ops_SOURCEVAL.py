@@ -29,7 +29,7 @@ def SOURCEVAL_prov(context, msg: str):
 @graph
 def harvest_SOURCEVAL():
     harvest = SOURCEVAL_index()
-    load1 = SOURCEVAL_rdf(harvest)
-    load2 = SOURCEVAL_prov(load1)
+    # load1 = SOURCEVAL_rdf(harvest)
+    # load2 = SOURCEVAL_prov(load1)
 
 
