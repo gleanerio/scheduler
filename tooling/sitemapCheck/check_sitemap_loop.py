@@ -43,7 +43,7 @@ def check_sitemap(sources, target: str) -> int:
                         print("ERROR {} : {} Sitegrap URL is 404".format(s["name"],smurl))
                         return 1 # sys.exit(os.EX_SOFTWARE)
                     else:
-                        print("VALID {} : {} Sitegraph URL code is {} ".format(s["name"], smurl, x.status_code))
+                        print("{} \t {} Sitegraph URL code is {} ".format(s["name"], smurl, x.status_code))
                         return 0 # sys.exit(os.EX_OK)
                 else:
                     try:
@@ -63,7 +63,7 @@ def check_sitemap(sources, target: str) -> int:
                             iow_sitemap = adv.sitemap_to_df(smurl)
                             usm = iow_sitemap.sitemap.unique()
                             uloc = iow_sitemap["loc"].unique()
-                            print("VALID {} : {} has {} unique resources in {} sitemap URLs".format(s["name"],smurl, len(uloc), len(usm)))
+                            print("{} : {} VALID {}  with {} sitemap URL(s)".format( len(uloc), s["name"],smurl, len(usm)))
                             return 0 # sys.exit(os.EX_OK)
                         except:
                             print("ERROR {} : {} reading sitemap XML".format(s["name"],smurl))
