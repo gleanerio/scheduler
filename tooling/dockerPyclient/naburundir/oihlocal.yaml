@@ -1,8 +1,8 @@
 minio:
   address: 192.168.202.114
   port: 49155
-  accesskey: AKIAIOSFODNN7EXAMPLE
-  secretkey: wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
+  accesskey:
+  secretkey:
   bucket: gleaner.oih
 objects:
   domain: us-east-1
