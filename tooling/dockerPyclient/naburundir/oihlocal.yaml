@@ -1,6 +1,6 @@
 minio:
   address: 192.168.202.114
-  port: 49155
+  port: 49153
   accesskey:
   secretkey:
   bucket: gleaner.oih
@@ -8,23 +8,23 @@ objects:
   domain: us-east-1
   prefix:
   - org
-  - summoned/cioosatlantic
-  - summoned/benguelacc
-  - summoned/caribbeanmarineatlas
-  - summoned/inanodc
-  - summoned/maspawio
-  - summoned/emodnet
-  - summoned/pdh
-  - prov/cioosatlantic
-  - prov/benguelacc
-  - prov/caribbeanmarineatlas
-  - prov/inanodc
-  - prov/maspawio
-  - prov/emodnet
-  - prov/pdh
+#  - summoned/cioosatlantic
+#  - summoned/benguelacc
+#  - summoned/caribbeanmarineatlas
+#  - summoned/inanodc
+#  - summoned/maspawio
+#  - summoned/emodnet
+#  - summoned/pdh
+#  - prov/cioosatlantic
+#  - prov/benguelacc
+#  - prov/caribbeanmarineatlas
+#  - prov/inanodc
+#  - prov/maspawio
+#  - prov/emodnet
+#  - prov/pdh
 sparql:
-  endpoint: https://ts.collaborium.io/blazegraph/namespace/development/sparql
-  authenticate: false
-  username: ""
-  password: ""
+  endpoint: http://coreos.lan:3030/oihdev/data
+  authenticate: true
+  username: admin
+  password: jfpwd
 

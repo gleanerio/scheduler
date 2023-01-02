@@ -6,7 +6,7 @@ import docker
 # https://stackoverflow.com/questions/54688176/python-docker-how-to-mount-the-directory-from-host-to-container
 
 client = docker.from_env()
-client = docker.DockerClient(base_url='unix://var/run/docker.sock')
+# client = docker.DockerClient(base_url='unix://var/run/docker.sock')
 
 # os.getcwd():
 stdout = client.containers.run(
@@ -14,7 +14,7 @@ stdout = client.containers.run(
     name='nabu',
     volumes={
         '/nabu/config/oihlocal.yaml': {
-            'bind': '/home/fils/tmp/scheduler/tooling/pyclient/naburundir/oihlocal.yaml',
+            'bind': '/home/fils/src/Projects/gleaner.io/scheduler/tooling/dockerPyclient/naburundir/oihlocal.yaml',
             'mode': 'rw',
         }
     },
