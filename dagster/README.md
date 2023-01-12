@@ -2,6 +2,12 @@
 
 ## Notes
 
+Single file testing run
+
+```bash
+ dagit -h ghost.lan -f test1.py
+```
+
 * Don't forget to set the DAGSTER_HOME dir like in 
 
 ```bash
