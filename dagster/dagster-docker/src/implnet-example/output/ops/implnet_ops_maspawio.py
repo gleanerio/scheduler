@@ -223,20 +223,43 @@ def gleanerio(mode, source):
     return 0
 
 @op
-def SOURCEVAL_gleaner():
-    returned_value = gleanerio(("gleaner"), "SOURCEVAL")
+def maspawio_gleaner():
+    returned_value = gleanerio(("gleaner"), "maspawio")
     r = str('returned value:{}'.format(returned_value))
     get_dagster_logger().info(f"Gleaner notes are  {r} ")
     return r
 
 @op
-def SOURCEVAL_nabu(context, msg: str):
-    returned_value = gleanerio(("nabu"), "SOURCEVAL")
+def maspawio_nabu(context, msg: str):
+    returned_value = gleanerio(("nabu"), "maspawio")
     r = str('returned value:{}'.format(returned_value))
     return msg + r
 
 @graph
-def harvest_SOURCEVAL():
-    harvest = SOURCEVAL_gleaner()
-    load1 = SOURCEVAL_nabu(harvest)
-    # load2 = SOURCEVAL_prov(load1)
+def harvest_maspawio():
+    harvest = maspawio_gleaner()
+    load1 = maspawio_nabu(harvest)
+    # load2 = maspawio_prov(load1)
+
+# @op
+# def maspawio_index(context):
+#     cwd = os.getcwd()
+#     print(cwd)
+#     get_dagster_logger().info(f"CWD is {cwd} ")
+#     returned_value = subprocess.run('./gleaner.bin -cfg gleanerconfig.yaml  --source maspawio -rude', shell=True, cwd='/usr/src/app')
+#     get_dagster_logger().info(f"Gleaner notes are  {returned_value} ")
+#     r = str('returned value:{}'.format(returned_value))
+#     get_dagster_logger().info(f"Gleaner notes are  {r} ")
+#     return r
+#
+# @op
+# def maspawio_rdf(context, msg: str):
+#     returned_value = subprocess.call('./nabuDocker.sh  --cfg /nabu/wd/nabuconfig.yaml  prune -s summoned/maspawio', shell=True, cwd='/home/fils/src/Projects/gleaner.io/nabu/secret/cliNaboDocker')
+#     r = str('returned value:{}'.format(returned_value))
+#     return msg + r
+#
+# @op
+# def maspawio_prov(context, msg: str):
+#     returned_value = subprocess.call('./nabuDocker.sh  --cfg /nabu/wd/nabuconfig.yaml  prune -s prov/maspawio', shell=True, cwd='/home/fils/src/Projects/gleaner.io/nabu/secret/cliNaboDocker')
+#     r = str('returned value:{}'.format(returned_value))
+#     return msg + r

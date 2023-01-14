@@ -223,20 +223,43 @@ def gleanerio(mode, source):
     return 0
 
 @op
-def SOURCEVAL_gleaner():
-    returned_value = gleanerio(("gleaner"), "SOURCEVAL")
+def vliz_gleaner():
+    returned_value = gleanerio(("gleaner"), "vliz")
     r = str('returned value:{}'.format(returned_value))
     get_dagster_logger().info(f"Gleaner notes are  {r} ")
     return r
 
 @op
-def SOURCEVAL_nabu(context, msg: str):
-    returned_value = gleanerio(("nabu"), "SOURCEVAL")
+def vliz_nabu(context, msg: str):
+    returned_value = gleanerio(("nabu"), "vliz")
     r = str('returned value:{}'.format(returned_value))
     return msg + r
 
 @graph
-def harvest_SOURCEVAL():
-    harvest = SOURCEVAL_gleaner()
-    load1 = SOURCEVAL_nabu(harvest)
-    # load2 = SOURCEVAL_prov(load1)
+def harvest_vliz():
+    harvest = vliz_gleaner()
+    load1 = vliz_nabu(harvest)
+    # load2 = vliz_prov(load1)
+
+# @op
+# def vliz_index(context):
+#     cwd = os.getcwd()
+#     print(cwd)
+#     get_dagster_logger().info(f"CWD is {cwd} ")
+#     returned_value = subprocess.run('./gleaner.bin -cfg gleanerconfig.yaml  --source vliz -rude', shell=True, cwd='/usr/src/app')
+#     get_dagster_logger().info(f"Gleaner notes are  {returned_value} ")
+#     r = str('returned value:{}'.format(returned_value))
+#     get_dagster_logger().info(f"Gleaner notes are  {r} ")
+#     return r
+#
+# @op
+# def vliz_rdf(context, msg: str):
+#     returned_value = subprocess.call('./nabuDocker.sh  --cfg /nabu/wd/nabuconfig.yaml  prune -s summoned/vliz', shell=True, cwd='/home/fils/src/Projects/gleaner.io/nabu/secret/cliNaboDocker')
+#     r = str('returned value:{}'.format(returned_value))
+#     return msg + r
+#
+# @op
+# def vliz_prov(context, msg: str):
+#     returned_value = subprocess.call('./nabuDocker.sh  --cfg /nabu/wd/nabuconfig.yaml  prune -s prov/vliz', shell=True, cwd='/home/fils/src/Projects/gleaner.io/nabu/secret/cliNaboDocker')
+#     r = str('returned value:{}'.format(returned_value))
+#     return msg + r

@@ -1,5 +1,6 @@
 #!/bin/bash
 
+echo "USAGE:  ./generator.sh ./path/to/gleanerconfig.yaml"
 echo "---  building src diretory "
 
 # TODO
@@ -16,7 +17,7 @@ tmp_dir=$(mktemp -d -t drb-XXXXXXXXXX)
 #echo $tmp_dir
 
 # declare an array variable for all the source names
-arr=($(grep name: gleanerconfig.yaml | grep -v propername | awk '{print $2}' ))
+arr=($(grep name: $1 | grep -v propername | awk '{print $3}' ))
 
 # Vars to spread sources over multiple days (here 7)
 AL=$((${#arr[@]}-1))  # take off one since we range from 0 not 1

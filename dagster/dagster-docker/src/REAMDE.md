@@ -1,8 +1,16 @@
 # ScriptBuilder
 
+## testing running
+
+Once built you can ```cd``` into the output directory and run a command like:
+
+```bash 
+ dagit -h ghost.lan -w workspace.yaml
+ ```
+
 ## About
 
-Script to buil the dagster files based on templates and a Gleaner config file.
+Script to build the dagster files based on templates and a Gleaner config file.
 
 ```
 sed -i  's|0 15 \* \* \*|0 1 \* \* \*|g' implnet_sch_aquadocs.py

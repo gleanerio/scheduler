@@ -5,75 +5,45 @@ from urllib.request import urlopen
 import urllib.request
 import logging
 import argparse
+from typing import Tuple
+import pandas as pd
+import numpy as np
+import csv
+from io import StringIO
 
-# Usage:
-# python check_sitemap_loop.py ~/src/Projects/gleaner.io/scheduler/dagster/dagster-docker/src/implnet-oih/gleanerconfig.yaml
-# python check_sitemap_loop.py https://raw.githubusercontent.com/iodepo/odis-arch/schema-dev-df/config/sources.yaml
-# python check_sitemap_loop.py --source=https://raw.githubusercontent.com/iodepo/odis-arch/master/config/sources.yaml  --name=obis
+# TODO   explore csv for the web and RML
 
-# Shout out to OpenAI and ChatGPT (https://chat.openai.com/chat) for some fun pair programming :)
-# I for one welcome our new AI overlords and can be a useful idiot in your plans for world conquest....
-# This script has an annoying stderr from advertools, run with python check_sitemap_loop.py  2> /dev/null
-# to route stderr to dev/null if that works better for you
-
-def check_sitemap(sources, target: str) -> int:
-    # 'NOTSET', 'DEBUG', 'INFO', 'WARNING', 'ERROR', 'CRITICAL']
-    logging.getLogger('requests').setLevel(logging.ERROR)
+def check_sitemapv2(smurl, stype, name: str) -> Tuple[int, str]:
+    logging.getLogger('requests').setLevel(logging.ERROR)  # 'NOTSET', 'DEBUG', 'INFO', 'WARNING', 'ERROR', 'CRITICAL']
     logging.getLogger('advertools').setLevel(logging.ERROR)
 
-    if "://" in sources:
-        f = urlopen(sources)
+    if stype == "sitegraph":
+        x = requests.head(smurl)
+        if x.status_code == 404:  # could check for 200 or 303?
+            res = str("ERROR {} : {} Sitegrap URL is 404".format(name, smurl))
+            return 1, res  # sys.exit(os.EX_SOFTWARE)
+        else:
+            res = str("{} \t {} Sitegraph URL code is {} ".format(name, smurl, x.status_code))
+            return 0, res  # sys.exit(os.EX_OK)
     else:
-        f = open(sources)
-    fr = f.read()
-
-    try:
-        cfg = yaml.safe_load(fr)
-        # cfg = yaml.load(file, Loader=yaml.FullLoader)
-        # print(cfg)
-        for s in cfg["sources"]:
-            if s["name"] == target:
-                smurl = s["url"]
-                stype = s["sourcetype"]
-                # print(stype, " : ", smurl)
-                if stype == "sitegraph":
-                    x = requests.head(smurl)
-                    # print(x.headers)
-                    if x.status_code == 404:  # could check for 200 or 303?
-                        print("ERROR {} : {} Sitegrap URL is 404".format(s["name"],smurl))
-                        return 1 # sys.exit(os.EX_SOFTWARE)
-                    else:
-                        print("{} \t {} Sitegraph URL code is {} ".format(s["name"], smurl, x.status_code))
-                        return 0 # sys.exit(os.EX_OK)
-                else:
-                    try:
-                        r = requests.get(smurl)
-                    except:
-                        print("ERROR making request, no further information at this time")
-                        return 1
-                    if r.status_code == 404:
-                        print("ERROR {} : {} Sitemap URL is 404".format(s["name"],smurl))
-                        return 1 # sys.exit(os.EX_SOFTWARE)
-                    else:
-                        try:
-                            # adv.logs_to_df(log_file='data/sample_log.log',
-                            # output_file='data/adv_logs.parquet',
-                            # errors_file='data/adv_errors.txt',
-                            # log_format='combined')
-                            iow_sitemap = adv.sitemap_to_df(smurl)
-                            usm = iow_sitemap.sitemap.unique()
-                            uloc = iow_sitemap["loc"].unique()
-                            print("{} : {} VALID {}  with {} sitemap URL(s)".format( len(uloc), s["name"],smurl, len(usm)))
-                            return 0 # sys.exit(os.EX_OK)
-                        except:
-                            print("ERROR {} : {} reading sitemap XML".format(s["name"],smurl))
-                            return 1
-        # looped and didn't find target
-        print("ERROR {} : target not found: returning 1".format(s["name"]))
-        return 1
-    except yaml.YAMLError as exc:
-        print(exc)
-        return 1 #  sys.exit(os.EX_SOFTWARE)
+        try:
+            r = requests.get(smurl)
+        except:
+            res = str("ERROR making request, no further information at this time")
+            return 1, res
+        if r.status_code == 404:
+            res = str("ERROR {} : {} Sitemap URL is 404".format(name, smurl))
+            return 1, res  # sys.exit(os.EX_SOFTWARE)
+        else:
+            try:
+                iow_sitemap = adv.sitemap_to_df(smurl)
+                usm = iow_sitemap.sitemap.unique()
+                uloc = iow_sitemap["loc"].unique()
+                res = str("{} : {} VALID {}  with {} sitemap URL(s)".format(len(uloc), name, smurl, len(usm)))
+                return 0, res  # sys.exit(os.EX_OK)
+            except:
+                res = str("ERROR {} : {} reading sitemap XML".format(name, smurl))
+                return 1, res
 
 def main():
     # Read the command line arguments
@@ -83,8 +53,8 @@ def main():
 
     # Initialize args  parser
     parser = argparse.ArgumentParser()
-    parser.add_argument("-s", "--source", help = "Source: URL or file")
-    parser.add_argument("-n", "--name", help = "Optional name of single source, by name, to check")
+    parser.add_argument("-s", "--source", help="Source: URL or file")
+    parser.add_argument("-n", "--name", help="Optional name of single source, by name, to check")
     args = parser.parse_args()
 
     sources = args.source
@@ -99,19 +69,52 @@ def main():
         data_source = yaml.safe_load(open(sources, 'r'))
 
     engine = yaql.factory.YaqlFactory().create()
-    expression = engine( '$.sources.name')
+    expression = engine('$.sources.name')
     order = expression.evaluate(data=data_source)
 
-    # print(order)
-
     if name is None:
-        for n in order:
-            r = check_sitemap(sources, n)
-            print(r)
+        rl = []
+        for s in data_source["sources"]:
+            smurl = s["url"]
+            stype = s["sourcetype"]
+            name = s["name"]
+
+            r, res = check_sitemapv2(smurl, stype, name)
+
+            data = { 'name': name, 'code': r, 'description': res, 'url': smurl, 'type': stype}
+            rl.append(data)
+
+        # leverage pandas to convert to csv
+        df = pd.DataFrame.from_dict(rl)
+        csv_data = df.to_csv(index=False)
+
+        print(csv_data)
+
     else:
-        r = check_sitemap(sources, name)
-        print(r)
+        rl = []
+        for s in data_source["sources"]:
+            if name == s["name"]:
+            # if ("r2r" == s["name"]) or ("magic" == s["name"]):  // testing
+
+                smurl = s["url"]
+                stype = s["sourcetype"]
+                name = s["name"]
+
+                r, res = check_sitemapv2(smurl, stype, name)
+
+                data = { 'name': name, 'code': r, 'description': res, 'url': smurl, 'type': stype}
+                rl.append(data)
+
+        # for row in rl:
+        #     # formatted_string = f"Name: {row['name']} code: {row['code']} description: {row['description']} type: {row['type']} "
+        #     print(row)
+
+        # leverage pandas to convert to csv
+        df = pd.DataFrame.from_dict(rl)
+        csv_data = df.to_csv(index=False)
+
+        print(csv_data)
+
 
 if __name__ == '__main__':
     main()
-

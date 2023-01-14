@@ -13,6 +13,13 @@ had widely different structure and was difficult to overview as a beginner.
 
 The example is based on the official [tutorial].
 
+## Folders
+
+bin:  The elements that run the gleaner elements.  Not needed with the API approach?
+src:  scripts and templates to build the dagster code
+build:  build directives for the docker containers
+
+
 ## Getting Started
 
 To run the example simply do

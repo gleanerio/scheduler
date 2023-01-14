@@ -7,16 +7,24 @@ from dagster import job, op, get_dagster_logger
 from minio import Minio
 from minio.error import S3Error
 from datetime import datetime
-
 # Vars and Envs
+
+
+CMD = ["--cfg", "/gleaner/testGleanerCfg.yaml", "--source", "edmo"]
+NAME = "gleaner01"
+LOGFILE = 'log_gleaner.txt'  #  only used for local log file writing
+
+# CMD = ["--cfg", "/nabu/testNabuCfg.yaml", "prefix", "summoned/edmo"]
+# NAME = "nabu01"
+# LOGFILE = 'log_nabu.txt'   #  only used for local log file writing
 
 # env items
 URL = os.environ.get('PORTAINER_URL')
 APIKEY = os.environ.get('PORTAINER_KEY')
-
+IMAGE = os.environ.get('GLEANERIO_IMAGE')
+ARCHIVE_FILE = os.environ.get('GLEANERIO_ARCHIVE_FILE')
+ARCHIVE_PATH = os.environ.get('GLEANERIO_ARCHIVE_PATH')
 MINIO_URL = os.environ.get('GLEANER_MINIO_URL')
-MINIO_PORT = os.environ.get('GLEANER_MINIO_PORT')
-MINIO_SSL = os.environ.get('GLEANER_MINIO_SSL')
 MINIO_SECRET = os.environ.get('GLEANER_MINIO_SECRET')
 MINIO_KEY = os.environ.get('GLEANER_MINIO_KEY')
 MINIO_BUCKET = os.environ.get('GLEANER_MINIO_BUCKET')
@@ -25,7 +33,6 @@ MINIO_BUCKET = os.environ.get('GLEANER_MINIO_BUCKET')
 def read_file_bytestream(image_path):
     data = open(image_path, 'rb').read()
     return data
-
 
 def load_data(file_or_url):
     try:
@@ -36,8 +43,7 @@ def load_data(file_or_url):
             data = f.read()
     return data
 
-
-def s3reader(object):
+def s3reader():
     server = os.environ.get('GLEANER_MINIO_URL') + ":" + os.environ.get('GLEANER_MINIO_PORT')
     client = Minio(
         server,
@@ -46,13 +52,12 @@ def s3reader(object):
         secret_key=os.environ.get('GLEANER_MINIO_SECRET'),
     )
     try:
-        data = client.get_object(os.environ.get('GLEANER_MINIO_BUCKET'), object)
+        data = client.get_object(os.environ.get('GLEANER_MINIO_BUCKET'), os.environ.get('GLEANERIO_ARCHIVE_OBJECT'))
         return data
     except S3Error as err:
         get_dagster_logger().info(f"S3 read error : {str(err)}")
 
-
-def s3loader(data, name):
+def s3loader(data):
     server = os.environ.get('GLEANER_MINIO_URL') + ":" + os.environ.get('GLEANER_MINIO_PORT')
     client = Minio(
         server,
@@ -71,8 +76,8 @@ def s3loader(data, name):
     now = datetime.now()
     date_string = now.strftime("%Y_%m_%d_%H_%M_%S")
 
-    logname = name + '_{}.log'.format(date_string)
-    objPrefix = os.environ.get('GLEANERIO_LOG_PREFIX') + logname
+    logname = NAME + '_{}.log'.format(date_string)
+    objPrefix = os.environ.get('GLEANERIO_LOG_PREFIX')+logname
     client.put_object(os.environ.get('GLEANER_MINIO_BUCKET'),
                       objPrefix,
                       io.BytesIO(data),
@@ -80,28 +85,12 @@ def s3loader(data, name):
     get_dagster_logger().info(f"Log uploaded: {str(objPrefix)}")
 
 
-def gleanerio(mode, source):
+@op
+def SOURCEVAL_index(context, msg: str):
     ## ------------   Create
 
-    get_dagster_logger().info(f"Create: {str(mode)}")
+    get_dagster_logger().info(f"Create: {str(msg)}")
 
-    if str(mode) == "gleaner":
-        IMAGE = os.environ.get('GLEANERIO_GLEANER_IMAGE')
-        ARCHIVE_FILE = os.environ.get('GLEANERIO_GLEANER_ARCHIVE_OBJECT')
-        ARCHIVE_PATH = os.environ.get('GLEANERIO_GLEANER_ARCHIVE_PATH')
-        CMD = ["--cfg", "/gleaner/testGleanerCfg.yaml", "--source", source]
-        NAME = "gleaner01"
-        # LOGFILE = 'log_gleaner.txt'  # only used for local log file writing
-    elif (str(mode) == "nabu"):
-        IMAGE = os.environ.get('GLEANERIO_NABU_IMAGE')
-        ARCHIVE_FILE = os.environ.get('GLEANERIO_NABU_ARCHIVE_OBJECT')
-        ARCHIVE_PATH = os.environ.get('GLEANERIO_NABU_ARCHIVE_PATH')
-        CMD = ["--cfg", "/nabu/testNabuCfg.yaml", "prefix", "summoned/" + source]
-        NAME = "nabu01"
-        # LOGFILE = 'log_nabu.txt'  # only used for local log file writing
-
-    else:
-        return 1
 
     data = {}
     data["Image"] = IMAGE
@@ -142,7 +131,7 @@ def gleanerio(mode, source):
     # print(url)
 
     # DATA = read_file_bytestream(ARCHIVE_FILE)
-    DATA = s3reader(ARCHIVE_FILE)
+    DATA = s3reader()
 
     req = request.Request(url, data=DATA, method="PUT")
     req.add_header('X-API-Key', APIKEY)
@@ -203,7 +192,7 @@ def gleanerio(mode, source):
     # f.close()
 
     # write to s3
-    s3loader(str(c).encode(), NAME)  # s3loader needs a bytes like object
+    s3loader(str(c).encode()) # s3loader needs a bytes like object
 
     # write to minio (would need the minio info here)
 
@@ -220,23 +209,35 @@ def gleanerio(mode, source):
     print(r.status)
     get_dagster_logger().info(f"Remove: {str(r.status)}")
 
-    return 0
-
-@op
-def SOURCEVAL_gleaner():
-    returned_value = gleanerio(("gleaner"), "SOURCEVAL")
-    r = str('returned value:{}'.format(returned_value))
-    get_dagster_logger().info(f"Gleaner notes are  {r} ")
-    return r
-
-@op
-def SOURCEVAL_nabu(context, msg: str):
-    returned_value = gleanerio(("nabu"), "SOURCEVAL")
-    r = str('returned value:{}'.format(returned_value))
-    return msg + r
 
 @graph
 def harvest_SOURCEVAL():
-    harvest = SOURCEVAL_gleaner()
-    load1 = SOURCEVAL_nabu(harvest)
+    harvest = SOURCEVAL_index()
+    # load1 = SOURCEVAL_rdf(harvest)
     # load2 = SOURCEVAL_prov(load1)
+
+
+
+# @op
+# def SOURCEVAL_index(context):
+#     cwd = os.getcwd()
+#     print(cwd)
+#     get_dagster_logger().info(f"CWD is {cwd} ")
+#     returned_value = subprocess.run('./gleaner.bin -cfg gleanerconfig.yaml  --source SOURCEVAL -rude', shell=True, cwd='/usr/src/app')
+#     get_dagster_logger().info(f"Gleaner notes are  {returned_value} ")
+#     r = str('returned value:{}'.format(returned_value))
+#     get_dagster_logger().info(f"Gleaner notes are  {r} ")
+#     return r
+#
+# @op
+# def SOURCEVAL_rdf(context, msg: str):
+#     returned_value = subprocess.call('./nabuDocker.sh  --cfg /nabu/wd/nabuconfig.yaml  prune -s summoned/SOURCEVAL', shell=True, cwd='/home/fils/src/Projects/gleaner.io/nabu/secret/cliNaboDocker')
+#     r = str('returned value:{}'.format(returned_value))
+#     return msg + r
+#
+# @op
+# def SOURCEVAL_prov(context, msg: str):
+#     returned_value = subprocess.call('./nabuDocker.sh  --cfg /nabu/wd/nabuconfig.yaml  prune -s prov/SOURCEVAL', shell=True, cwd='/home/fils/src/Projects/gleaner.io/nabu/secret/cliNaboDocker')
+#     r = str('returned value:{}'.format(returned_value))
+#     return msg + r
+
