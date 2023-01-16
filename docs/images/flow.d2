@@ -1,0 +1,53 @@
+direction: right
+
+Host
+Host.Portainer
+Host.Minio
+
+EF: Env File  {
+    style: {
+    opacity: 0.6
+    fill: orange
+    }
+} 
+
+
+GA: Gleaner Archive {
+    style: {
+    opacity: 0.6
+    fill: orange
+    }
+} 
+
+NA: Nabue archive {
+    style: {
+    opacity: 0.6
+    fill: orange
+    }
+} 
+
+T: Template {
+    style: {
+    opacity: 0.6
+    fill: orange
+    }
+} 
+
+
+
+G: Generator script
+
+DS: Dagster Source
+DC: Dagster Container
+
+T -> G -> DS
+DS -> DC: via Makefile
+
+EF -> Host.Portainer
+DC -> Host.Portainer
+
+GA -> Host.Minio:  GLEANERIO_GLEANER_ARCHIVE_PATH
+NA -> Host.Minio:  GLEANERIO_NABU_ARCHIVE_PATH
+
+
+

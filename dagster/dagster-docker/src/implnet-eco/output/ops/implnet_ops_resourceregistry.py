@@ -223,20 +223,20 @@ def gleanerio(mode, source):
     return 0
 
 @op
-def magic_gleaner():
-    returned_value = gleanerio(("gleaner"), "magic")
+def resourceregistry_gleaner():
+    returned_value = gleanerio(("gleaner"), "resourceregistry")
     r = str('returned value:{}'.format(returned_value))
     get_dagster_logger().info(f"Gleaner notes are  {r} ")
     return r
 
 @op
-def magic_nabu(context, msg: str):
-    returned_value = gleanerio(("nabu"), "magic")
+def resourceregistry_nabu(context, msg: str):
+    returned_value = gleanerio(("nabu"), "resourceregistry")
     r = str('returned value:{}'.format(returned_value))
     return msg + r
 
 @graph
-def harvest_magic():
-    harvest = magic_gleaner()
-    load1 = magic_nabu(harvest)
-    # load2 = magic_prov(load1)
+def harvest_resourceregistry():
+    harvest = resourceregistry_gleaner()
+    load1 = resourceregistry_nabu(harvest)
+    # load2 = resourceregistry_prov(load1)

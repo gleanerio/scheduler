@@ -1,5 +1,71 @@
 # Dagster
 
+
+## About
+
+The following is a description of the steps and requirements for
+building and deploying the docker based workflow implemented in 
+dagster.
+
+The general flow is:
+
+* Creation of template files for the various operations, jobs and 
+schedules
+* Creation of the archive files that hold the configuration for the 
+jobs run 
+* Environment file for the values needed by the operatons
+
+![flow](../docs/images/flow.svg)
+
+
+### Template files
+
+See:  [template](./dagster-docker/src/implnet-example/templates)
+
+### Archive files
+
+The archive files need to be compress tar files with the Gleaner
+or Nabu configs and other required files like the schema context. 
+
+### Environment files
+
+``` bash
+export PORTAINER_URL=http://example.org:9000/api/endpoints/2/docker/
+export PORTAINER_KEY=KEY
+
+export GLEANERIO_GLEANER_IMAGE=fils/gleaner:v3.0.11-development-df
+export GLEANERIO_GLEANER_ARCHIVE_OBJECT=scheduler/configs/testGleanerCfg.tgz
+export GLEANERIO_GLEANER_ARCHIVE_PATH=/gleaner/
+
+export GLEANERIO_NABU_IMAGE=fils/nabu:2.0.4-developement
+export GLEANERIO_NABU_ARCHIVE_OBJECT=scheduler/configs/testNabuCfg.tgz
+export GLEANERIO_NABU_ARCHIVE_PATH=/nabu/
+
+export GLEANERIO_LOG_PREFIX=scheduler/logs/
+
+export GLEANER_MINIO_URL=192.168.202.114
+export GLEANER_MINIO_PORT=49153
+export GLEANER_MINIO_SSL=False
+export GLEANER_MINIO_SECRET=SECRET
+export GLEANER_MINIO_KEY=KEY
+export GLEANER_MINIO_BUCKET=gleaner.test
+
+```
+
+## Setup
+
+
+![orchestration](../docs/images/orchestrationInit.svg)
+
+
+
+## Docker API sequence
+
+
+![sequence](../docs/images/sequence.svg)
+
+
+
 ## Notes
 
 Single file testing run
