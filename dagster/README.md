@@ -27,6 +27,46 @@ See:  [template](./dagster-docker/src/implnet-example/templates)
 The archive files need to be compress tar files with the Gleaner
 or Nabu configs and other required files like the schema context. 
 
+The archive files are defined in:
+
+```yaml
+        ARCHIVE_FILE = os.environ.get('GLEANERIO_GLEANER_ARCHIVE_OBJECT')
+        ARCHIVE_PATH = os.environ.get('GLEANERIO_GLEANER_ARCHIVE_PATH')
+
+        ARCHIVE_FILE = os.environ.get('GLEANERIO_NABU_ARCHIVE_OBJECT')
+        ARCHIVE_PATH = os.environ.get('GLEANERIO_NABU_ARCHIVE_PATH')
+```
+The required config file names are expressed in the CMD line:
+
+```yaml
+        CMD = ["--cfg", "/gleaner/gleanerconfig.yaml", "--source", source]
+
+        CMD = ["--cfg", "/nabu/nabuconfig.yaml", "prefix", "summoned/" + source]
+```
+
+So:  gleanerconfig.yaml  and nabuconfig.yaml
+
+> NOTE: At present only yaml is supported, JSON support is a simple addition 
+> once the system is tested and working OK with the yaml files. 
+
+The contents will look something like 
+
+```bash
+❯ tar -ztf GleanerCfg.tgz
+./gleanerconfig.yaml
+./jsonldcontext.json
+❯ tar -ztf NabuCfg.tgz
+./nabuconfig.yaml
+./jsonldcontext.json
+```
+
+These files need to be in the bucket prefix defined by: 
+
+```yaml
+GLEANERIO_GLEANER_ARCHIVE_OBJECT=scheduler/configs/GleanerCfg.tgz
+GLEANERIO_NABU_ARCHIVE_OBJECT=scheduler/configs/NabuCfg.tgz
+```
+
 ### Environment files
 
 ``` bash

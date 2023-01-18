@@ -2,7 +2,7 @@
 <svg
 style="background: white;"
 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-width="2098" height="725" viewBox="-88 -88 2098 725"><style type="text/css">
+width="2237" height="891" viewBox="-88 -88 2237 891"><style type="text/css">
 <![CDATA[
 .shape {
   shape-rendering: geometricPrecision;
@@ -18,11 +18,776 @@ width="2098" height="725" viewBox="-88 -88 2098 725"><style type="text/css">
 }
 
 ]]>
-</style><g id="Host"><g class="shape" ><rect x="1587" y="62" width="323" height="422" style="fill:#C9B9A1;stroke:#1E1303;opacity:1.000000;stroke-width:2;" /></g><text class="text" x="1748.500000" y="95.000000" style="text-anchor:middle;font-size:28px;fill:#170206">Host</text></g><g id="EF"><g class="shape" ><rect x="1323" y="158" width="159" height="126" style="fill:orange;stroke:#1E1303;opacity:0.600000;stroke-width:2;" /></g><text class="text-bold" x="1402.500000" y="224.000000" style="text-anchor:middle;font-size:16px;fill:#170206">Env File</text></g><g id="GA"><g class="shape" ><rect x="917" y="411" width="217" height="126" style="fill:orange;stroke:#1E1303;opacity:0.600000;stroke-width:2;" /></g><text class="text-bold" x="1025.500000" y="477.000000" style="text-anchor:middle;font-size:16px;fill:#170206">Gleaner Archive</text></g><g id="NA"><g class="shape" ><rect x="928" y="265" width="206" height="126" style="fill:orange;stroke:#1E1303;opacity:0.600000;stroke-width:2;" /></g><text class="text-bold" x="1031.000000" y="331.000000" style="text-anchor:middle;font-size:16px;fill:#170206">Nabue archive</text></g><g id="T"><g class="shape" ><rect x="12" y="12" width="173" height="126" style="fill:orange;stroke:#1E1303;opacity:0.600000;stroke-width:2;" /></g><text class="text-bold" x="98.500000" y="78.000000" style="text-anchor:middle;font-size:16px;fill:#170206">Template</text></g><g id="G"><g class="shape" ><rect x="285" y="12" width="221" height="126" style="fill:#FAF1E6;stroke:#1E1303;opacity:1.000000;stroke-width:2;" /></g><text class="text-bold" x="395.500000" y="78.000000" style="text-anchor:middle;font-size:16px;fill:#170206">Generator script</text></g><g id="DS"><g class="shape" ><rect x="606" y="12" width="211" height="126" style="fill:#FAF1E6;stroke:#1E1303;opacity:1.000000;stroke-width:2;" /></g><text class="text-bold" x="711.500000" y="78.000000" style="text-anchor:middle;font-size:16px;fill:#170206">Dagster Source</text></g><g id="DC"><g class="shape" ><rect x="1242" y="12" width="233" height="126" style="fill:#FAF1E6;stroke:#1E1303;opacity:1.000000;stroke-width:2;" /></g><text class="text-bold" x="1358.500000" y="78.000000" style="text-anchor:middle;font-size:16px;fill:#170206">Dagster Container</text></g><g id="Host.Portainer"><g class="shape" ><rect x="1662" y="137" width="173" height="126" style="fill:#E9DBCA;stroke:#1E1303;opacity:1.000000;stroke-width:2;" /></g><text class="text-bold" x="1748.500000" y="203.000000" style="text-anchor:middle;font-size:16px;fill:#170206">Portainer</text></g><g id="Host.Minio"><g class="shape" ><rect x="1662" y="283" width="144" height="126" style="fill:#E9DBCA;stroke:#1E1303;opacity:1.000000;stroke-width:2;" /></g><text class="text-bold" x="1734.000000" y="349.000000" style="text-anchor:middle;font-size:16px;fill:#170206">Minio</text></g><g id="(T -&gt; G)[0]"><marker id="mk-2592688081" markerWidth="10.000000" markerHeight="12.000000" refX="7.000000" refY="6.000000" viewBox="0.000000 0.000000 10.000000 12.000000" orient="auto" markerUnits="userSpaceOnUse"> <polygon class="connection" fill="#1E1303" stroke-width="2" points="0.000000,0.000000 10.000000,6.000000 0.000000,12.000000" /> </marker><path d="M 187.000000 75.000000 L 281.000000 75.000000" class="connection" style="fill:none;stroke:#1E1303;opacity:1.000000;stroke-width:2;" marker-end="url(#mk-2592688081)" mask="url(#1793832277)"/></g><g id="(G -&gt; DS)[0]"><path d="M 508.000000 75.000000 L 602.000000 75.000000" class="connection" style="fill:none;stroke:#1E1303;opacity:1.000000;stroke-width:2;" marker-end="url(#mk-2592688081)" mask="url(#1793832277)"/></g><g id="(DS -&gt; DC)[0]"><path d="M 819.000000 75.000000 L 1237.500000 75.000000" class="connection" style="fill:none;stroke:#1E1303;opacity:1.000000;stroke-width:2;" marker-end="url(#mk-2592688081)" mask="url(#1793832277)"/><text class="text-italic" x="1029.500000" y="81.000000" style="text-anchor:middle;font-size:16px;fill:#535152">via Makefile</text></g><g id="(EF -&gt; Host.Portainer)[0]"><path d="M 1484.000000 221.000000 L 1658.000000 221.000000" class="connection" style="fill:none;stroke:#1E1303;opacity:1.000000;stroke-width:2;" marker-end="url(#mk-2592688081)" mask="url(#1793832277)"/></g><g id="(DC -&gt; Host.Portainer)[0]"><path d="M 1476.500000 75.000000 L 1522.000000 75.000000 S 1532.000000 75.000000 1532.000000 85.000000 L 1532.000000 169.000000 S 1532.000000 179.000000 1542.000000 179.000000 L 1658.000000 179.000000" class="connection" style="fill:none;stroke:#1E1303;opacity:1.000000;stroke-width:2;" marker-end="url(#mk-2592688081)" mask="url(#1793832277)"/></g><g id="(GA -&gt; Host.Minio)[0]"><path d="M 1136.000000 474.000000 L 1522.000000 474.000000 S 1532.000000 474.000000 1532.000000 464.000000 L 1532.000000 377.000000 S 1532.000000 367.000000 1542.000000 367.000000 L 1658.000000 367.000000" class="connection" style="fill:none;stroke:#1E1303;opacity:1.000000;stroke-width:2;" marker-end="url(#mk-2592688081)" mask="url(#1793832277)"/><text class="text-italic" x="1452.000000" y="480.000000" style="text-anchor:middle;font-size:16px;fill:#535152">GLEANERIO_GLEANER_ARCHIVE_PATH</text></g><g id="(NA -&gt; Host.Minio)[0]"><path d="M 1136.000000 328.000000 L 1530.500000 328.000000 C 1533.500000 328.000000 1530.500000 325.000000 1533.500000 325.000000 L 1658.000000 325.000000" class="connection" style="fill:none;stroke:#1E1303;opacity:1.000000;stroke-width:2;" marker-end="url(#mk-2592688081)" mask="url(#1793832277)"/><text class="text-italic" x="1400.000000" y="334.000000" style="text-anchor:middle;font-size:16px;fill:#535152">GLEANERIO_NABU_ARCHIVE_PATH</text></g><mask id="1793832277" maskUnits="userSpaceOnUse" x="0" y="0" width="2098" height="725">
-<rect x="0" y="0" width="2098" height="725" fill="white"></rect>
-<rect x="990.000000" y="65.000000" width="79" height="21" fill="black"></rect>
-<rect x="1328.000000" y="464.000000" width="248" height="21" fill="black"></rect>
-<rect x="1287.000000" y="318.000000" width="226" height="21" fill="black"></rect>
+</style><style type="text/css">.md em,
+.md dfn {
+  font-family: "font-italic";
+}
+
+.md b,
+.md strong {
+  font-family: "font-bold";
+}
+
+.md code,
+.md kbd,
+.md pre,
+.md samp {
+  font-family: "font-mono";
+  font-size: 1em;
+}
+
+.md {
+  tab-size: 4;
+}
+
+/* based on https://github.com/sindresorhus/github-markdown-css */
+.md {
+  color-scheme: light;
+  --color-fg-default: #24292f;
+  --color-fg-muted: #57606a;
+  --color-fg-subtle: #6e7781;
+  --color-canvas-default: #ffffff;
+  --color-canvas-subtle: #f6f8fa;
+  --color-border-default: #d0d7de;
+  --color-border-muted: hsla(210, 18%, 87%, 1);
+  --color-neutral-muted: rgba(175, 184, 193, 0.2);
+  --color-accent-fg: #0969da;
+  --color-accent-emphasis: #0969da;
+  --color-attention-subtle: #fff8c5;
+  --color-danger-fg: #cf222e;
+}
+
+.md {
+  -ms-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+  margin: 0;
+  color: var(--color-fg-default);
+  background-color: var(--color-canvas-default);
+  font-family: "font-regular";
+  font-size: 16px;
+  line-height: 1.5;
+  word-wrap: break-word;
+}
+
+.md details,
+.md figcaption,
+.md figure {
+  display: block;
+}
+
+.md summary {
+  display: list-item;
+}
+
+.md [hidden] {
+  display: none !important;
+}
+
+.md a {
+  background-color: transparent;
+  color: var(--color-accent-fg);
+  text-decoration: none;
+}
+
+.md a:active,
+.md a:hover {
+  outline-width: 0;
+}
+
+.md abbr[title] {
+  border-bottom: none;
+  text-decoration: underline dotted;
+}
+
+.md dfn {
+  font-style: italic;
+}
+
+.md h1 {
+  margin: 0.67em 0;
+  font-weight: 600;
+  padding-bottom: 0.3em;
+  font-size: 2em;
+  border-bottom: 1px solid var(--color-border-muted);
+}
+
+.md mark {
+  background-color: var(--color-attention-subtle);
+  color: var(--color-text-primary);
+}
+
+.md small {
+  font-size: 90%;
+}
+
+.md sub,
+.md sup {
+  font-size: 75%;
+  line-height: 0;
+  position: relative;
+  vertical-align: baseline;
+}
+
+.md sub {
+  bottom: -0.25em;
+}
+
+.md sup {
+  top: -0.5em;
+}
+
+.md img {
+  border-style: none;
+  max-width: 100%;
+  box-sizing: content-box;
+  background-color: var(--color-canvas-default);
+}
+
+.md figure {
+  margin: 1em 40px;
+}
+
+.md hr {
+  box-sizing: content-box;
+  overflow: hidden;
+  background: transparent;
+  border-bottom: 1px solid var(--color-border-muted);
+  height: 0.25em;
+  padding: 0;
+  margin: 24px 0;
+  background-color: var(--color-border-default);
+  border: 0;
+}
+
+.md input {
+  font: inherit;
+  margin: 0;
+  overflow: visible;
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+}
+
+.md [type="button"],
+.md [type="reset"],
+.md [type="submit"] {
+  -webkit-appearance: button;
+}
+
+.md [type="button"]::-moz-focus-inner,
+.md [type="reset"]::-moz-focus-inner,
+.md [type="submit"]::-moz-focus-inner {
+  border-style: none;
+  padding: 0;
+}
+
+.md [type="button"]:-moz-focusring,
+.md [type="reset"]:-moz-focusring,
+.md [type="submit"]:-moz-focusring {
+  outline: 1px dotted ButtonText;
+}
+
+.md [type="checkbox"],
+.md [type="radio"] {
+  box-sizing: border-box;
+  padding: 0;
+}
+
+.md [type="number"]::-webkit-inner-spin-button,
+.md [type="number"]::-webkit-outer-spin-button {
+  height: auto;
+}
+
+.md [type="search"] {
+  -webkit-appearance: textfield;
+  outline-offset: -2px;
+}
+
+.md [type="search"]::-webkit-search-cancel-button,
+.md [type="search"]::-webkit-search-decoration {
+  -webkit-appearance: none;
+}
+
+.md ::-webkit-input-placeholder {
+  color: inherit;
+  opacity: 0.54;
+}
+
+.md ::-webkit-file-upload-button {
+  -webkit-appearance: button;
+  font: inherit;
+}
+
+.md a:hover {
+  text-decoration: underline;
+}
+
+.md hr::before {
+  display: table;
+  content: "";
+}
+
+.md hr::after {
+  display: table;
+  clear: both;
+  content: "";
+}
+
+.md table {
+  border-spacing: 0;
+  border-collapse: collapse;
+  display: block;
+  width: max-content;
+  max-width: 100%;
+  overflow: auto;
+}
+
+.md td,
+.md th {
+  padding: 0;
+}
+
+.md details summary {
+  cursor: pointer;
+}
+
+.md details:not([open]) > *:not(summary) {
+  display: none !important;
+}
+
+.md kbd {
+  display: inline-block;
+  padding: 3px 5px;
+  color: var(--color-fg-default);
+  vertical-align: middle;
+  background-color: var(--color-canvas-subtle);
+  border: solid 1px var(--color-neutral-muted);
+  border-bottom-color: var(--color-neutral-muted);
+  border-radius: 6px;
+  box-shadow: inset 0 -1px 0 var(--color-neutral-muted);
+}
+
+.md h1,
+.md h2,
+.md h3,
+.md h4,
+.md h5,
+.md h6 {
+  margin-top: 24px;
+  margin-bottom: 16px;
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+.md h2 {
+  font-weight: 600;
+  padding-bottom: 0.3em;
+  font-size: 1.5em;
+  border-bottom: 1px solid var(--color-border-muted);
+}
+
+.md h3 {
+  font-weight: 600;
+  font-size: 1.25em;
+}
+
+.md h4 {
+  font-weight: 600;
+  font-size: 1em;
+}
+
+.md h5 {
+  font-weight: 600;
+  font-size: 0.875em;
+}
+
+.md h6 {
+  font-weight: 600;
+  font-size: 0.85em;
+  color: var(--color-fg-muted);
+}
+
+.md p {
+  margin-top: 0;
+  margin-bottom: 10px;
+}
+
+.md blockquote {
+  margin: 0;
+  padding: 0 1em;
+  color: var(--color-fg-muted);
+  border-left: 0.25em solid var(--color-border-default);
+}
+
+.md ul,
+.md ol {
+  margin-top: 0;
+  margin-bottom: 0;
+  padding-left: 2em;
+}
+
+.md ol ol,
+.md ul ol {
+  list-style-type: lower-roman;
+}
+
+.md ul ul ol,
+.md ul ol ol,
+.md ol ul ol,
+.md ol ol ol {
+  list-style-type: lower-alpha;
+}
+
+.md dd {
+  margin-left: 0;
+}
+
+.md pre {
+  margin-top: 0;
+  margin-bottom: 0;
+  word-wrap: normal;
+}
+
+.md ::placeholder {
+  color: var(--color-fg-subtle);
+  opacity: 1;
+}
+
+.md input::-webkit-outer-spin-button,
+.md input::-webkit-inner-spin-button {
+  margin: 0;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.md::before {
+  display: table;
+  content: "";
+}
+
+.md::after {
+  display: table;
+  clear: both;
+  content: "";
+}
+
+.md > *:first-child {
+  margin-top: 0 !important;
+}
+
+.md > *:last-child {
+  margin-bottom: 0 !important;
+}
+
+.md a:not([href]) {
+  color: inherit;
+  text-decoration: none;
+}
+
+.md .absent {
+  color: var(--color-danger-fg);
+}
+
+.md .anchor {
+  float: left;
+  padding-right: 4px;
+  margin-left: -20px;
+  line-height: 1;
+}
+
+.md .anchor:focus {
+  outline: none;
+}
+
+.md p,
+.md blockquote,
+.md ul,
+.md ol,
+.md dl,
+.md table,
+.md pre,
+.md details {
+  margin-top: 0;
+  margin-bottom: 16px;
+}
+
+.md blockquote > :first-child {
+  margin-top: 0;
+}
+
+.md blockquote > :last-child {
+  margin-bottom: 0;
+}
+
+.md sup > a::before {
+  content: "[";
+}
+
+.md sup > a::after {
+  content: "]";
+}
+
+.md h1:hover .anchor,
+.md h2:hover .anchor,
+.md h3:hover .anchor,
+.md h4:hover .anchor,
+.md h5:hover .anchor,
+.md h6:hover .anchor {
+  text-decoration: none;
+}
+
+.md h1 tt,
+.md h1 code,
+.md h2 tt,
+.md h2 code,
+.md h3 tt,
+.md h3 code,
+.md h4 tt,
+.md h4 code,
+.md h5 tt,
+.md h5 code,
+.md h6 tt,
+.md h6 code {
+  padding: 0 0.2em;
+  font-size: inherit;
+}
+
+.md ul.no-list,
+.md ol.no-list {
+  padding: 0;
+  list-style-type: none;
+}
+
+.md ol[type="1"] {
+  list-style-type: decimal;
+}
+
+.md ol[type="a"] {
+  list-style-type: lower-alpha;
+}
+
+.md ol[type="i"] {
+  list-style-type: lower-roman;
+}
+
+.md div > ol:not([type]) {
+  list-style-type: decimal;
+}
+
+.md ul ul,
+.md ul ol,
+.md ol ol,
+.md ol ul {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.md li > p {
+  margin-top: 16px;
+}
+
+.md li + li {
+  margin-top: 0.25em;
+}
+
+.md dl {
+  padding: 0;
+}
+
+.md dl dt {
+  padding: 0;
+  margin-top: 16px;
+  font-size: 1em;
+  font-style: italic;
+  font-weight: 600;
+}
+
+.md dl dd {
+  padding: 0 16px;
+  margin-bottom: 16px;
+}
+
+.md table th {
+  font-weight: 600;
+}
+
+.md table th,
+.md table td {
+  padding: 6px 13px;
+  border: 1px solid var(--color-border-default);
+}
+
+.md table tr {
+  background-color: var(--color-canvas-default);
+  border-top: 1px solid var(--color-border-muted);
+}
+
+.md table tr:nth-child(2n) {
+  background-color: var(--color-canvas-subtle);
+}
+
+.md table img {
+  background-color: transparent;
+}
+
+.md img[align="right"] {
+  padding-left: 20px;
+}
+
+.md img[align="left"] {
+  padding-right: 20px;
+}
+
+.md span.frame {
+  display: block;
+  overflow: hidden;
+}
+
+.md span.frame > span {
+  display: block;
+  float: left;
+  width: auto;
+  padding: 7px;
+  margin: 13px 0 0;
+  overflow: hidden;
+  border: 1px solid var(--color-border-default);
+}
+
+.md span.frame span img {
+  display: block;
+  float: left;
+}
+
+.md span.frame span span {
+  display: block;
+  padding: 5px 0 0;
+  clear: both;
+  color: var(--color-fg-default);
+}
+
+.md span.align-center {
+  display: block;
+  overflow: hidden;
+  clear: both;
+}
+
+.md span.align-center > span {
+  display: block;
+  margin: 13px auto 0;
+  overflow: hidden;
+  text-align: center;
+}
+
+.md span.align-center span img {
+  margin: 0 auto;
+  text-align: center;
+}
+
+.md span.align-right {
+  display: block;
+  overflow: hidden;
+  clear: both;
+}
+
+.md span.align-right > span {
+  display: block;
+  margin: 13px 0 0;
+  overflow: hidden;
+  text-align: right;
+}
+
+.md span.align-right span img {
+  margin: 0;
+  text-align: right;
+}
+
+.md span.float-left {
+  display: block;
+  float: left;
+  margin-right: 13px;
+  overflow: hidden;
+}
+
+.md span.float-left span {
+  margin: 13px 0 0;
+}
+
+.md span.float-right {
+  display: block;
+  float: right;
+  margin-left: 13px;
+  overflow: hidden;
+}
+
+.md span.float-right > span {
+  display: block;
+  margin: 13px auto 0;
+  overflow: hidden;
+  text-align: right;
+}
+
+.md code,
+.md tt {
+  padding: 0.2em 0.4em;
+  margin: 0;
+  font-size: 85%;
+  background-color: var(--color-neutral-muted);
+  border-radius: 6px;
+}
+
+.md code br,
+.md tt br {
+  display: none;
+}
+
+.md del code {
+  text-decoration: inherit;
+}
+
+.md pre code {
+  font-size: 100%;
+}
+
+.md pre > code {
+  padding: 0;
+  margin: 0;
+  word-break: normal;
+  white-space: pre;
+  background: transparent;
+  border: 0;
+}
+
+.md .highlight {
+  margin-bottom: 16px;
+}
+
+.md .highlight pre {
+  margin-bottom: 0;
+  word-break: normal;
+}
+
+.md .highlight pre,
+.md pre {
+  padding: 16px;
+  overflow: auto;
+  font-size: 85%;
+  line-height: 1.45;
+  background-color: var(--color-canvas-subtle);
+  border-radius: 6px;
+}
+
+.md pre code,
+.md pre tt {
+  display: inline;
+  max-width: auto;
+  padding: 0;
+  margin: 0;
+  overflow: visible;
+  line-height: inherit;
+  word-wrap: normal;
+  background-color: transparent;
+  border: 0;
+}
+
+.md .csv-data td,
+.md .csv-data th {
+  padding: 5px;
+  overflow: hidden;
+  font-size: 12px;
+  line-height: 1;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.md .csv-data .blob-num {
+  padding: 10px 8px 9px;
+  text-align: right;
+  background: var(--color-canvas-default);
+  border: 0;
+}
+
+.md .csv-data tr {
+  border-top: 0;
+}
+
+.md .csv-data th {
+  font-weight: 600;
+  background: var(--color-canvas-subtle);
+  border-top: 0;
+}
+
+.md .footnotes {
+  font-size: 12px;
+  color: var(--color-fg-muted);
+  border-top: 1px solid var(--color-border-default);
+}
+
+.md .footnotes ol {
+  padding-left: 16px;
+}
+
+.md .footnotes li {
+  position: relative;
+}
+
+.md .footnotes li:target::before {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  bottom: -8px;
+  left: -24px;
+  pointer-events: none;
+  content: "";
+  border: 2px solid var(--color-accent-emphasis);
+  border-radius: 6px;
+}
+
+.md .footnotes li:target {
+  color: var(--color-fg-default);
+}
+
+.md .task-list-item {
+  list-style-type: none;
+}
+
+.md .task-list-item label {
+  font-weight: 400;
+}
+
+.md .task-list-item.enabled label {
+  cursor: pointer;
+}
+
+.md .task-list-item + .task-list-item {
+  margin-top: 3px;
+}
+
+.md .task-list-item .handle {
+  display: none;
+}
+
+.md .task-list-item-checkbox {
+  margin: 0 0.2em 0.25em -1.6em;
+  vertical-align: middle;
+}
+
+.md .contains-task-list:dir(rtl) .task-list-item-checkbox {
+  margin: 0 -1.6em 0.25em 0.2em;
+}
+</style><g id="explanation"><g class="shape" ></g><g><foreignObject requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility" x="12.000000" y="12.000000" width="313" height="146"><div xmlns="http://www.w3.org/1999/xhtml" class="md"><h1>Scheduling Assets</h1>
+<ul>
+<li>Red:  Assets we edit and maintain</li>
+<li>Orange: Semi-static assets, less editing</li>
+<li>White: Static, generated or external assets</li>
+</ul>
+</div></foreignObject></g></g><g id="Host"><g class="shape" ><rect x="1726" y="218" width="323" height="422" style="fill:#C9B9A1;stroke:#1E1303;opacity:1.000000;stroke-width:2;" /></g><text class="text" x="1887.500000" y="251.000000" style="text-anchor:middle;font-size:28px;fill:#170206">Host</text></g><g id="EF"><g class="shape" ><rect x="1452" y="324" width="159" height="126" style="fill:orange;stroke:#1E1303;opacity:0.600000;stroke-width:2;" /></g><text class="text-bold" x="1531.500000" y="390.000000" style="text-anchor:middle;font-size:16px;fill:#170206">Env File</text></g><g id="Orc"><g class="shape" ><rect x="1378" y="32" width="233" height="126" style="fill:orange;stroke:#1E1303;opacity:0.600000;stroke-width:2;" /></g><text class="text-bold" x="1494.500000" y="98.000000" style="text-anchor:middle;font-size:16px;fill:#170206">Orchestration File</text></g><g id="GA"><g class="shape" ><rect x="1046" y="577" width="217" height="126" style="fill:#FAF1E6;stroke:#1E1303;opacity:0.600000;stroke-width:2;" /></g><text class="text-bold" x="1154.500000" y="643.000000" style="text-anchor:middle;font-size:16px;fill:#170206">Gleaner Archive</text></g><g id="NA"><g class="shape" ><rect x="1052" y="431" width="206" height="126" style="fill:#FAF1E6;stroke:#1E1303;opacity:0.600000;stroke-width:2;" /></g><text class="text-bold" x="1155.000000" y="497.000000" style="text-anchor:middle;font-size:16px;fill:#170206">Nabue archive</text></g><g id="T"><g class="shape" ><rect x="78" y="178" width="247" height="126" style="fill:orange;stroke:#1E1303;opacity:0.600000;stroke-width:2;" /></g><text class="text-bold" x="201.500000" y="244.000000" style="text-anchor:middle;font-size:16px;fill:#170206">Templates &amp; Scripts</text></g><g id="DS"><g class="shape" ><rect x="735" y="178" width="211" height="126" style="fill:#FAF1E6;stroke:#1E1303;opacity:1.000000;stroke-width:2;" /></g><text class="text-bold" x="840.500000" y="244.000000" style="text-anchor:middle;font-size:16px;fill:#170206">Dagster Source</text></g><g id="DC"><g class="shape" ><rect x="1371" y="178" width="233" height="126" style="fill:#FAF1E6;stroke:#1E1303;opacity:1.000000;stroke-width:2;" /></g><text class="text-bold" x="1487.500000" y="244.000000" style="text-anchor:middle;font-size:16px;fill:#170206">Dagster Container</text></g><g id="Glcfg"><g class="shape" ><rect x="425" y="577" width="210" height="126" style="fill:red;stroke:#1E1303;opacity:0.600000;stroke-width:2;" /></g><text class="text-bold" x="530.000000" y="643.000000" style="text-anchor:middle;font-size:16px;fill:#170206">Gleaner Config</text></g><g id="Nbcfg"><g class="shape" ><rect x="435" y="431" width="191" height="126" style="fill:red;stroke:#1E1303;opacity:0.600000;stroke-width:2;" /></g><text class="text-bold" x="530.500000" y="497.000000" style="text-anchor:middle;font-size:16px;fill:#170206">Nabu Config</text></g><g id="SDOC"><g class="shape" ><rect x="78" y="452" width="247" height="126" style="fill:#FAF1E6;stroke:#1E1303;opacity:1.000000;stroke-width:2;" /></g><text class="text-bold" x="201.500000" y="518.000000" style="text-anchor:middle;font-size:16px;fill:#170206">Schema.org context</text></g><g id="Host.Portainer"><g class="shape" ><rect x="1801" y="293" width="173" height="126" style="fill:#E9DBCA;stroke:#1E1303;opacity:1.000000;stroke-width:2;" /></g><text class="text-bold" x="1887.500000" y="359.000000" style="text-anchor:middle;font-size:16px;fill:#170206">Portainer</text></g><g id="Host.Minio"><g class="shape" ><rect x="1801" y="439" width="144" height="126" style="fill:#E9DBCA;stroke:#1E1303;opacity:1.000000;stroke-width:2;" /></g><text class="text-bold" x="1873.000000" y="505.000000" style="text-anchor:middle;font-size:16px;fill:#170206">Minio</text></g><g id="(T -&gt; DS)[0]"><marker id="mk-2592688081" markerWidth="10.000000" markerHeight="12.000000" refX="7.000000" refY="6.000000" viewBox="0.000000 0.000000 10.000000 12.000000" orient="auto" markerUnits="userSpaceOnUse"> <polygon class="connection" fill="#1E1303" stroke-width="2" points="0.000000,0.000000 10.000000,6.000000 0.000000,12.000000" /> </marker><path d="M 327.000000 241.000000 L 731.000000 241.000000" class="connection" style="fill:none;stroke:#1E1303;opacity:1.000000;stroke-width:2;" marker-end="url(#mk-2592688081)" mask="url(#3509461780)"/><text class="text-italic" x="530.500000" y="247.000000" style="text-anchor:middle;font-size:16px;fill:#535152">via scripts</text></g><g id="(DS -&gt; DC)[0]"><path d="M 948.000000 241.000000 L 1366.500000 241.000000" class="connection" style="fill:none;stroke:#1E1303;opacity:1.000000;stroke-width:2;" marker-end="url(#mk-2592688081)" mask="url(#3509461780)"/><text class="text-italic" x="1158.500000" y="247.000000" style="text-anchor:middle;font-size:16px;fill:#535152">via Makefile</text></g><g id="(EF -&gt; Host.Portainer)[0]"><path d="M 1613.000000 387.000000 L 1797.000000 387.000000" class="connection" style="fill:none;stroke:#1E1303;opacity:1.000000;stroke-width:2;" marker-end="url(#mk-2592688081)" mask="url(#3509461780)"/></g><g id="(DC -&gt; Host.Portainer)[0]"><path d="M 1605.500000 241.000000 L 1651.000000 241.000000 S 1661.000000 241.000000 1661.000000 251.000000 L 1661.000000 345.500000 S 1661.000000 355.500000 1671.000000 355.500000 L 1797.000000 355.500000" class="connection" style="fill:none;stroke:#1E1303;opacity:1.000000;stroke-width:2;" marker-end="url(#mk-2592688081)" mask="url(#3509461780)"/></g><g id="(Orc -&gt; Host.Portainer)[0]"><path d="M 1613.000000 95.000000 L 1661.000000 95.000000 S 1671.000000 95.000000 1671.000000 105.000000 L 1671.000000 314.000000 S 1671.000000 324.000000 1681.000000 324.000000 L 1797.000000 324.000000" class="connection" style="fill:none;stroke:#1E1303;opacity:1.000000;stroke-width:2;" marker-end="url(#mk-2592688081)" mask="url(#3509461780)"/></g><g id="(GA -&gt; Host.Minio)[0]"><path d="M 1265.000000 640.000000 L 1651.000000 640.000000 S 1661.000000 640.000000 1661.000000 630.000000 L 1661.000000 532.500000 S 1661.000000 522.500000 1671.000000 522.500000 L 1797.000000 522.500000" class="connection" style="fill:none;stroke:#1E1303;opacity:1.000000;stroke-width:2;" marker-end="url(#mk-2592688081)" mask="url(#3509461780)"/><text class="text-italic" x="1591.000000" y="646.000000" style="text-anchor:middle;font-size:16px;fill:#535152">GLEANERIO_GLEANER_ARCHIVE_PATH</text></g><g id="(NA -&gt; Host.Minio)[0]"><path d="M 1259.500000 494.000000 L 1654.250000 494.000000 C 1667.750000 494.000000 1654.250000 480.500000 1667.750000 480.500000 L 1797.000000 480.500000" class="connection" style="fill:none;stroke:#1E1303;opacity:1.000000;stroke-width:2;" marker-end="url(#mk-2592688081)" mask="url(#3509461780)"/><text class="text-italic" x="1536.000000" y="500.000000" style="text-anchor:middle;font-size:16px;fill:#535152">GLEANERIO_NABU_ARCHIVE_PATH</text></g><g id="(Glcfg -&gt; GA)[0]"><path d="M 637.000000 640.000000 L 1042.000000 640.000000" class="connection" style="fill:none;stroke:#1E1303;opacity:1.000000;stroke-width:2;" marker-end="url(#mk-2592688081)" mask="url(#3509461780)"/><text class="text-italic" x="840.500000" y="646.000000" style="text-anchor:middle;font-size:16px;fill:#535152">via scripts</text></g><g id="(Nbcfg -&gt; NA)[0]"><path d="M 627.500000 494.000000 L 1047.500000 494.000000" class="connection" style="fill:none;stroke:#1E1303;opacity:1.000000;stroke-width:2;" marker-end="url(#mk-2592688081)" mask="url(#3509461780)"/><text class="text-italic" x="838.500000" y="500.000000" style="text-anchor:middle;font-size:16px;fill:#535152">via scripts</text></g><g id="(SDOC -&gt; Glcfg)[0]"><path d="M 327.000000 536.000000 L 365.000000 536.000000 S 375.000000 536.000000 375.000000 546.000000 L 375.000000 630.000000 S 375.000000 640.000000 385.000000 640.000000 L 421.000000 640.000000" class="connection" style="fill:none;stroke:#1E1303;opacity:1.000000;stroke-width:2;" marker-end="url(#mk-2592688081)" mask="url(#3509461780)"/></g><g id="(SDOC -&gt; Nbcfg)[0]"><path d="M 327.000000 494.000000 L 430.500000 494.000000" class="connection" style="fill:none;stroke:#1E1303;opacity:1.000000;stroke-width:2;" marker-end="url(#mk-2592688081)" mask="url(#3509461780)"/></g><mask id="3509461780" maskUnits="userSpaceOnUse" x="0" y="0" width="2237" height="891">
+<rect x="0" y="0" width="2237" height="891" fill="white"></rect>
+<rect x="497.000000" y="231.000000" width="67" height="21" fill="black"></rect>
+<rect x="1119.000000" y="231.000000" width="79" height="21" fill="black"></rect>
+<rect x="1467.000000" y="630.000000" width="248" height="21" fill="black"></rect>
+<rect x="1423.000000" y="484.000000" width="226" height="21" fill="black"></rect>
+<rect x="807.000000" y="630.000000" width="67" height="21" fill="black"></rect>
+<rect x="805.000000" y="484.000000" width="67" height="21" fill="black"></rect>
 </mask><style type="text/css"><![CDATA[
 .text {
 	font-family: "font-regular";

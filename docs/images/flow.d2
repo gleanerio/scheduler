@@ -1,5 +1,14 @@
 direction: right
 
+explanation: |md
+  # Scheduling Assets
+  - Red:  Assets we edit and maintain
+  - Orange: Semi-static assets, less editing
+  - White: Static, generated or external assets
+| {
+  near: T
+}
+
 Host
 Host.Portainer
 Host.Minio
@@ -9,24 +18,29 @@ EF: Env File  {
     opacity: 0.6
     fill: orange
     }
-} 
+}
+
+Orc: Orchestration File  {
+    style: {
+    opacity: 0.6
+    fill: orange
+    }
+}
 
 
 GA: Gleaner Archive {
     style: {
     opacity: 0.6
-    fill: orange
-    }
+     }
 } 
 
 NA: Nabue archive {
     style: {
     opacity: 0.6
-    fill: orange
-    }
+     }
 } 
 
-T: Template {
+T: Templates & Scripts {
     style: {
     opacity: 0.6
     fill: orange
@@ -35,19 +49,38 @@ T: Template {
 
 
 
-G: Generator script
 
 DS: Dagster Source
 DC: Dagster Container
 
-T -> G -> DS
+T  -> DS: via scripts
 DS -> DC: via Makefile
 
 EF -> Host.Portainer
 DC -> Host.Portainer
+Orc -> Host.Portainer
 
 GA -> Host.Minio:  GLEANERIO_GLEANER_ARCHIVE_PATH
 NA -> Host.Minio:  GLEANERIO_NABU_ARCHIVE_PATH
 
+Glcfg: Gleaner Config {
+    style: {
+    opacity: 0.6
+    fill: red
+    }
+}
+Nbcfg: Nabu Config {
+    style: {
+    opacity: 0.6
+    fill: red
+    }
+}
 
+Glcfg -> GA: via scripts
+Nbcfg -> NA: via scripts
+
+SDOC: Schema.org context
+
+SDOC -> GLcfg
+SDOC -> Nbcfg
 
