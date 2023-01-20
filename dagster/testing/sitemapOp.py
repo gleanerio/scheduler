@@ -1,7 +1,7 @@
 import os, json, io
 import urllib
 from urllib import request
-from dagster import job, op, get_dagster_logger
+from dagster import job, op, get_dagster_logger, schedule
 from minio import Minio
 from minio.error import S3Error
 from datetime import datetime
@@ -16,8 +16,6 @@ import argparse
 from typing import Tuple
 import pandas as pd
 
-
-
 NAME = "sitemapcheck"
 
 # env items
@@ -30,8 +28,6 @@ MINIO_URL = os.environ.get('GLEANER_MINIO_URL')
 MINIO_SECRET = os.environ.get('GLEANER_MINIO_SECRET')
 MINIO_KEY = os.environ.get('GLEANER_MINIO_KEY')
 MINIO_BUCKET = os.environ.get('GLEANER_MINIO_BUCKET')
-
-
 
 def s3reader():
     server = os.environ.get('GLEANER_MINIO_URL') + ":" + os.environ.get('GLEANER_MINIO_PORT')
@@ -132,5 +128,11 @@ def sitemaptest():
     get_dagster_logger().info(f"CSV: {str(csv_data)}")
 
 @job
-def sitemap_job():
+def implnet_job_sitemap():
     sitemaptest()
+
+# 0 3 * * *   is at 3 AM each day
+@schedule(cron_schedule="0 3 * * *", job=implnet_job_sitemap, execution_timezone="US/Central")
+def implnet_sch_sitemap(_context):
+        run_config = {}
+        return run_config
