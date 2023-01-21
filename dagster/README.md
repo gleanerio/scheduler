@@ -20,6 +20,16 @@ jobs run
 
 ### Template files
 
+The template files define the Dagster Ops, Jobs and Schedules.  From these
+and a GleanerIO config file a set of Python scripts for Dagster are created in
+the output directory. 
+
+These only need to be changed or used to regenerate if you wish to alter the 
+execution graph (ie, the ops, jobs and schedules) or change the config file.
+In the later case only a regeneration needs to be done.
+
+There are then Docker build scripts to build out new containers.  
+
 See:  [template](./dagster-docker/src/implnet-example/templates)
 
 ### Archive files
@@ -44,7 +54,7 @@ The required config file names are expressed in the CMD line:
         CMD = ["--cfg", "/nabu/nabuconfig.yaml", "prefix", "summoned/" + source]
 ```
 
-So:  gleanerconfig.yaml  and nabuconfig.yaml
+So:  gleanerconfig.yaml  and nabuconfig.yaml are the required configuration names.
 
 > NOTE: At present only yaml is supported, JSON support is a simple addition 
 > once the system is tested and working OK with the yaml files. 
@@ -105,6 +115,12 @@ export GLEANER_MINIO_BUCKET=gleaner.test
 ![sequence](../docs/images/sequence.svg)
 
 
+## Appendix
+
+### Portainer API setup
+
+You will need to setup Portainer to allow for an API call.  To do this look 
+at the documentation for [Accessing the Portainer API](https://docs.portainer.io/api/access)
 
 ## Notes
 
