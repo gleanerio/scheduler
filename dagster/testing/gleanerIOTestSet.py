@@ -20,20 +20,22 @@ from datetime import datetime
 ## TODOs
 # - the log file name is static in the point where the log is loaded to s3
 
-CMD = ["--cfg", "/gleaner/testGleanerCfg.yaml", "--source", "edmo"]
-NAME = "gleaner01"
-LOGFILE = 'log_gleaner.txt'  #  only used for local log file writing
+# CMD = ["--cfg", "/gleaner/testGleanerCfg.yaml", "--source", "edmo"]
+# NAME = "gleaner01"
+# LOGFILE = 'log_gleaner.txt'  #  only used for local log file writing
 
-# CMD = ["--cfg", "/nabu/testNabuCfg.yaml", "prefix", "summoned/edmo"]
-# NAME = "nabu01"
-# LOGFILE = 'log_nabu.txt'   #  only used for local log file writing
+CMD = ["--cfg", "/nabu/nabuconfig.yaml", "prefix", "--prefix", "summoned/edmo"]
+NAME = "nabu01"
+LOGFILE = 'log_nabu.txt'   #  only used for local log file writing
 
 # env items
+# TODO this section is a mess and not in sync with the now deployed versions
+# ENV vars.  Need to sync up.
 URL = os.environ.get('PORTAINER_URL')
 APIKEY = os.environ.get('PORTAINER_KEY')
-IMAGE = os.environ.get('GLEANERIO_IMAGE')
-ARCHIVE_FILE = os.environ.get('GLEANERIO_ARCHIVE_FILE')
-ARCHIVE_PATH = os.environ.get('GLEANERIO_ARCHIVE_PATH')
+IMAGE = os.environ.get('GLEANERIO_NABU_IMAGE')
+ARCHIVE_FILE = os.environ.get('GLEANERIO_NABU_ARCHIVE_FILE')
+ARCHIVE_PATH = os.environ.get('GLEANERIO_NABU_ARCHIVE_PATH')
 MINIO_URL = os.environ.get('GLEANER_MINIO_URL')
 MINIO_SECRET = os.environ.get('GLEANER_MINIO_SECRET')
 MINIO_KEY = os.environ.get('GLEANER_MINIO_KEY')
@@ -63,7 +65,7 @@ def s3reader():
         secret_key=os.environ.get('GLEANER_MINIO_SECRET'),
     )
     try:
-        data = client.get_object(os.environ.get('GLEANER_MINIO_BUCKET'), os.environ.get('GLEANERIO_ARCHIVE_OBJECT'))
+        data = client.get_object(os.environ.get('GLEANER_MINIO_BUCKET'), os.environ.get('GLEANERIO_NABU_ARCHIVE_OBJECT'))
         return data
     except S3Error as err:
         get_dagster_logger().info(f"S3 read error : {str(err)}")
@@ -121,6 +123,8 @@ def gleanerioflow_op():
     query_string = urllib.parse.urlencode(params)
     url = url + "?" + query_string
 
+    get_dagster_logger().info(f"Image: {str(IMAGE)}")
+
     get_dagster_logger().info(f"URL: {str(url)}")
 
     req = request.Request(url, str.encode(json.dumps(data)))
@@ -134,9 +138,9 @@ def gleanerioflow_op():
 
     print(r.status)
     get_dagster_logger().info(f"Create: {str(r.status)}")
+    get_dagster_logger().info(f"CID: {str(cid)}")
 
     # print(cid)
-
     ## ------------  Archive to load, which is how to send in the config (from where?)
 
     url = URL + 'containers/' + cid + '/archive'
@@ -211,6 +215,8 @@ def gleanerioflow_op():
 
     # write to s3
     s3loader(str(c).encode()) # s3loader needs a bytes like object
+
+    get_dagster_logger().info(f"Log: {str(c)}")
 
     # write to minio (would need the minio info here)
 

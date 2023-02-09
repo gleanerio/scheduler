@@ -89,15 +89,15 @@ def gleanerio(mode, source):
         IMAGE = os.environ.get('GLEANERIO_GLEANER_IMAGE')
         ARCHIVE_FILE = os.environ.get('GLEANERIO_GLEANER_ARCHIVE_OBJECT')
         ARCHIVE_PATH = os.environ.get('GLEANERIO_GLEANER_ARCHIVE_PATH')
-        CMD = ["--cfg", "/gleaner/gleanerconfig.yaml", "--source", source]
-        NAME = "gleaner01"
+        CMD = ["--cfg", "/gleaner/gleanerconfig.yaml", "--source", source, "--rude"]
+        NAME = "gleaner01_" + source
         # LOGFILE = 'log_gleaner.txt'  # only used for local log file writing
     elif (str(mode) == "nabu"):
         IMAGE = os.environ.get('GLEANERIO_NABU_IMAGE')
         ARCHIVE_FILE = os.environ.get('GLEANERIO_NABU_ARCHIVE_OBJECT')
         ARCHIVE_PATH = os.environ.get('GLEANERIO_NABU_ARCHIVE_PATH')
-        CMD = ["--cfg", "/nabu/nabuconfig.yaml", "prefix", "summoned/" + source]
-        NAME = "nabu01"
+        CMD = ["--cfg", "/nabu/nabuconfig.yaml", "prune", "--prefix", "summoned/" + source]
+        NAME = "nabu01_" + source
         # LOGFILE = 'log_nabu.txt'  # only used for local log file writing
 
     else:
@@ -106,6 +106,17 @@ def gleanerio(mode, source):
     data = {}
     data["Image"] = IMAGE
     data["Cmd"] = CMD
+
+    # add in env variables here"Env": ["FOO=bar","BAZ=quux"],
+    enva = []
+    enva.append(str("MINIO_URL={}".format(MINIO_URL)))
+    enva.append(str("MINIO_PORT={}".format(MINIO_PORT)))
+    enva.append(str("MINIO_SSL={}".format(MINIO_SSL)))
+    enva.append(str("MINIO_SECRET={}".format(MINIO_SECRET)))
+    enva.append(str("MINIO_KEY={}".format(MINIO_KEY)))
+    enva.append(str("MINIO_BUCKET={}".format(MINIO_BUCKET)))
+
+    data["Env"] = enva
 
     url = URL + 'containers/create'
     params = {

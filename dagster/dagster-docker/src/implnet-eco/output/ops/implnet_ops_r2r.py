@@ -39,14 +39,20 @@ def load_data(file_or_url):
 
 def s3reader(object):
     server = os.environ.get('GLEANER_MINIO_URL') + ":" + os.environ.get('GLEANER_MINIO_PORT')
+    bucket = str(os.environ.get('GLEANER_MINIO_BUCKET'))
+
+    get_dagster_logger().info(f"server: : {str(server)}")
+    get_dagster_logger().info(f"bucket: : {bucket}")
+    get_dagster_logger().info(f"object: : {str(object)}")
+
     client = Minio(
         server,
-        secure=False,
+        # secure=False,
         access_key=os.environ.get('GLEANER_MINIO_KEY'),
         secret_key=os.environ.get('GLEANER_MINIO_SECRET'),
     )
     try:
-        data = client.get_object(os.environ.get('GLEANER_MINIO_BUCKET'), object)
+        data = client.get_object(bucket, object)
         return data
     except S3Error as err:
         get_dagster_logger().info(f"S3 read error : {str(err)}")
@@ -56,7 +62,7 @@ def s3loader(data, name):
     server = os.environ.get('GLEANER_MINIO_URL') + ":" + os.environ.get('GLEANER_MINIO_PORT')
     client = Minio(
         server,
-        secure=False,
+        # secure=False,
         access_key=os.environ.get('GLEANER_MINIO_KEY'),
         secret_key=os.environ.get('GLEANER_MINIO_SECRET'),
     )
@@ -89,15 +95,15 @@ def gleanerio(mode, source):
         IMAGE = os.environ.get('GLEANERIO_GLEANER_IMAGE')
         ARCHIVE_FILE = os.environ.get('GLEANERIO_GLEANER_ARCHIVE_OBJECT')
         ARCHIVE_PATH = os.environ.get('GLEANERIO_GLEANER_ARCHIVE_PATH')
-        CMD = ["--cfg", "/gleaner/testGleanerCfg.yaml", "--source", source]
-        NAME = "gleaner01"
+        CMD = ["--cfg", "/gleaner/gleanerconfig.yaml", "--source", source, "--rude"]
+        NAME = "gleaner01_" + source
         # LOGFILE = 'log_gleaner.txt'  # only used for local log file writing
     elif (str(mode) == "nabu"):
         IMAGE = os.environ.get('GLEANERIO_NABU_IMAGE')
         ARCHIVE_FILE = os.environ.get('GLEANERIO_NABU_ARCHIVE_OBJECT')
         ARCHIVE_PATH = os.environ.get('GLEANERIO_NABU_ARCHIVE_PATH')
-        CMD = ["--cfg", "/nabu/testNabuCfg.yaml", "prefix", "summoned/" + source]
-        NAME = "nabu01"
+        CMD = ["--cfg", "/nabu/nabuconfig.yaml", "prefix",  "--prefix", "summoned/" + source]
+        NAME = "nabu01_" + source
         # LOGFILE = 'log_nabu.txt'  # only used for local log file writing
 
     else:
@@ -106,6 +112,17 @@ def gleanerio(mode, source):
     data = {}
     data["Image"] = IMAGE
     data["Cmd"] = CMD
+
+    # add in env variables here"Env": ["FOO=bar","BAZ=quux"],
+    enva = []
+    enva.append(str("MINIO_URL={}".format(MINIO_URL)))
+    enva.append(str("MINIO_PORT={}".format(MINIO_PORT)))
+    enva.append(str("MINIO_SSL={}".format(MINIO_SSL)))
+    enva.append(str("MINIO_SECRET={}".format(MINIO_SECRET)))
+    enva.append(str("MINIO_KEY={}".format(MINIO_KEY)))
+    enva.append(str("MINIO_BUCKET={}".format(MINIO_BUCKET)))
+
+    data["Env"] = enva
 
     url = URL + 'containers/create'
     params = {

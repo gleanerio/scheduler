@@ -55,10 +55,13 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("-s", "--source", help="Source: URL or file")
     parser.add_argument("-n", "--name", help="Optional name of single source, by name, to check")
+    parser.add_argument("-f", "--file", help="Optional name of CSV file to save results to")
+
     args = parser.parse_args()
 
     sources = args.source
     name = args.name
+    file = args.file
 
     if "://" in sources:
         # If the input is a URL, open it using urllib
@@ -86,9 +89,12 @@ def main():
 
         # leverage pandas to convert to csv
         df = pd.DataFrame.from_dict(rl)
-        csv_data = df.to_csv(index=False)
 
-        print(csv_data)
+        if file is not None:
+            df.to_csv(file, index=False)
+        else:
+            csv_data = df.to_csv(index=False)
+            print(csv_data)
 
     else:
         rl = []
@@ -111,10 +117,12 @@ def main():
 
         # leverage pandas to convert to csv
         df = pd.DataFrame.from_dict(rl)
-        csv_data = df.to_csv(index=False)
 
-        print(csv_data)
-
+        if file is not None:
+            df.to_csv(file, index=False)
+        else:
+            csv_data = df.to_csv(index=False)
+            print(csv_data)
 
 if __name__ == '__main__':
     main()

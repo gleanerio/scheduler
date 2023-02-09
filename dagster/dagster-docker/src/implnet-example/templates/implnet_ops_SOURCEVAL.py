@@ -90,14 +90,14 @@ def gleanerio(mode, source):
         ARCHIVE_FILE = os.environ.get('GLEANERIO_GLEANER_ARCHIVE_OBJECT')
         ARCHIVE_PATH = os.environ.get('GLEANERIO_GLEANER_ARCHIVE_PATH')
         CMD = ["--cfg", "/gleaner/GleanerCfg.yaml", "--source", source]
-        NAME = "gleaner01"
+        NAME = "gleaner01_" + source
         # LOGFILE = 'log_gleaner.txt'  # only used for local log file writing
     elif (str(mode) == "nabu"):
         IMAGE = os.environ.get('GLEANERIO_NABU_IMAGE')
         ARCHIVE_FILE = os.environ.get('GLEANERIO_NABU_ARCHIVE_OBJECT')
         ARCHIVE_PATH = os.environ.get('GLEANERIO_NABU_ARCHIVE_PATH')
         CMD = ["--cfg", "/nabu/NabuCfg.yaml", "prefix", "summoned/" + source]
-        NAME = "nabu01"
+        NAME = "nabu01_" + source
         # LOGFILE = 'log_nabu.txt'  # only used for local log file writing
 
     else:

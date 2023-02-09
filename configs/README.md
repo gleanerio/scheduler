@@ -2,16 +2,21 @@
 
 ## About
 
-This diretory holds some of the general configuration files that might 
+This directory holds some of the general configuration files that might
 be useful for running Gleaner and Nabu.  This section is broken down
-by the various communities (impementation networks).
+by the various communities (implementation networks).
 
 These are provided as examples.
 
 ## TAR archive
 
 The tar archive must be compressed and must be named to align 
-with the archive ENV variable.  
+with the archive ENV variable
+
+```
+GLEANERIO_GLEANER_ARCHIVE_OBJECT=scheduler/configs/GleanerCfg.tgz
+GLEANERIO_NABU_ARCHIVE_OBJECT=scheduler/configs/NabuCfg.tgz
+```
 
 ```bash
  tar -zcf GleanerCfg.tgz ./gleanerconfig.yaml ./jsonldcontext.json
@@ -37,5 +42,3 @@ your vars.
 Example compose file for use with Dagster is included here.
 It also is edited to read and express the shell variables 
 into the containers.
-
-
