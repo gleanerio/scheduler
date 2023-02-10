@@ -31,7 +31,8 @@ python check_sitemap_loop.py -s https://raw.githubusercontent.com/iodepo/odis-ar
 
 ### Optionally modify the output
 
-The adv tools does some rather verbose output.  You can hide these by redirecting this to /dev/null.
+The underlying [advertools](https://advertools.readthedocs.io/en/master/index.html) gives 
+some rather verbose output.  You can hide these by redirecting this to /dev/null.
 Doing so might give you some nicer output.  So like the following:
 
 ```bash
