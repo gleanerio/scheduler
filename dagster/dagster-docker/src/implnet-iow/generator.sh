@@ -20,7 +20,10 @@ arr=($(grep name: gleanerconfig.yaml | grep -v propername | awk '{print $2}' ))
 
 # Vars to spread sources over multiple days (here 7)
 AL=$((${#arr[@]}-1))  # take off one since we range from 0 not 1
-INC=$((24*7/$AL))  # Spread over a week
+INC=$((24*28/$AL))  # Spread over 4 weeks, 28 days (still incs over a week, as we don't inc the week below)
+
+echo "---  "  $AL $INC
+
 
 # now loop through the array of Gleaner sources
 #for SOURCE in "${arr[@]}"

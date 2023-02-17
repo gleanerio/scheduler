@@ -26,9 +26,19 @@ summoner:
 millers:
   graph: true
 sources:
-#
-# AquaDocs
-#
+- name: africaioc
+  propername: IOC Africa Data Portal
+  catalogue: https://ioc-africa.org/dbs/displayData.php
+  domain: https://ioc-africa.org
+  logo: https://ioc-africa.org/dbs/images/unesco_ioc_logo.png
+  pid: https://oceaninfohub.org/.well-known/org/africaioc
+  sourcetype: sitemap
+  url: https://ioc-africa.org/sitemap.xml
+  changefreq: daily
+  backend: Custom
+  headless: true
+  dateadded: 2023-02-09
+  active: true
 - name: aquadocs
   propername: AquaDocs
   catalogue: https://aquadocs.org/discover
@@ -37,6 +47,7 @@ sources:
   pid: https://catalogue.odis.org/view/3215
   sourcetype: sitegraph
   url: https://oih.aquadocs.org/aquadocs.json
+  changefreq:
   backend: OAI
   headless: false
   dateadded: 2021-02-26
@@ -49,6 +60,7 @@ sources:
   pid: https://oceaninfohub.org/.well-known/org/benguelacc
   sourcetype: sitegraph
   url: https://raw.githubusercontent.com/iodepo/odis-arch/schema-dev-jm/code/notebooks/Exploration/data-benguelacc/benguelacc-simple-graph.json
+  changefreq:
   backend: GeoNode
   headless: false
   dateadded: 2022-04-13
@@ -61,6 +73,7 @@ sources:
   pid: https://catalogue.odis.org/view/616
   sourcetype: sitegraph
   url: https://raw.githubusercontent.com/iodepo/odis-arch/schema-dev-jm/code/notebooks/Exploration/data-caribbeanmarineatlas/caribbeanmarineatlas-simple-graph.json
+  changefreq:
   backend: GeoNode
   headless: false
   dateadded: 2022-04-13
@@ -73,6 +86,7 @@ sources:
   pid: https://oceaninfohub.org/.well-known/org/cioos
   sourcetype: sitemap
   url: https://catalogue.cioos.ca/sitemap/sitemap.xml
+  changefreq: daily
   backend: CKAN
   headless: true
   dateadded: 2023-01-31
@@ -86,6 +100,7 @@ sources:
   pid: https://oceaninfohub.org/.well-known/org/edmerp
   sourcetype: sitemap
   url: https://edmerp.seadatanet.org/sitemap.xml
+  changefreq: as needed
   backend: SeaDataCloud
   headless: false
   dateadded: 2021-07-26
@@ -98,6 +113,7 @@ sources:
   pid: https://oceaninfohub.org/.well-known/org/edmo
   sourcetype: sitemap
   url: https://edmo.seadatanet.org/sitemap.xml
+  changefreq: as needed
   backend: SeaDataCloud
   dateadded: 2021-07-26
   headless: false
@@ -110,7 +126,8 @@ sources:
   pid: https://catalogue.odis.org/view/2993
   sourcetype: sitemap
   url: https://www.oceanexpert.org/assets/sitemaps/sitemapEvents.xml
-  backend: Unknown
+  changefreq: unknown
+  backend: unknown
   headless: false
   dateadded: 2022-03-26
   active: true
@@ -122,7 +139,8 @@ sources:
   pid: https://catalogue.odis.org/view/2993
   sourcetype: sitemap
   url: https://www.oceanexpert.org/assets/sitemaps/sitemapExperts.xml
-  backend: Unknown
+  changefreq: unknown
+  backend: unknown
   headless: false
   dateadded: 2022-03-26
   active: true
@@ -134,7 +152,8 @@ sources:
   pid: https://catalogue.odis.org/view/2993
   sourcetype: sitemap
   url: https://www.oceanexpert.org/assets/sitemaps/sitemapInstitutions.xml
-  backend: Unknown
+  changefreq: unknown
+  backend: unknown
   headless: false
   dateadded: 2022-03-26
   active: true
@@ -146,7 +165,8 @@ sources:
   pid: https://catalogue.odis.org/view/2993
   sourcetype: sitemap
   url: https://infohub.eurocean.net/sitemap/organizations
-  backend: Unknown
+  changefreq: daily
+  backend: unknown
   headless: false
   dateadded: 2022-03-26
   active: true
@@ -158,7 +178,8 @@ sources:
   pid: https://catalogue.odis.org/view/2993
   sourcetype: sitemap
   url: https://infohub.eurocean.net/sitemap/projects
-  backend: Unknown
+  changefreq: daily
+  backend: unknown
   headless: false
   dateadded: 2022-03-26
   active: true
@@ -170,7 +191,8 @@ sources:
   pid: https://catalogue.odis.org/view/2993
   sourcetype: sitemap
   url: https://www.oceanexpert.org/assets/sitemaps/sitemapTraining.xml
-  backend: Unknown
+  changefreq: unknown
+  backend: unknown
   headless: false
   dateadded: 2022-03-26
   active: true
@@ -182,7 +204,8 @@ sources:
   pid: https://catalogue.odis.org/view/2993
   sourcetype: sitemap
   url: https://infohub.eurocean.net/sitemap/vessels
-  backend: Unknown
+  changefreq: daily
+  backend: unknown
   headless: false
   dateadded: 2022-03-26
   active: true
@@ -194,6 +217,7 @@ sources:
   pid: https://catalogue.odis.org/view/364
   sourcetype: sitemap
   url: https://emodnet.ec.europa.eu/geonetwork/srv/eng/portal.sitemap
+  changefreq: as needed
   backend: GeoNetwork
   headless: true
   dateadded: 2022-08-24
@@ -206,6 +230,7 @@ sources:
   pid: https://catalogue.odis.org/view/3246
   sourcetype: sitemap
   url: https://geonode.nodc.id/sitemap.xml
+  changefreq: on demand
   backend: GeoNode
   headless: false
   dateadded: 2022-04-05
@@ -218,6 +243,7 @@ sources:
   pid: https://oceaninfohub.org/.well-known/org/invemardocuments
   sourcetype: sitegraph
   url: http://portete.invemar.org.co/chm/api/oih/documents?format=json
+  changefreq:
   backend: INVEMAR CHM
   headless: false
   dateadded: 2022-01-26
@@ -230,6 +256,7 @@ sources:
   pid: https://oceaninfohub.org/.well-known/org/invemarexpert
   sourcetype: sitegraph
   url: http://portete.invemar.org.co/chm/api/oih/expert?format=json
+  changefreq:
   backend: INVEMAR CHM
   headless: false
   dateadded: 2022-01-26
@@ -242,6 +269,7 @@ sources:
   pid: https://oceaninfohub.org/.well-known/org/invemarinstitutions
   sourcetype: sitegraph
   url: http://portete.invemar.org.co/chm/api/oih/institution?format=json
+  changefreq:
   backend: INVEMAR CHM
   headless: false
   dateadded: 2022-01-26
@@ -254,6 +282,7 @@ sources:
   pid: https://oceaninfohub.org/.well-known/org/invemartraining
   sourcetype: sitegraph
   url: http://portete.invemar.org.co/chm/api/oih/training?format=json
+  changefreq:
   backend: INVEMAR CHM
   headless: false
   dateadded: 2022-01-26
@@ -266,6 +295,7 @@ sources:
   pid: https://oceaninfohub.org/.well-known/org/invemarvessels
   sourcetype: sitegraph
   url: http://portete.invemar.org.co/chm/api/oih/vessel?format=json
+  changefreq:
   backend: INVEMAR CHM
   headless: false
   dateadded: 2022-01-26
@@ -278,6 +308,7 @@ sources:
   pid: https://catalogue.odis.org/view/1972
   sourcetype: sitemap
   url: https://www.marinetraining.eu/sitemap.xml
+  changefreq: daily
   backend: Drupal
   headless: false
   dateadded: 2021-05-26
@@ -290,6 +321,7 @@ sources:
   pid: https://catalogue.odis.org/view/351
   sourcetype: sitegraph
   url: https://raw.githubusercontent.com/iodepo/odis-arch/schema-dev-jm/code/notebooks/Exploration/data-maspawio/maspawio-simple-graph.json
+  changefreq:
   backend: GeoNode
   headless: false
   dateadded: 2022-03-30
@@ -302,7 +334,8 @@ sources:
   pid: https://catalogue.odis.org/view/343
   sourcetype: sitemap
   url: https://obis.org/sitemap_datasets.xml
-  backend: Unknown
+  changefreq: weekly
+  backend: unknown
   headless: false
   dateadded: 2021-02-26
   active: true
@@ -314,6 +347,7 @@ sources:
   pid: https://catalogue.odis.org/view/292
   sourcetype: sitegraph
   url: https://oih.oceanbestpractices.org/obps.json
+  changefreq:
   backend: OAI
   headless: false
   dateadded: 2021-01-26
@@ -326,7 +360,8 @@ sources:
   pid: https://catalogue.odis.org/view/4
   sourcetype: sitemap
   url: https://oceanexpert.org/assets/sitemaps/sitemapIndex.xml
-  backend: Unknown
+  changefreq: unknown
+  backend: unknown
   headless: false
   dateadded: 2021-08-26
   active: true
@@ -338,6 +373,7 @@ sources:
   pid: https://catalogue.odis.org/view/1098
   sourcetype: sitemap
   url: https://oceanscape.org/organisation-sitemap.xml
+  changefreq: as needed
   backend: WordPress
   headless: true
   dateadded: 2022-05-18
@@ -350,6 +386,7 @@ sources:
   pid: https://catalogue.odis.org/view/689
   sourcetype: sitemap
   url: https://pacificdata.org/organization/sitemap.xml
+  changefreq: as needed
   backend: CKAN
   headless: true
   dateadded: 2022-07-25
@@ -362,6 +399,7 @@ sources:
   pid: https://catalogue.odis.org/view/3247
   sourcetype: sitemap
   url: https://pogo-ocean.org/pogo-member-sitemap.xml
+  changefreq: as needed
   backend: WordPress
   headless: true
   dateadded: 2022-11-30

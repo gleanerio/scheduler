@@ -7,13 +7,36 @@ The following is a description of the steps and requirements for
 building and deploying the docker based workflow implemented in 
 dagster.
 
-The general flow is:
+### Broad overview
+
+The image following provides a broad overview of the elements that 
+are loaded in to the Docker orchestration environment.  This is a very 
+basic view and doesn't present any scaling or fail over elements.  
+
+The key elements are:
+
+* sources to configuration and then the creation of the archive files that are loaded and used
+to load into the Gleaner and Nabu tools
+* The Dagster set which loads three containers to support workflow operations
+* The Gleaner Architecture images which loads three or more containers to support 
+  * s3 object storage
+  * graph database (triplestore)
+  * headless chrome for page rendering to support dynamically inserted JSON-LD
+  * any other support packages like text, semantic or spatial indexes
+* The GleanerIO tools which loads two containers (Gleaner and Nabu) that are run 
+and removed by the Dagster workflow
+
+![upper level](../docs/images/gleanerDagster.svg)
+
+
+
+### The asset file flow in more detail:
 
 * Creation of template files for the various operations, jobs and 
 schedules
 * Creation of the archive files that hold the configuration for the 
 jobs run 
-* Environment file for the values needed by the operatons
+* Environment file for the values needed by the operations
 
 ![flow](../docs/images/flow.svg)
 
