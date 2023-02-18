@@ -2,6 +2,7 @@
 __pycache__/
 *.py[cod]
 secret/**
+venv/**
 .idea/**
 /dagster/.logs_queue/
 /dagster/.telemetry/

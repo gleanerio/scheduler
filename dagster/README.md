@@ -130,10 +130,7 @@ export GLEANER_MINIO_BUCKET=gleaner.test
 
 ![orchestration](../docs/images/orchestrationInit.svg)
 
-
-
 ## Docker API sequence
-
 
 ![sequence](../docs/images/sequence.svg)
 
