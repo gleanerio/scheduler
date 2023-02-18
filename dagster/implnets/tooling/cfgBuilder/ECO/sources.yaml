@@ -1,0 +1,222 @@
+- active: true
+  domain: http://www.opentopography.org/
+  hack: '3'
+  headless: false
+  headlesswait: '0'
+  logo: ''
+  name: opentopography
+  pid: https://www.re3data.org/repository/r3d100010655
+  properame: OpenTopography
+  sourcetype: sitemap
+  url: https://portal.opentopography.org/sitemap.xml
+- active: true
+  domain: http://iris.edu
+  hack: '5'
+  headless: false
+  headlesswait: '0'
+  logo: 'No distribution '
+  name: iris
+  pid: https://www.re3data.org/repository/r3d100010268
+  properame: IRIS
+  sourcetype: sitemap
+  url: http://ds.iris.edu/files/sitemap.xml
+- active: true
+  domain: 'http://environmentaldatainitiative.org/ '
+  hack: '7'
+  headless: false
+  headlesswait: '0'
+  logo: ''
+  name: edi
+  pid: https://www.re3data.org/repository/r3d100010272
+  properame: Environmental Data Initiative
+  sourcetype: sitemap
+  url: https://portal.edirepository.org/sitemap_index.xml
+- active: true
+  domain: https://www.cuahsi.org/
+  hack: '11'
+  headless: false
+  headlesswait: '0'
+  logo: ''
+  name: hydroshare
+  pid: https://www.re3data.org/repository/r3d100012625
+  properame: Consortium of Universities for the Advancement of Hydrologic Science
+  sourcetype: sitemap
+  url: https://www.hydroshare.org/sitemap-resources.xml
+- active: true
+  domain: http://www.iedadata.org/
+  hack: '13'
+  headless: false
+  headlesswait: '0'
+  logo: ''
+  name: iedadata
+  pid: https://www.re3data.org/repository/r3d100010578
+  properame: IEDA (Integrated Earth Data Applications)
+  sourcetype: sitemap
+  url: http://get.iedadata.org/doi/xml-sitemap.php
+- active: true
+  domain: http://www.opentopography.org/
+  hack: '15'
+  headless: false
+  headlesswait: '0'
+  logo: ''
+  name: opentopography
+  pid: https://www.re3data.org/repository/r3d100010655
+  properame: OpenTopography
+  sourcetype: sitemap
+  url: https://opentopography.org/sitemap.xml
+- active: true
+  domain: http://www.unavco.org/
+  hack: '17'
+  headless: false
+  headlesswait: '0'
+  logo: Schema.org validator says not found... not sure why. looks ok
+  name: unavco
+  pid: http://www.re3data.org/repository/r3d100010872
+  properame: UNAVCO
+  sourcetype: sitemap
+  url: https://www.unavco.org/data/doi/sitemap.xml
+- active: true
+  domain: https://ssdb.iodp.org/
+  hack: '19'
+  headless: false
+  headlesswait: '0'
+  logo: distribution is misspelled. request for update sent to contact web page https://ssdb.iodp.org/contact.php  2022-11-15
+  name: ssdb.iodp
+  pid: https://www.re3data.org/repository/r3d100010267
+  properame: IODP Site Survey Databank
+  sourcetype: sitemap
+  url: https://ssdb.iodp.org/dataset/sitemap.xml
+- active: true
+  domain: http://wiki.linked.earth
+  hack: '23'
+  headless: false
+  headlesswait: '0'
+  logo: Lots of properties. Possible Cruft
+  name: linked.earth
+  pid: http://wiki.linked.earth
+  properame: Linked Earth
+  sourcetype: sitemap
+  url: http://wiki.linked.earth/sitemap.xml
+- active: true
+  domain: https://lipdverse.org/
+  hack: '25'
+  headless: false
+  headlesswait: '0'
+  logo: ''
+  name: lipdverse
+  pid: https://lipdverse.org
+  properame: Linked PaleoData
+  sourcetype: sitemap
+  url: https://lipdverse.org/sitemap.xml
+- active: true
+  domain: http://iris.edu
+  hack: '27'
+  headless: false
+  headlesswait: '0'
+  logo: ''
+  name: iris
+  pid: https://www.re3data.org/repository/r3d100010268
+  properame: IRIS
+  sourcetype: sitemap
+  url: http://ds.iris.edu/files/sitemap.xml
+- active: true
+  domain: https://www.earthref.org/MagIC
+  hack: '33'
+  headless: true
+  headlesswait: '0'
+  logo: ''
+  name: magic
+  pid: http://www.re3data.org/repository/r3d100011910
+  properame: Magnetics Information Consortium (MagIC)
+  sourcetype: sitemap
+  url: https://www2.earthref.org/MagIC/contributions.sitemap.xml
+- active: true
+  domain: https://ecl.earthchem.org/home.php
+  hack: '37'
+  headless: false
+  headlesswait: '0'
+  logo: ''
+  name: earthchem
+  pid: https://www.re3data.org/repository/r3d100011538
+  properame: earthchem
+  sourcetype: sitemap
+  url: https://ecl.earthchem.org/sitemap.xml
+- active: true
+  domain: http://www.neonscience.org/
+  hack: '41'
+  headless: false
+  headlesswait: '0'
+  logo: ''
+  name: neon
+  pid: http://www.re3data.org/repository/r3d100010290
+  properame: National Ecological Observatory Network (NEON)
+  sourcetype: sitemap
+  url: https://geodex.org/neon_prodcodes_sm.xml
+- active: true
+  domain: https://www.designsafe-ci.org/data/browser/public/
+  hack: '49'
+  headless: false
+  headlesswait: '0'
+  logo: ''
+  name: designsafe
+  pid: ''
+  properame: ''
+  sourcetype: sitemap
+  url: 'https://www.designsafe-ci.org/sitemap.xml '
+- active: true
+  domain: https://www.rvdata.us/
+  hack: '57'
+  headless: true
+  headlesswait: '3'
+  logo: '(script jsonld for the dataset is outside of the HTML tag. basically it''s
+    own element.) Headles wait so that dataset JSONLD can be retrieved. Two JSONLD,
+    only one item store due to file naming issue (aka sha).  issue: https://github.com/gleanerio/gleaner/issues/111'
+  name: r2r
+  pid: http://www.re3data.org/repository/r3d100010735
+  properame: Rolling Deck to Repository Program (R2R)
+  sourcetype: sitemap
+  url: https://service-dev.rvdata.us/api/sitemap/
+- active: true
+  domain: https://www.earthcube.org/datasets/
+  hack: '58'
+  headless: false
+  headlesswait: '0'
+  logo: ''
+  name: geocodes_demo_datasets
+  pid: https://github.com/earthcube/GeoCODES-Metadata/metadata/OtherResources
+  properame: Geocodes Demo Datasets
+  sourcetype: sitemap
+  url: https://earthcube.github.io/GeoCODES-Metadata/metadata/Dataset/allgood/sitemap.xml
+- active: true
+  domain: https://www.usap-dc.org/
+  hack: '59'
+  headless: true
+  headlesswait: '0'
+  logo: 'Looks good. Two JSONLD items: possible issue: https://github.com/gleanerio/gleaner/issues/111'
+  name: usap-dc
+  pid: https://www.re3data.org/repository/r3d100010660
+  properame: U.S. Antarctic Program Data Center
+  sourcetype: sitemap
+  url: https://www.usap-dc.org/view/dataset/sitemap.xml
+- active: true
+  domain: https://cchdo.ucsd.edu/
+  hack: '61'
+  headless: false
+  headlesswait: '0'
+  logo: Using datacatalog with datasets... UI Code, or gleaner needs to handle this
+  name: cchdo
+  pid: https://www.re3data.org/repository/r3d100010831
+  properame: CLIVAR and Carbon Hydrographic Data Office
+  sourcetype: sitemap
+  url: https://cchdo.ucsd.edu/sitemap.xml
+- active: true
+  domain: https://amgeo.colorado.edu/
+  hack: '62'
+  headless: false
+  headlesswait: '0'
+  logo: five records
+  name: amgeo
+  pid: ''
+  properame: Assimilative Mapping of Geospace Observations
+  sourcetype: sitemap
+  url: https://amgeo-dev.colorado.edu/sitemap.xml
