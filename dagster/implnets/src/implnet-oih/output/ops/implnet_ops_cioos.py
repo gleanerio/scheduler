@@ -254,40 +254,40 @@ def gleanerio(mode, source):
     return 0
 
 @op
-def maspawio_gleaner(context):
-    returned_value = gleanerio(("gleaner"), "maspawio")
+def cioos_gleaner(context):
+    returned_value = gleanerio(("gleaner"), "cioos")
     r = str('returned value:{}'.format(returned_value))
     get_dagster_logger().info(f"Gleaner notes are  {r} ")
     return r
 
 @op
-def maspawio_nabu(context, msg: str):
-    returned_value = gleanerio(("nabu"), "maspawio")
+def cioos_nabu(context, msg: str):
+    returned_value = gleanerio(("nabu"), "cioos")
     r = str('returned value:{}'.format(returned_value))
     return msg + r
 
 @op
-def maspawio_nabuprov(context, msg: str):
-    returned_value = gleanerio(("prov"), "maspawio")
+def cioos_nabuprov(context, msg: str):
+    returned_value = gleanerio(("prov"), "cioos")
     r = str('returned value:{}'.format(returned_value))
     return msg + r
 
 @op
-def maspawio_nabuorg(context, msg: str):
-    returned_value = gleanerio(("orgs"), "maspawio")
+def cioos_nabuorg(context, msg: str):
+    returned_value = gleanerio(("orgs"), "cioos")
     r = str('returned value:{}'.format(returned_value))
     return msg + r
 
 @op
-def maspawio_naburelease(context, msg: str):
-    returned_value = gleanerio(("release"), "maspawio")
+def cioos_naburelease(context, msg: str):
+    returned_value = gleanerio(("release"), "cioos")
     r = str('returned value:{}'.format(returned_value))
     return msg + r
 
 @graph
-def harvest_maspawio():
-    harvest = maspawio_gleaner()
-    load1 = maspawio_nabu(harvest)
-    load2 = maspawio_nabuprov(load1)
-    load3 = maspawio_nabuorg(load2)
-    load4 = maspawio_naburelease(load3)
+def harvest_cioos():
+    harvest = cioos_gleaner()
+    load1 = cioos_nabu(harvest)
+    load2 = cioos_nabuprov(load1)
+    load3 = cioos_nabuorg(load2)
+    load4 = cioos_naburelease(load3)

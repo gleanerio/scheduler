@@ -99,7 +99,27 @@ def gleanerio(mode, source):
         CMD = ["--cfg", "/nabu/nabuconfig.yaml", "prune", "--prefix", "summoned/" + source]
         NAME = "nabu01_" + source
         # LOGFILE = 'log_nabu.txt'  # only used for local log file writing
-
+    elif (str(mode) == "prov"):
+        IMAGE = os.environ.get('GLEANERIO_NABU_IMAGE')
+        ARCHIVE_FILE = os.environ.get('GLEANERIO_NABU_ARCHIVE_OBJECT')
+        ARCHIVE_PATH = os.environ.get('GLEANERIO_NABU_ARCHIVE_PATH')
+        CMD = ["--cfg", "/nabu/nabuconfig.yaml", "prefix", "--prefix", "prov/" + source]
+        NAME = "nabu01_" + source
+        # LOGFILE = 'log_nabu.txt'  # only used for local log file writing
+    elif (str(mode) == "orgs"):
+        IMAGE = os.environ.get('GLEANERIO_NABU_IMAGE')
+        ARCHIVE_FILE = os.environ.get('GLEANERIO_NABU_ARCHIVE_OBJECT')
+        ARCHIVE_PATH = os.environ.get('GLEANERIO_NABU_ARCHIVE_PATH')
+        CMD = ["--cfg", "/nabu/nabuconfig.yaml", "prefix", "--prefix", "orgs"]
+        NAME = "nabu01_" + source
+        # LOGFILE = 'log_nabu.txt'  # only used for local log file writing
+    elif (str(mode) == "release"):
+        IMAGE = os.environ.get('GLEANERIO_NABU_IMAGE')
+        ARCHIVE_FILE = os.environ.get('GLEANERIO_NABU_ARCHIVE_OBJECT')
+        ARCHIVE_PATH = os.environ.get('GLEANERIO_NABU_ARCHIVE_PATH')
+        CMD = ["--cfg", "/nabu/nabuconfig.yaml", "release", "--prefix", "summoned/" + source]
+        NAME = "nabu01_" + source
+        # LOGFILE = 'log_nabu.txt'  # only used for local log file writing
     else:
         return 1
 
@@ -234,20 +254,40 @@ def gleanerio(mode, source):
     return 0
 
 @op
-def vliz_gleaner(context):
-    returned_value = gleanerio(("gleaner"), "vliz")
+def africaioc_gleaner(context):
+    returned_value = gleanerio(("gleaner"), "africaioc")
     r = str('returned value:{}'.format(returned_value))
     get_dagster_logger().info(f"Gleaner notes are  {r} ")
     return r
 
 @op
-def vliz_nabu(context, msg: str):
-    returned_value = gleanerio(("nabu"), "vliz")
+def africaioc_nabu(context, msg: str):
+    returned_value = gleanerio(("nabu"), "africaioc")
+    r = str('returned value:{}'.format(returned_value))
+    return msg + r
+
+@op
+def africaioc_nabuprov(context, msg: str):
+    returned_value = gleanerio(("prov"), "africaioc")
+    r = str('returned value:{}'.format(returned_value))
+    return msg + r
+
+@op
+def africaioc_nabuorg(context, msg: str):
+    returned_value = gleanerio(("orgs"), "africaioc")
+    r = str('returned value:{}'.format(returned_value))
+    return msg + r
+
+@op
+def africaioc_naburelease(context, msg: str):
+    returned_value = gleanerio(("release"), "africaioc")
     r = str('returned value:{}'.format(returned_value))
     return msg + r
 
 @graph
-def harvest_vliz():
-    harvest = vliz_gleaner()
-    load1 = vliz_nabu(harvest)
-    # load2 = vliz_prov(load1)
+def harvest_africaioc():
+    harvest = africaioc_gleaner()
+    load1 = africaioc_nabu(harvest)
+    load2 = africaioc_nabuprov(load1)
+    load3 = africaioc_nabuorg(load2)
+    load4 = africaioc_naburelease(load3)

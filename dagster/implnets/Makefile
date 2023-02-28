@@ -2,35 +2,38 @@
 .SHELLFLAGS += -e
 VERSION :=`cat VERSION`
 
-generate-oih:
+oih-generate:
 	cd ./src/implnet-oih && ./generator.sh
 
-build-oih:
+oih-build:
 	podman build  --tag="docker.io/fils/dagster_oih:$(VERSION)"  --file=./build/Dockerfile.oih  .
 
-push-oih:
+oih-push:
 	podman push docker.io/fils/dagster_oih:$(VERSION)
 
-generate-iow:
+iow-cfgbuild:
+	cd ./tooling/cfgBuilder/IoW && python cfgBuilder.py -s https://geoconnex.us/sitemap.xml
+
+iow-generate:
 	cd ./src/implnet-iow && ./generator.sh
 
-build-iow:
+iow-build:
 	podman build  --tag="docker.io/fils/dagster_iow:$(VERSION)"  --file=./build/Dockerfile.iow  .
 
-push-iow:
+iow-push:
 	podman push docker.io/fils/dagster_iow:$(VERSION) 
 
-generate-eco:
+eco-generate:
 	cd ./src/implnet-eco && ./generator.sh
 
-build-eco:
+eco-build:
 	podman build  --tag="docker.io/fils/dagster_eco:$(VERSION)"  --file=./build/Dockerfile.eco  .
 
-push-eco:
+eco-push:
 	podman push docker.io/fils/dagster_eco:$(VERSION)
 
-all-eco: generate-eco build-eco push-eco
+all-eco: eco-generate eco-build eco-push
 
-all-oih: generate-oih build-oih push-oih
+all-oih: oih-generate oih-build oih-push
 
-all-iow: generate-iow build-iow push-iow
+all-iow: iow-generate iow-build iow-push
