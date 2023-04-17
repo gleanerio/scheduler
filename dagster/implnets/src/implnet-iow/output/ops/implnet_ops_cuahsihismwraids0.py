@@ -99,7 +99,27 @@ def gleanerio(mode, source):
         CMD = ["--cfg", "/nabu/nabuconfig.yaml", "prune", "--prefix", "summoned/" + source]
         NAME = "nabu01_" + source
         # LOGFILE = 'log_nabu.txt'  # only used for local log file writing
-
+    elif (str(mode) == "prov"):
+        IMAGE = os.environ.get('GLEANERIO_NABU_IMAGE')
+        ARCHIVE_FILE = os.environ.get('GLEANERIO_NABU_ARCHIVE_OBJECT')
+        ARCHIVE_PATH = os.environ.get('GLEANERIO_NABU_ARCHIVE_PATH')
+        CMD = ["--cfg", "/nabu/nabuconfig.yaml", "prefix", "--prefix", "prov/" + source]
+        NAME = "nabu01_" + source
+        # LOGFILE = 'log_nabu.txt'  # only used for local log file writing
+    elif (str(mode) == "orgs"):
+        IMAGE = os.environ.get('GLEANERIO_NABU_IMAGE')
+        ARCHIVE_FILE = os.environ.get('GLEANERIO_NABU_ARCHIVE_OBJECT')
+        ARCHIVE_PATH = os.environ.get('GLEANERIO_NABU_ARCHIVE_PATH')
+        CMD = ["--cfg", "/nabu/nabuconfig.yaml", "prefix", "--prefix", "orgs"]
+        NAME = "nabu01_" + source
+        # LOGFILE = 'log_nabu.txt'  # only used for local log file writing
+    elif (str(mode) == "release"):
+        IMAGE = os.environ.get('GLEANERIO_NABU_IMAGE')
+        ARCHIVE_FILE = os.environ.get('GLEANERIO_NABU_ARCHIVE_OBJECT')
+        ARCHIVE_PATH = os.environ.get('GLEANERIO_NABU_ARCHIVE_PATH')
+        CMD = ["--cfg", "/nabu/nabuconfig.yaml", "release", "--prefix", "summoned/" + source]
+        NAME = "nabu01_" + source
+        # LOGFILE = 'log_nabu.txt'  # only used for local log file writing
     else:
         return 1
 
@@ -246,8 +266,28 @@ def cuahsihismwraids0_nabu(context, msg: str):
     r = str('returned value:{}'.format(returned_value))
     return msg + r
 
+@op
+def cuahsihismwraids0_nabuprov(context, msg: str):
+    returned_value = gleanerio(("prov"), "cuahsihismwraids0")
+    r = str('returned value:{}'.format(returned_value))
+    return msg + r
+
+@op
+def cuahsihismwraids0_nabuorg(context, msg: str):
+    returned_value = gleanerio(("orgs"), "cuahsihismwraids0")
+    r = str('returned value:{}'.format(returned_value))
+    return msg + r
+
+@op
+def cuahsihismwraids0_naburelease(context, msg: str):
+    returned_value = gleanerio(("release"), "cuahsihismwraids0")
+    r = str('returned value:{}'.format(returned_value))
+    return msg + r
+
 @graph
 def harvest_cuahsihismwraids0():
     harvest = cuahsihismwraids0_gleaner()
     load1 = cuahsihismwraids0_nabu(harvest)
-    # load2 = cuahsihismwraids0_prov(load1)
+    load2 = cuahsihismwraids0_nabuprov(load1)
+    load3 = cuahsihismwraids0_nabuorg(load2)
+    load4 = cuahsihismwraids0_naburelease(load3)

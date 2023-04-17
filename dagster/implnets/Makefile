@@ -23,6 +23,9 @@ iow-build:
 iow-push:
 	podman push docker.io/fils/dagster_iow:$(VERSION) 
 
+eco-clean:
+	cd ./src/implnet-eco && rm -rf ./output/*
+
 eco-generate:
 	cd ./src/implnet-eco && ./generator.sh
 
@@ -32,7 +35,7 @@ eco-build:
 eco-push:
 	podman push docker.io/fils/dagster_eco:$(VERSION)
 
-all-eco: eco-generate eco-build eco-push
+all-eco: eco-clean eco-generate eco-build eco-push
 
 all-oih: oih-generate oih-build oih-push
 

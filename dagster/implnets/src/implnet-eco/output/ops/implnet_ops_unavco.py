@@ -1,3 +1,5 @@
+import distutils
+
 from dagster import op, graph, get_dagster_logger
 import subprocess
 import os, json, io
@@ -39,20 +41,22 @@ def load_data(file_or_url):
 
 def s3reader(object):
     server = os.environ.get('GLEANER_MINIO_URL') + ":" + os.environ.get('GLEANER_MINIO_PORT')
-    bucket = str(os.environ.get('GLEANER_MINIO_BUCKET'))
-
-    get_dagster_logger().info(f"server: : {str(server)}")
-    get_dagster_logger().info(f"bucket: : {bucket}")
-    get_dagster_logger().info(f"object: : {str(object)}")
+    get_dagster_logger().info(f"S3 URL    : {str(os.environ.get('GLEANER_MINIO_URL'))}")
+    get_dagster_logger().info(f"S3 PORT   : {str(os.environ.get('GLEANER_MINIO_PORT'))}")
+    # get_dagster_logger().info(f"S3 read started : {str(os.environ.get('GLEANER_MINIO_KEY'))}")
+    # get_dagster_logger().info(f"S3 read started : {str(os.environ.get('GLEANER_MINIO_SECRET'))}")
+    get_dagster_logger().info(f"S3 BUCKET : {str(os.environ.get('GLEANER_MINIO_BUCKET'))}")
+    get_dagster_logger().info(f"S3 object : {str(object)}")
 
     client = Minio(
         server,
-        # secure=False,
+        # secure=True,
+        secure = bool(distutils.util.strtobool(os.environ.get('GLEANER_MINIO_SSL'))),
         access_key=os.environ.get('GLEANER_MINIO_KEY'),
         secret_key=os.environ.get('GLEANER_MINIO_SECRET'),
     )
     try:
-        data = client.get_object(bucket, object)
+        data = client.get_object(os.environ.get('GLEANER_MINIO_BUCKET'), object)
         return data
     except S3Error as err:
         get_dagster_logger().info(f"S3 read error : {str(err)}")
@@ -62,7 +66,8 @@ def s3loader(data, name):
     server = os.environ.get('GLEANER_MINIO_URL') + ":" + os.environ.get('GLEANER_MINIO_PORT')
     client = Minio(
         server,
-        # secure=False,
+        # secure=True,
+        secure = bool(distutils.util.strtobool(os.environ.get('GLEANER_MINIO_SSL'))),
         access_key=os.environ.get('GLEANER_MINIO_KEY'),
         secret_key=os.environ.get('GLEANER_MINIO_SECRET'),
     )
@@ -102,10 +107,30 @@ def gleanerio(mode, source):
         IMAGE = os.environ.get('GLEANERIO_NABU_IMAGE')
         ARCHIVE_FILE = os.environ.get('GLEANERIO_NABU_ARCHIVE_OBJECT')
         ARCHIVE_PATH = os.environ.get('GLEANERIO_NABU_ARCHIVE_PATH')
-        CMD = ["--cfg", "/nabu/nabuconfig.yaml", "prefix",  "--prefix", "summoned/" + source]
+        CMD = ["--cfg", "/nabu/nabuconfig.yaml", "prune", "--prefix", "summoned/" + source]
         NAME = "nabu01_" + source
         # LOGFILE = 'log_nabu.txt'  # only used for local log file writing
-
+    elif (str(mode) == "prov"):
+        IMAGE = os.environ.get('GLEANERIO_NABU_IMAGE')
+        ARCHIVE_FILE = os.environ.get('GLEANERIO_NABU_ARCHIVE_OBJECT')
+        ARCHIVE_PATH = os.environ.get('GLEANERIO_NABU_ARCHIVE_PATH')
+        CMD = ["--cfg", "/nabu/nabuconfig.yaml", "prefix", "--prefix", "prov/" + source]
+        NAME = "nabu01_" + source
+        # LOGFILE = 'log_nabu.txt'  # only used for local log file writing
+    elif (str(mode) == "orgs"):
+        IMAGE = os.environ.get('GLEANERIO_NABU_IMAGE')
+        ARCHIVE_FILE = os.environ.get('GLEANERIO_NABU_ARCHIVE_OBJECT')
+        ARCHIVE_PATH = os.environ.get('GLEANERIO_NABU_ARCHIVE_PATH')
+        CMD = ["--cfg", "/nabu/nabuconfig.yaml", "prefix", "--prefix", "orgs"]
+        NAME = "nabu01_" + source
+        # LOGFILE = 'log_nabu.txt'  # only used for local log file writing
+    elif (str(mode) == "release"):
+        IMAGE = os.environ.get('GLEANERIO_NABU_IMAGE')
+        ARCHIVE_FILE = os.environ.get('GLEANERIO_NABU_ARCHIVE_OBJECT')
+        ARCHIVE_PATH = os.environ.get('GLEANERIO_NABU_ARCHIVE_PATH')
+        CMD = ["--cfg", "/nabu/nabuconfig.yaml", "release", "--prefix", "summoned/" + source]
+        NAME = "nabu01_" + source
+        # LOGFILE = 'log_nabu.txt'  # only used for local log file writing
     else:
         return 1
 
@@ -240,7 +265,7 @@ def gleanerio(mode, source):
     return 0
 
 @op
-def unavco_gleaner():
+def unavco_gleaner(context):
     returned_value = gleanerio(("gleaner"), "unavco")
     r = str('returned value:{}'.format(returned_value))
     get_dagster_logger().info(f"Gleaner notes are  {r} ")
@@ -252,8 +277,28 @@ def unavco_nabu(context, msg: str):
     r = str('returned value:{}'.format(returned_value))
     return msg + r
 
+@op
+def unavco_nabuprov(context, msg: str):
+    returned_value = gleanerio(("prov"), "unavco")
+    r = str('returned value:{}'.format(returned_value))
+    return msg + r
+
+@op
+def unavco_nabuorg(context, msg: str):
+    returned_value = gleanerio(("orgs"), "unavco")
+    r = str('returned value:{}'.format(returned_value))
+    return msg + r
+
+@op
+def unavco_naburelease(context, msg: str):
+    returned_value = gleanerio(("release"), "unavco")
+    r = str('returned value:{}'.format(returned_value))
+    return msg + r
+
 @graph
 def harvest_unavco():
     harvest = unavco_gleaner()
     load1 = unavco_nabu(harvest)
-    # load2 = unavco_prov(load1)
+    load2 = unavco_nabuprov(load1)
+    load3 = unavco_nabuorg(load2)
+    load4 = unavco_naburelease(load3)

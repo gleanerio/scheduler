@@ -99,7 +99,27 @@ def gleanerio(mode, source):
         CMD = ["--cfg", "/nabu/nabuconfig.yaml", "prune", "--prefix", "summoned/" + source]
         NAME = "nabu01_" + source
         # LOGFILE = 'log_nabu.txt'  # only used for local log file writing
-
+    elif (str(mode) == "prov"):
+        IMAGE = os.environ.get('GLEANERIO_NABU_IMAGE')
+        ARCHIVE_FILE = os.environ.get('GLEANERIO_NABU_ARCHIVE_OBJECT')
+        ARCHIVE_PATH = os.environ.get('GLEANERIO_NABU_ARCHIVE_PATH')
+        CMD = ["--cfg", "/nabu/nabuconfig.yaml", "prefix", "--prefix", "prov/" + source]
+        NAME = "nabu01_" + source
+        # LOGFILE = 'log_nabu.txt'  # only used for local log file writing
+    elif (str(mode) == "orgs"):
+        IMAGE = os.environ.get('GLEANERIO_NABU_IMAGE')
+        ARCHIVE_FILE = os.environ.get('GLEANERIO_NABU_ARCHIVE_OBJECT')
+        ARCHIVE_PATH = os.environ.get('GLEANERIO_NABU_ARCHIVE_PATH')
+        CMD = ["--cfg", "/nabu/nabuconfig.yaml", "prefix", "--prefix", "orgs"]
+        NAME = "nabu01_" + source
+        # LOGFILE = 'log_nabu.txt'  # only used for local log file writing
+    elif (str(mode) == "release"):
+        IMAGE = os.environ.get('GLEANERIO_NABU_IMAGE')
+        ARCHIVE_FILE = os.environ.get('GLEANERIO_NABU_ARCHIVE_OBJECT')
+        ARCHIVE_PATH = os.environ.get('GLEANERIO_NABU_ARCHIVE_PATH')
+        CMD = ["--cfg", "/nabu/nabuconfig.yaml", "release", "--prefix", "summoned/" + source]
+        NAME = "nabu01_" + source
+        # LOGFILE = 'log_nabu.txt'  # only used for local log file writing
     else:
         return 1
 
@@ -246,8 +266,28 @@ def wade5_nabu(context, msg: str):
     r = str('returned value:{}'.format(returned_value))
     return msg + r
 
+@op
+def wade5_nabuprov(context, msg: str):
+    returned_value = gleanerio(("prov"), "wade5")
+    r = str('returned value:{}'.format(returned_value))
+    return msg + r
+
+@op
+def wade5_nabuorg(context, msg: str):
+    returned_value = gleanerio(("orgs"), "wade5")
+    r = str('returned value:{}'.format(returned_value))
+    return msg + r
+
+@op
+def wade5_naburelease(context, msg: str):
+    returned_value = gleanerio(("release"), "wade5")
+    r = str('returned value:{}'.format(returned_value))
+    return msg + r
+
 @graph
 def harvest_wade5():
     harvest = wade5_gleaner()
     load1 = wade5_nabu(harvest)
-    # load2 = wade5_prov(load1)
+    load2 = wade5_nabuprov(load1)
+    load3 = wade5_nabuorg(load2)
+    load4 = wade5_naburelease(load3)

@@ -39,14 +39,20 @@ def load_data(file_or_url):
 
 def s3reader(object):
     server = os.environ.get('GLEANER_MINIO_URL') + ":" + os.environ.get('GLEANER_MINIO_PORT')
+    bucket = str(os.environ.get('GLEANER_MINIO_BUCKET'))
+
+    get_dagster_logger().info(f"server: : {str(server)}")
+    get_dagster_logger().info(f"bucket: : {bucket}")
+    get_dagster_logger().info(f"object: : {str(object)}")
+
     client = Minio(
         server,
-        secure=False,
+        # secure=False,
         access_key=os.environ.get('GLEANER_MINIO_KEY'),
         secret_key=os.environ.get('GLEANER_MINIO_SECRET'),
     )
     try:
-        data = client.get_object(os.environ.get('GLEANER_MINIO_BUCKET'), object)
+        data = client.get_object(bucket, object)
         return data
     except S3Error as err:
         get_dagster_logger().info(f"S3 read error : {str(err)}")
@@ -56,7 +62,7 @@ def s3loader(data, name):
     server = os.environ.get('GLEANER_MINIO_URL') + ":" + os.environ.get('GLEANER_MINIO_PORT')
     client = Minio(
         server,
-        secure=False,
+        # secure=False,
         access_key=os.environ.get('GLEANER_MINIO_KEY'),
         secret_key=os.environ.get('GLEANER_MINIO_SECRET'),
     )
@@ -96,30 +102,10 @@ def gleanerio(mode, source):
         IMAGE = os.environ.get('GLEANERIO_NABU_IMAGE')
         ARCHIVE_FILE = os.environ.get('GLEANERIO_NABU_ARCHIVE_OBJECT')
         ARCHIVE_PATH = os.environ.get('GLEANERIO_NABU_ARCHIVE_PATH')
-        CMD = ["--cfg", "/nabu/nabuconfig.yaml", "prune", "--prefix", "summoned/" + source]
+        CMD = ["--cfg", "/nabu/nabuconfig.yaml", "prefix",  "--prefix", "summoned/" + source]
         NAME = "nabu01_" + source
         # LOGFILE = 'log_nabu.txt'  # only used for local log file writing
-    elif (str(mode) == "prov"):
-        IMAGE = os.environ.get('GLEANERIO_NABU_IMAGE')
-        ARCHIVE_FILE = os.environ.get('GLEANERIO_NABU_ARCHIVE_OBJECT')
-        ARCHIVE_PATH = os.environ.get('GLEANERIO_NABU_ARCHIVE_PATH')
-        CMD = ["--cfg", "/nabu/nabuconfig.yaml", "prefix", "--prefix", "prov/" + source]
-        NAME = "nabu01_" + source
-        # LOGFILE = 'log_nabu.txt'  # only used for local log file writing
-    elif (str(mode) == "orgs"):
-        IMAGE = os.environ.get('GLEANERIO_NABU_IMAGE')
-        ARCHIVE_FILE = os.environ.get('GLEANERIO_NABU_ARCHIVE_OBJECT')
-        ARCHIVE_PATH = os.environ.get('GLEANERIO_NABU_ARCHIVE_PATH')
-        CMD = ["--cfg", "/nabu/nabuconfig.yaml", "prefix", "--prefix", "orgs"]
-        NAME = "nabu01_" + source
-        # LOGFILE = 'log_nabu.txt'  # only used for local log file writing
-    elif (str(mode) == "release"):
-        IMAGE = os.environ.get('GLEANERIO_NABU_IMAGE')
-        ARCHIVE_FILE = os.environ.get('GLEANERIO_NABU_ARCHIVE_OBJECT')
-        ARCHIVE_PATH = os.environ.get('GLEANERIO_NABU_ARCHIVE_PATH')
-        CMD = ["--cfg", "/nabu/nabuconfig.yaml", "release", "--prefix", "summoned/" + source]
-        NAME = "nabu01_" + source
-        # LOGFILE = 'log_nabu.txt'  # only used for local log file writing
+
     else:
         return 1
 
@@ -254,40 +240,20 @@ def gleanerio(mode, source):
     return 0
 
 @op
-def hmw1_gleaner(context):
-    returned_value = gleanerio(("gleaner"), "hmw1")
+def SOURCEVAL_gleaner():
+    returned_value = gleanerio(("gleaner"), "SOURCEVAL")
     r = str('returned value:{}'.format(returned_value))
     get_dagster_logger().info(f"Gleaner notes are  {r} ")
     return r
 
 @op
-def hmw1_nabu(context, msg: str):
-    returned_value = gleanerio(("nabu"), "hmw1")
-    r = str('returned value:{}'.format(returned_value))
-    return msg + r
-
-@op
-def hmw1_nabuprov(context, msg: str):
-    returned_value = gleanerio(("prov"), "hmw1")
-    r = str('returned value:{}'.format(returned_value))
-    return msg + r
-
-@op
-def hmw1_nabuorg(context, msg: str):
-    returned_value = gleanerio(("orgs"), "hmw1")
-    r = str('returned value:{}'.format(returned_value))
-    return msg + r
-
-@op
-def hmw1_naburelease(context, msg: str):
-    returned_value = gleanerio(("release"), "hmw1")
+def SOURCEVAL_nabu(context, msg: str):
+    returned_value = gleanerio(("nabu"), "SOURCEVAL")
     r = str('returned value:{}'.format(returned_value))
     return msg + r
 
 @graph
-def harvest_hmw1():
-    harvest = hmw1_gleaner()
-    load1 = hmw1_nabu(harvest)
-    load2 = hmw1_nabuprov(load1)
-    load3 = hmw1_nabuorg(load2)
-    load4 = hmw1_naburelease(load3)
+def harvest_SOURCEVAL():
+    harvest = SOURCEVAL_gleaner()
+    load1 = SOURCEVAL_nabu(harvest)
+    # load2 = SOURCEVAL_prov(load1)

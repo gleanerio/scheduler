@@ -53,7 +53,20 @@ In the later case only a regeneration needs to be done.
 
 There are then Docker build scripts to build out new containers.  
 
-See:  [template](./dagster-docker/src/implnet-example/templates)
+See:  [template](./implnets/src/implnet-example/templates)
+
+## Steps to build and deploy
+
+1) move to the implementation directory
+2) After you make any needed edits to the template
+3) After you update the gleaner config file which will be used for the indexing runs
+4) generator.sh to build all the python code for Dagster based on the gleaner config file
+5) move up two directories and use the makefile to run
+6) increment VERSION
+7) make eco-build
+8) make eco-publish (notes on registering your container register with docker / podman)
+9) go to your orchestration env and use CLI or podman to load your new containers. 
+
 
 ### Archive files
 
