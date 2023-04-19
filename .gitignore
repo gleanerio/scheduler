@@ -6,3 +6,4 @@ venv/**
 .idea/**
 /dagster/.logs_queue/
 /dagster/.telemetry/
+/dagster/.telemetry/
