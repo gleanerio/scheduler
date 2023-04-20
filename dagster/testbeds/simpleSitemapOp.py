@@ -1,5 +1,6 @@
 import os, json, io
 import urllib
+import requests
 from urllib import request
 from dagster import (
     job,
@@ -108,6 +109,19 @@ def do_something_on_failure(context: HookContext):
 
 def do_something(message):
     get_dagster_logger().info(f"This is a custom error function")
+
+    # using rdf now, but nostr might be cool....
+
+    url = 'https://graphdb.provisium.io/repositories/syndication/statements'
+    data = "<https://gleaner.io/id/test3> <https://schema.org/description> \"this is a test 2\" ."
+    headers = {'Content-Type': 'text/x-nquads'}
+    response = requests.post(url, data=data, headers=headers)
+
+    if response.status_code == 204:
+        get_dagster_logger().info('POST request successful')
+    else:
+        get_dagster_logger().info(f'POST request failed with status code {response.status_code}')
+
     get_dagster_logger().info(message)
 
 @graph
