@@ -2,41 +2,70 @@
 .SHELLFLAGS += -e
 VERSION :=`cat VERSION`
 
-oih-generate:
-	cd ./src/implnet-oih && ./generator.sh
+# ----  NSDF  ----
 
-oih-build:
-	podman build  --tag="docker.io/fils/dagster_oih:$(VERSION)"  --file=./build/Dockerfile.oih  .
+nsdf-cfgbuild:
+	cd ./tooling/cfgBuilder/NSDF && python cfgBuilder.py -s https://geoconnex.us/sitemap.xml
 
-oih-push:
-	podman push docker.io/fils/dagster_oih:$(VERSION)
+nsdf-clean:
+	cd ./generatedCode/implnet-nsdf && rm -rf ./output/*
 
-iow-cfgbuild:
-	cd ./tooling/cfgBuilder/IoW && python cfgBuilder.py -s https://geoconnex.us/sitemap.xml
+nsdf-generate:
+	python pygen.py -cf ./configs/nsdf/gleanerconfig.yaml -od ./generatedCode/implnet-nsdf/output  -td ./templates/v1   -d 7
 
-iow-generate:
-	cd ./src/implnet-iow && ./generator.sh
+nsdf-build:
+	podman build  --tag="docker.io/fils/dagster_nsdf:$(VERSION)"  --build-arg implnet=nsdf --file=./build/Dockerfile .
 
-iow-build:
-	podman build  --tag="docker.io/fils/dagster_iow:$(VERSION)"  --file=./build/Dockerfile.iow  .
+nsdf-push:
+	podman push docker.io/fils/dagster_nsdf:$(VERSION)
 
-iow-push:
-	podman push docker.io/fils/dagster_iow:$(VERSION) 
+# ----  ECO  ----
+
+eco-cfgbuild:
+	cd ./tooling/cfgBuilder/ECO && python cfgBuilder.py -s https://foo.us/sitemap.xml
 
 eco-clean:
-	cd ./src/implnet-eco && rm -rf ./output/*
+	cd ./generatedCode/implnet-eco && rm -rf ./output/*
 
 eco-generate:
-	cd ./src/implnet-eco && ./generator.sh
+	python pygen.py -cf ./configs/eco/gleanerconfig.yaml -od ./generatedCode/implnet-eco/output  -td ./templates/v1   -d 7
 
 eco-build:
-	podman build  --tag="docker.io/fils/dagster_eco:$(VERSION)"  --file=./build/Dockerfile.eco  .
+	podman build  --tag="docker.io/fils/dagster_eco:$(VERSION)"  --build-arg implnet=eco --file=./build/Dockerfile .
 
 eco-push:
 	podman push docker.io/fils/dagster_eco:$(VERSION)
 
-all-eco: eco-clean eco-generate eco-build eco-push
+# ----  OIH  ----
 
-all-oih: oih-generate oih-build oih-push
+oih-cfgbuild:
+	cd ./tooling/cfgBuilder/OIH && python cfgBuilder.py -s https://foo.us/sitemap.xml
 
-all-iow: iow-generate iow-build iow-push
+oih-clean:
+	cd ./generatedCode/implnet-oih && rm -rf ./output/*
+
+oih-generate:
+	python pygen.py -cf ./configs/oih/gleanerconfig.yaml -od ./generatedCode/implnet-oih/output  -td ./templates/v1   -d 7
+
+oih-build:
+	podman build  --tag="docker.io/fils/dagster_oih:$(VERSION)"  --build-arg implnet=oih --file=./build/Dockerfile .
+
+oih-push:
+	podman push docker.io/fils/dagster_oih:$(VERSION)
+
+# ----  IoW  ----
+
+iow-cfgbuild:
+	cd ./tooling/cfgBuilder/IoW && python cfgBuilder.py -s https://foo.us/sitemap.xml
+
+iow-clean:
+	cd ./generatedCode/implnet-iow && rm -rf ./output/*
+
+iow-generate:
+	python pygen.py -cf ./configs/iow/gleanerconfig.yaml -od ./generatedCode/implnet-iow/output  -td ./templates/v1   -d 7
+
+iow-build:
+	podman build  --tag="docker.io/fils/dagster_iow:$(VERSION)"  --build-arg implnet=iow --file=./build/Dockerfile .
+
+iow-push:
+	podman push docker.io/fils/dagster_iow:$(VERSION)
