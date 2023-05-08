@@ -7,7 +7,7 @@ The following is a description of the steps and requirements for
 building and deploying the docker based workflow implemented in 
 dagster.
 
-### Broad overview
+### Overview
 
 The image following provides a broad overview of the elements that 
 are loaded in to the Docker orchestration environment.  This is a very 
@@ -29,18 +29,6 @@ and removed by the Dagster workflow
 ![upper level](images/gleanerDagster.svg)
 
 
-
-### The asset file flow in more detail:
-
-* Creation of template files for the various operations, jobs and 
-schedules
-* Creation of the archive files that hold the configuration for the 
-jobs run 
-* Environment file for the values needed by the operations
-
-![flow](images/flow.svg)
-
-
 ### Template files
 
 The template files define the Dagster Ops, Jobs and Schedules.  From these
@@ -57,15 +45,23 @@ See:  [template](./implnets/src/implnet-example/templates)
 
 ## Steps to build and deploy
 
-1) move to the implementation directory
-2) After you make any needed edits to the template
-3) After you update the gleaner config file which will be used for the indexing runs
-4) generator.sh to build all the python code for Dagster based on the gleaner config file
-5) move up two directories and use the makefile to run
-6) increment VERSION
-7) make eco-build
-8) make eco-publish (notes on registering your container register with docker / podman)
-9) go to your orchestration env and use CLI or podman to load your new containers. 
+1) Move to the _implnets_ directory
+1) Place your gleanerconfig.yaml (use that exact name) in _confgis/NETWORK/gleanerconfig.yaml_
+   1) Note:  When doing your docker build, you will use this NETWORK name as a value in the command such as
+   ```bash
+   podman build  --tag="docker.io/fils/dagster_nsdf:$(VERSION)"  --build-arg implnet=nsdf --file=./build/Dockerfile 
+   ```
+1) Make any needed edits to the templates in directory _templates/v1/_ or make your own template set in that directory
+
+The command to build using the pygen.py program follows.  This is done from the standpoint of running in from the 
+implenet directory.
+
+```bash
+ python pygen.py -cf ./configs/nsdf/gleanerconfig.yaml -od ./generatedCode/implnet-nsdf/output  -td ./templates/v1   -d 7
+```
+
+1) This will generate the code to build a dagster instance from the combination of the templates and gelanerconfig.yaml.
+2) 
 
 
 ### Archive files
@@ -200,9 +196,6 @@ Then use:
 ```bash
 dagit -h ghost.lan -w workspace.yaml
 ```
-
-
-
 
 ## Building
 
