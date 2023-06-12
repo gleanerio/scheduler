@@ -3,17 +3,27 @@ version: "3.9"
 # $HOST
 # $PROJECT
 
+
 # not sure is a named external network works well with traffik, or if the label
 #            - "traefik.docker.network=traefik_proxy"
 # is even needed if the network is defined.
 
+# secrets not working... these become files, so not really working
+secrets:
+  MINIO_ROOT_ACCESS_KEY:
+    external: true
+  MINIO_ROOT_SECRET_KEY:
+    external: true
 networks:
   traefik_proxy:
     external: true
     name:   traefik_proxy
 services:
     dagster-dagit:
-        image: docker.io/fils/dagster_${PROJECT}:0.0.44
+        image: docker.io/fils/dagster_${PROJECT}:0.0.64
+        secrets:
+          - MINIO_ROOT_ACCESS_KEY
+          - MINIO_ROOT_SECRET_KEY
         environment:
             - PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python
             - PORTAINER_URL=${PORTAINER_URL}
@@ -31,6 +41,8 @@ services:
             - GLEANER_MINIO_BUCKET=${GLEANER_MINIO_BUCKET}
             - GLEANER_MINIO_KEY=${GLEANER_MINIO_KEY}
             - GLEANER_MINIO_SECRET=${GLEANER_MINIO_SECRET}
+#            - GLEANER_MINIO_KEY=/run/secrets/MINIO_ROOT_ACCESS_KEY
+#            - GLEANER_MINIO_SECRET=/run/secrets/MINIO_ROOT_SECRET_KEY
             - GLEANER_BASE=${GLEANER_BASE}
             - GLEANER_OBJECTS=${GLEANER_OBJECTS}
             - GLEANER_MEILI=${GLEANER_MEILI}
@@ -70,7 +82,10 @@ services:
               - "traefik.http.middlewares.sched-${PROJECT}.headers.accesscontrolmaxage=100"
               - "traefik.http.middlewares.sched-${PROJECT}.headers.addvaryheader=true"
     dagster-daemon:
-        image: docker.io/fils/dagster_${PROJECT}:0.0.44
+        image: docker.io/fils/dagster_${PROJECT}:0.0.64
+        secrets:
+          - MINIO_ROOT_ACCESS_KEY
+          - MINIO_ROOT_SECRET_KEY
         environment:
             - PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python
             - PORTAINER_URL=${PORTAINER_URL}
@@ -88,6 +103,8 @@ services:
             - GLEANER_MINIO_BUCKET=${GLEANER_MINIO_BUCKET}
             - GLEANER_MINIO_KEY=${GLEANER_MINIO_KEY}
             - GLEANER_MINIO_SECRET=${GLEANER_MINIO_SECRET}
+#            - GLEANER_MINIO_KEY=/run/secrets/MINIO_ROOT_ACCESS_KEY
+#            - GLEANER_MINIO_SECRET=/run/secrets/MINIO_ROOT_SECRET_KEY
             - GLEANER_BASE=${GLEANER_BASE}
             - GLEANER_OBJECTS=${GLEANER_OBJECTS}
             - GLEANER_MEILI=${GLEANER_MEILI}
