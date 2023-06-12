@@ -1,0 +1,113 @@
+version: "3"
+
+networks:
+  traefik_proxy:
+    external: true
+services:
+    dagster-dagit:
+        image: docker.io/fils/dagster_eco:0.0.44
+        environment:
+            - PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python
+            - PORTAINER_URL=${PORTAINER_URL}
+            - PORTAINER_KEY=${PORTAINER_KEY}
+            - GLEANERIO_GLEANER_IMAGE=${GLEANERIO_GLEANER_IMAGE}
+            - GLEANERIO_GLEANER_ARCHIVE_OBJECT=${GLEANERIO_GLEANER_ARCHIVE_OBJECT}
+            - GLEANERIO_GLEANER_ARCHIVE_PATH=${GLEANERIO_GLEANER_ARCHIVE_PATH}
+            - GLEANERIO_NABU_IMAGE=${GLEANERIO_NABU_IMAGE}
+            - GLEANERIO_NABU_ARCHIVE_OBJECT=${GLEANERIO_NABU_ARCHIVE_OBJECT}
+            - GLEANERIO_NABU_ARCHIVE_PATH=${GLEANERIO_NABU_ARCHIVE_PATH}
+            - GLEANERIO_LOG_PREFIX=${GLEANERIO_LOG_PREFIX}
+            - GLEANER_MINIO_URL=${GLEANER_MINIO_URL}
+            - GLEANER_MINIO_PORT=${GLEANER_MINIO_PORT}
+            - GLEANER_MINIO_SSL=${GLEANER_MINIO_SSL}
+            - GLEANER_MINIO_BUCKET=${GLEANER_MINIO_BUCKET}
+            - GLEANER_MINIO_KEY=${GLEANER_MINIO_KEY}
+            - GLEANER_MINIO_SECRET=${GLEANER_MINIO_SECRET}
+            - GLEANER_BASE=${GLEANER_BASE}
+            - GLEANER_OBJECTS=${GLEANER_OBJECTS}
+            - GLEANER_MEILI=${GLEANER_MEILI}
+            - GLEANER_GRAPH=${GLEANER_GRAPH}
+            - GLEANER_GRAPH_CONF=${GLEANER_GRAPH_CONF}
+            - GLEANER_TRAEFIK=${GLEANER_TRAEFIK}
+            - GLEANER_DOMAIN=${GLEANER_DOMAIN}
+            - GLEANER_OSS_DOMAIN=${GLEANER_OSS_DOMAIN}
+            - GLEANER_GRAPH_DOMAIN=${GLEANER_GRAPH_DOMAIN}
+            - GLEANER_WEB_DOMAIN=${GLEANER_WEB_DOMAIN}
+            - GLEANER_WEB2_DOMAIN=${GLEANER_WEB2_DOMAIN}
+            - GLEANER_INDEX_DOMAIN=${GLEANER_INDEX_DOMAIN}
+            - GLEANER_ADMIN_DOMAIN=${GLEANER_ADMIN_DOMAIN}
+        ports:
+            - 3000:3000
+        networks:
+          - traefik_proxy
+        depends_on:
+            - dagster-postgres
+        labels:
+              - "traefik.enable=true"
+              - "traefik.http.routers.sched.entrypoints=http"
+              - "traefik.http.routers.sched.priority=13"
+              - "traefik.http.routers.sched.rule=Host(`sched.geocodes-aws-dev.earthcube.org`)"
+              - "traefik.http.middlewares.sched-https-redirect.redirectscheme.scheme=https"
+              - "traefik.http.routers.sched.middlewares=sched-https-redirect"
+              - "traefik.http.routers.sched-secure.entrypoints=https"
+              - "traefik.http.routers.sched-secure.priority=12"
+              - "traefik.http.routers.sched-secure.rule=Host(`sched.geocodes-aws-dev.earthcube.org`)"
+              - "traefik.http.routers.sched-secure.tls=true"
+              - "traefik.http.routers.sched-secure.tls.certresolver=httpresolver"
+              - "traefik.http.routers.sched-secure.service=sched"
+              - "traefik.http.services.sched.loadbalancer.server.port=3000"
+              - "traefik.docker.network=traefik_proxy"
+              - "traefik.http.middlewares.sched.headers.accesscontrolallowmethods=GET,OPTIONS,POST"
+              - "traefik.http.middlewares.sched.headers.accesscontrolalloworigin=*"
+              - "traefik.http.middlewares.sched.headers.accesscontrolmaxage=100"
+              - "traefik.http.middlewares.sched.headers.addvaryheader=true"
+    dagster-daemon:
+        image: docker.io/fils/dagster_eco:0.0.44
+        environment:
+            - PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python
+            - PORTAINER_URL=${PORTAINER_URL}
+            - PORTAINER_KEY=${PORTAINER_KEY}
+            - GLEANERIO_GLEANER_IMAGE=${GLEANERIO_GLEANER_IMAGE}
+            - GLEANERIO_GLEANER_ARCHIVE_OBJECT=${GLEANERIO_GLEANER_ARCHIVE_OBJECT}
+            - GLEANERIO_GLEANER_ARCHIVE_PATH=${GLEANERIO_GLEANER_ARCHIVE_PATH}
+            - GLEANERIO_NABU_IMAGE=${GLEANERIO_NABU_IMAGE}
+            - GLEANERIO_NABU_ARCHIVE_OBJECT=${GLEANERIO_NABU_ARCHIVE_OBJECT}
+            - GLEANERIO_NABU_ARCHIVE_PATH=${GLEANERIO_NABU_ARCHIVE_PATH}
+            - GLEANERIO_LOG_PREFIX=${GLEANERIO_LOG_PREFIX}
+            - GLEANER_MINIO_URL=${GLEANER_MINIO_URL}
+            - GLEANER_MINIO_PORT=${GLEANER_MINIO_PORT}
+            - GLEANER_MINIO_SSL=${GLEANER_MINIO_SSL}
+            - GLEANER_MINIO_BUCKET=${GLEANER_MINIO_BUCKET}
+            - GLEANER_MINIO_KEY=${GLEANER_MINIO_KEY}
+            - GLEANER_MINIO_SECRET=${GLEANER_MINIO_SECRET}
+            - GLEANER_BASE=${GLEANER_BASE}
+            - GLEANER_OBJECTS=${GLEANER_OBJECTS}
+            - GLEANER_MEILI=${GLEANER_MEILI}
+            - GLEANER_GRAPH=${GLEANER_GRAPH}
+            - GLEANER_GRAPH_CONF=${GLEANER_GRAPH_CONF}
+            - GLEANER_TRAEFIK=${GLEANER_TRAEFIK}
+            - GLEANER_DOMAIN=${GLEANER_DOMAIN}
+            - GLEANER_OSS_DOMAIN=${GLEANER_OSS_DOMAIN}
+            - GLEANER_GRAPH_DOMAIN=${GLEANER_GRAPH_DOMAIN}
+            - GLEANER_WEB_DOMAIN=${GLEANER_WEB_DOMAIN}
+            - GLEANER_WEB2_DOMAIN=${GLEANER_WEB2_DOMAIN}
+            - GLEANER_INDEX_DOMAIN=${GLEANER_INDEX_DOMAIN}
+            - GLEANER_ADMIN_DOMAIN=${GLEANER_ADMIN_DOMAIN}
+        command: "dagster-daemon run"
+        depends_on:
+            - dagster-postgres
+        networks:
+            - traefik_proxy
+    dagster-postgres:
+        image: postgres:13.3
+        ports:
+            - 5432:5432
+        environment:
+            - POSTGRES_PASSWORD=secret
+        volumes:
+            - dagster-postgres:/var/lib/postgresql/data
+        networks:
+           - traefik_proxy
+volumes:
+    dagster-postgres:
+        driver: local

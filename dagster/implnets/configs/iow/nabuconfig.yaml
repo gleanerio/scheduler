@@ -1,0 +1,24 @@
+sparql:
+  endpoint: http://10.128.0.41:7200/repositories/iow/sparql
+  endpointMethod: PUT
+  contentType: application/n-quads
+  authenticate: false
+context:
+    cache: true
+    strict: true
+contextmaps:
+  - prefix: "https://schema.org/"
+    file: "/nabu/assets/schemaorg-current-https.jsonld"  # wget http://schema.org/docs/jsonldcontext.jsonld
+  - prefix: "http://schema.org/"
+    file: "/nabu/assets/schemaorg-current-http.jsonld"  # wget http://schema.org/docs/jsonldcontext.jsonld
+objects:
+  prefix:
+    - demo
+  domain: us-east-1
+minio:
+  bucket: iow
+  address: 10.128.0.41
+  port: '9001'
+  accesskey:
+  secretkey:
+  useSSL: false
