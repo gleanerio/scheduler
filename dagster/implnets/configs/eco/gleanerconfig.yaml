@@ -22,8 +22,8 @@ minio:
   address:
   port:
   ssl:
-  accesskey:
-  secretkey:
+  accessKey:
+  secretKey:
   bucket:
 sources:
 - sourcetype: sitemap

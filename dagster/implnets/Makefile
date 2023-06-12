@@ -2,22 +2,6 @@
 .SHELLFLAGS += -e
 VERSION :=`cat VERSION`
 
-# ----  NSDF  ----
-
-nsdf-cfgbuild:
-	cd ./tooling/cfgBuilder/NSDF && python cfgBuilder.py -s https://geoconnex.us/sitemap.xml
-
-nsdf-clean:
-	cd ./generatedCode/implnet-nsdf && rm -rf ./output/*
-
-nsdf-generate:
-	python pygen.py -cf ./configs/nsdf/gleanerconfig.yaml -od ./generatedCode/implnet-nsdf/output  -td ./templates/v1   -d 7
-
-nsdf-build:
-	podman build  --tag="docker.io/fils/dagster_nsdf:$(VERSION)"  --build-arg implnet=nsdf --file=./build/Dockerfile .
-
-nsdf-push:
-	podman push docker.io/fils/dagster_nsdf:$(VERSION)
 
 # ----  ECO  ----
 
@@ -35,6 +19,24 @@ eco-build:
 
 eco-push:
 	podman push docker.io/fils/dagster_eco:$(VERSION)
+
+
+# ----  NSDF  ----
+
+nsdf-cfgbuild:
+	cd ./tooling/cfgBuilder/NSDF && python cfgBuilder.py -s https://geoconnex.us/sitemap.xml
+
+nsdf-clean:
+	cd ./generatedCode/implnet-nsdf && rm -rf ./output/*
+
+nsdf-generate:
+	python pygen.py -cf ./configs/nsdf/gleanerconfig.yaml -od ./generatedCode/implnet-nsdf/output  -td ./templates/v1   -d 7
+
+nsdf-build:
+	podman build  --tag="docker.io/fils/dagster_nsdf:$(VERSION)"  --build-arg implnet=nsdf --file=./build/Dockerfile .
+
+nsdf-push:
+	podman push docker.io/fils/dagster_nsdf:$(VERSION)
 
 # ----  OIH  ----
 
@@ -56,13 +58,13 @@ oih-push:
 # ----  IoW  ----
 
 iow-cfgbuild:
-	cd ./tooling/cfgBuilder/IoW && python cfgBuilder.py -s https://foo.us/sitemap.xml
+	cd ./tooling/cfgBuilder/NSDF && python cfgBuilder.py -s https://geoconnex.us/sitemap.xml
 
 iow-clean:
 	cd ./generatedCode/implnet-iow && rm -rf ./output/*
 
 iow-generate:
-	python pygen.py -cf ./configs/iow/gleanerconfig.yaml -od ./generatedCode/implnet-iow/output  -td ./templates/v1   -d 7
+	python pygen.py -cf ./configs/iow/gleanerconfig.yaml -od ./generatedCode/implnet-iow/output  -td ./templates/v1   -d 21
 
 iow-build:
 	podman build  --tag="docker.io/fils/dagster_iow:$(VERSION)"  --build-arg implnet=iow --file=./build/Dockerfile .
