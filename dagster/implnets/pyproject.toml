@@ -1,7 +1,6 @@
 [project]
 name = "GleanerIO Scheduler"
 version = "0.0.67"
-dynamic = ["dependencies"]
 description = "Tools for harvesting and loading on a schedule from gleaner configurations"
 readme =  "README.md"
 
