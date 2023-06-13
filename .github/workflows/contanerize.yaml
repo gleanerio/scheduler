@@ -35,10 +35,10 @@ jobs:
 #          flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
 #      - name: Build package
 #        run: python -m build
-      - name: Build tooling
-        run: | 
-          cd ./tooling/cfgBuilder/${{ matrix.project }}
-          python cfgBuilder.py -s https://foo.us/sitemap.xml
+#      - name: Build tooling
+#        run: |
+#          cd ./tooling/cfgBuilder/${{ matrix.project }}
+#          python cfgBuilder.py -s https://foo.us/sitemap.xml
       - name: Generate
         run: |
             python pygen.py -cf ./configs/${{ matrix.project }}/gleanerconfig.yaml -od ./generatedCode/implnet-${{ matrix.project }}/output  -td ./templates/v1   -d 7
