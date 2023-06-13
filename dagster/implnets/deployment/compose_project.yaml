@@ -20,7 +20,7 @@ networks:
     name:   traefik_proxy
 services:
     dagster-dagit:
-        image: docker.io/fils/dagster_${PROJECT}:0.0.64
+        image: docker.io/nsfearthcube/dagster-${PROJECT}:latest
         secrets:
           - MINIO_ROOT_ACCESS_KEY
           - MINIO_ROOT_SECRET_KEY
@@ -82,7 +82,7 @@ services:
               - "traefik.http.middlewares.sched-${PROJECT}.headers.accesscontrolmaxage=100"
               - "traefik.http.middlewares.sched-${PROJECT}.headers.addvaryheader=true"
     dagster-daemon:
-        image: docker.io/fils/dagster_${PROJECT}:0.0.64
+        image: docker.io/nsfearthcube/dagster-${PROJECT}:latest
         secrets:
           - MINIO_ROOT_ACCESS_KEY
           - MINIO_ROOT_SECRET_KEY

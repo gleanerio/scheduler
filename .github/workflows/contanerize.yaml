@@ -1,6 +1,10 @@
 name: Dockerize  Dagster
 on:
   push:
+    branches:
+      - "**"
+    tags:
+      - "v*.*.*"
 
 # https://github.com/marketplace/actions/publish-docker
 # https://github.com/docker/build-push-action
@@ -13,7 +17,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        project: [ "eco" ]
+        project: [ "eco", "iow", "oih" ]
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v3
