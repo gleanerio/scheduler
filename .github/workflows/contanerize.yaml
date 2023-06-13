@@ -6,7 +6,7 @@ on:
 # https://github.com/docker/build-push-action
 defaults:
   run:
-    working-directory: dagster/implnets
+    working-directory: .
 jobs:
   deploy:
     name: Dockerize  Scheduler for Project
@@ -41,7 +41,8 @@ jobs:
 #          python cfgBuilder.py -s https://foo.us/sitemap.xml
       - name: Generate
         run: |
-            python pygen.py -cf ./configs/${{ matrix.project }}/gleanerconfig.yaml -od ./generatedCode/implnet-${{ matrix.project }}/output  -td ./templates/v1   -d 7
+          cd dagster/implnets
+          python pygen.py -cf ./configs/${{ matrix.project }}/gleanerconfig.yaml -od ./generatedCode/implnet-${{ matrix.project }}/output  -td ./templates/v1   -d 7
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
       - name: Set up Docker Buildx
