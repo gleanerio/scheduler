@@ -35,14 +35,12 @@ jobs:
       - name: Build package
         run: python -m build
       - name: Build tooling
-        with:
-          project: ${{ matrix.project }}
         run: | 
           cd ./tooling/cfgBuilder/${{ matrix.project }}
           python cfgBuilder.py -s https://foo.us/sitemap.xml
       - name: Generate
         run: |
-            python pygen.py -cf ./configs/${PROJECT}/gleanerconfig.yaml -od ./generatedCode/implnet-${{ matrix.project }}/output  -td ./templates/v1   -d 7
+            python pygen.py -cf ./configs/${{ matrix.project }}/gleanerconfig.yaml -od ./generatedCode/implnet-${{ matrix.project }}/output  -td ./templates/v1   -d 7
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
       - name: Set up Docker Buildx
