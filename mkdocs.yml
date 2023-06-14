@@ -37,4 +37,6 @@ plugins:
 nav:
   - Gleaner IO Scheduler:
     - Dagster: README.md
+    - Quick: quick.md
+    - Add Containers:  add_containers.md
 
