@@ -82,12 +82,12 @@ jobs:
         id: docker_build
         uses: docker/build-push-action@v4
         with:
+          context:  ./dagster/implnets
           push: true
           build-args:
             implnet=${{ matrix.project }}
           file: ./build/Dockerfile
           #context:  "{{defaultContext}}:dagster/implnets"
-          context:  .
           tags: ${{ steps.meta.outputs.tags }}
 #          tags: nsfearthcube/ec_facets_client:latest
           labels: ${{ steps.meta.outputs.labels }}
