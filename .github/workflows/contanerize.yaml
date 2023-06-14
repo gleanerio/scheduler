@@ -19,10 +19,29 @@ jobs:
       matrix:
         project: [ "eco", "iow", "oih" ]
     steps:
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+      - name: Login to DockerHub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@v4
+        with:
+          images: nsfearthcube/dagster-${{ matrix.project }}
+          flavor: |
+            latest=true
+          tags: |
+            type=ref,event=tag
+            type=ref,event=branch
+            type=semver,pattern={{version}}
+            type=sha
       - name: Checkout Repo
         uses: actions/checkout@v3
-        with:
-          ref: ${{ github.ref }}
       - name: Set up Python 3.10
         uses: actions/setup-python@v4
         with:
@@ -52,27 +71,7 @@ jobs:
       - name: Generate
         run: |
           python pygen.py -cf ./configs/${{ matrix.project }}/gleanerconfig.yaml -od ./generatedCode/implnet-${{ matrix.project }}/output  -td ./templates/v1   -d 7
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v2
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
-      - name: Login to DockerHub
-        uses: docker/login-action@v2
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-      - name: Extract metadata (tags, labels) for Docker
-        id: meta
-        uses: docker/metadata-action@v4
-        with:
-          images: nsfearthcube/dagster-${{ matrix.project }}
-          flavor: |
-            latest=true
-          tags: |
-            type=ref,event=tag
-            type=ref,event=branch
-            type=semver,pattern={{version}}
-            type=sha
+
       - name: Build and push
         id: docker_build
         uses: docker/build-push-action@v4
