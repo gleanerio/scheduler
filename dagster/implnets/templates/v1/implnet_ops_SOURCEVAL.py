@@ -47,7 +47,8 @@ def load_data(file_or_url):
 
 def s3reader(object):
     server =  _pythonMinioUrl(os.environ.get('GLEANER_MINIO_URL')) + ":" + os.environ.get('GLEANER_MINIO_PORT')
-    get_dagster_logger().info(f"S3 URL    : {str(os.environ.get('GLEANER_MINIO_PYTHON_URL'))}")
+    get_dagster_logger().info(f"S3 URL    : {str(os.environ.get('GLEANER_MINIO_URL'))}")
+    get_dagster_logger().info(f"S3 PYTHON SERVER : {server}")
     get_dagster_logger().info(f"S3 PORT   : {str(os.environ.get('GLEANER_MINIO_PORT'))}")
     # get_dagster_logger().info(f"S3 read started : {str(os.environ.get('GLEANER_MINIO_KEY'))}")
     # get_dagster_logger().info(f"S3 read started : {str(os.environ.get('GLEANER_MINIO_SECRET'))}")
