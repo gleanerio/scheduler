@@ -41,16 +41,16 @@ jobs:
             type=ref,event=branch
             type=semver,pattern={{version}}
             type=sha
-      - name: Checkout Repo
-        uses: actions/checkout@v3
-      - name: Set up Python 3.10
-        uses: actions/setup-python@v4
-        with:
-          python-version:  '3.10'
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+#      - name: Checkout Repo
+#        uses: actions/checkout@v3
+#      - name: Set up Python 3.10
+#        uses: actions/setup-python@v4
+#        with:
+#          python-version:  '3.10'
+#      - name: Install dependencies
+#        run: |
+#          python -m pip install --upgrade pip
+#          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 # long version with lint,
 #        run: |
 #          python -m pip install --upgrade pip
@@ -69,14 +69,14 @@ jobs:
 #        run: |
 #          cd ./tooling/cfgBuilder/${{ matrix.project }}
 #          python cfgBuilder.py -s https://foo.us/sitemap.xml
-      - name: Generate
-        working-directory:  dagster/implnets
-        run: |
-          python pygen.py -cf ./configs/${{ matrix.project }}/gleanerconfig.yaml -od ./generatedDocker/implnet-${{ matrix.project }}/output  -td ./templates/v1   -d 7
-      - name: check
-        working-directory:  dagster/implnets
-        run: |
-           cat ./generatedCode/implnet-${{ matrix.project }}/output/ops/implnet_ops_amgeo.py
+#      - name: Generate
+#        working-directory:  dagster/implnets
+#        run: |
+#          python pygen.py -cf ./configs/${{ matrix.project }}/gleanerconfig.yaml -od ../../generatedDocker/implnet-${{ matrix.project }}/output  -td ./templates/v1   -d 7
+#      - name: check
+#        working-directory:  dagster/implnets
+#        run: |
+#           cat ./generatedCode/implnet-${{ matrix.project }}/output/ops/implnet_ops_amgeo.py
 
       - name: Build and push
         id: docker_build
