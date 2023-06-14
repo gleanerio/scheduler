@@ -1,4 +1,7 @@
 name: Dockerize  Dagster
+# this will build based on what is committed to the branch
+# dockerbuildandpush pulls the repo.
+# overwrites any files created.
 on:
   push:
     branches:
@@ -17,8 +20,8 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        project: [ "eco" ]
-      #  project: [ "eco", "iow", "oih" ]
+       # project: [ "eco" ]
+        project: [ "eco", "iow", "oih" ]
     steps:
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
@@ -91,7 +94,6 @@ jobs:
           #file: ./dagster/implnets/build/Dockerfile
           file: ./build/Dockerfile_ci
           context:  "{{defaultContext}}:dagster/implnets"
-          no-cache: true
           tags: ${{ steps.meta.outputs.tags }}
 #          tags: nsfearthcube/ec_facets_client:latest
           labels: ${{ steps.meta.outputs.labels }}
