@@ -17,7 +17,8 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        project: [ "eco", "iow", "oih" ]
+        project: [ "eco" ]
+      #  project: [ "eco", "iow", "oih" ]
     steps:
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
@@ -71,9 +72,10 @@ jobs:
       - name: Generate
         working-directory:  dagster/implnets
         run: |
-          ls -l ./generatedCode/implnet-${{ matrix.project }}/output
+          cat ./templates/v1/implnet_ops_SOURCEVAL.py
+          cat ./generatedCode/implnet-${{ matrix.project }}/output/ops/implnet_ops_amgeo.py
           python pygen.py -cf ./configs/${{ matrix.project }}/gleanerconfig.yaml -od ./generatedCode/implnet-${{ matrix.project }}/output  -td ./templates/v1   -d 7
-          ls -l ./generatedCode/implnet-${{ matrix.project }}/output
+          cat ./generatedCode/implnet-${{ matrix.project }}/output/ops/implnet_ops_amgeo.py
       - name: Build and push
         id: docker_build
         uses: docker/build-push-action@v4
