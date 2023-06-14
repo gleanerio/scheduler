@@ -3,9 +3,9 @@ context:
   strict: true
 contextmaps:
   - prefix: "https://schema.org/"
-    file: "./assets/schemaorg-current-https.jsonld"  # wget http://schema.org/docs/jsonldcontext.jsonld
+    file: "./jsonldcontext.json"  # wget http://schema.org/docs/jsonldcontext.jsonld
   - prefix: "http://schema.org/"
-    file: "./assets/schemaorg-current-https.jsonld"  # wget http://schema.org/docs/jsonldcontext.jsonld
+    file: "./jsonldcontext.json"  # wget http://schema.org/docs/jsonldcontext.jsonld
 gleaner:
   mill: true
   runid: runX
