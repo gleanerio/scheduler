@@ -174,13 +174,17 @@ def gleanerio(mode, source):
     req.add_header('X-API-Key', APIKEY)
     req.add_header('content-type', 'application/json')
     req.add_header('accept', 'application/json')
-    r = request.urlopen(req)
-    c = r.read()
-    d = json.loads(c)
-    cid = d['Id']
+    try:
+        r = request.urlopen(req)
+        c = r.read()
+        d = json.loads(c)
+        cid = d['Id']
+        print(r.status)
+        get_dagster_logger().info(f"Create: {str(r.status)}")
+    except ex:
+        print("failed to create container: ", ex)
+        get_dagster_logger().info(f"Create Failed: {str(ex)}")
 
-    print(r.status)
-    get_dagster_logger().info(f"Create: {str(r.status)}")
 
     # print(cid)
 
