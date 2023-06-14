@@ -185,10 +185,10 @@ def gleanerio(mode, source):
         cid = d['Id']
         print(r.status)
         get_dagster_logger().info(f"Create: {str(r.status)}")
-    except ex:
-        print("failed to create container: ", ex)
-        get_dagster_logger().info(f"Create Failed: {str(ex)}")
-
+    except HTTPError as err:
+        print("failed to create container: ", err)
+        get_dagster_logger().info(f"Create Failed: {str(err)}")
+        raise err
 
     # print(cid)
 
