@@ -28,6 +28,7 @@ def _pythonMinioUrl(url):
         PYTHON_MINIO_URL = "s3.amazonaws.com"
     else:
         PYTHON_MINIO_URL = url
+    return PYTHON_MINIO_URL
 
 def read_file_bytestream(image_path):
     data = open(image_path, 'rb').read()
