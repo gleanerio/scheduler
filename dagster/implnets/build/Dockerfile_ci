@@ -11,7 +11,8 @@ RUN mkdir -p /usr/src/app/output
 #COPY ./generatedCode/implnet-${implnet}/output output
 COPY dagster.yaml /usr/src/app/
 
-RUN pip install -r requirements.txt && python pygen.py -cf ./gleanerconfig.yaml -od /usr/src/app/output  -td ./templates/v1   -d 7
+RUN pip install -r requirements.txt
+RUN python pygen.py -cf ./gleanerconfig.yaml -od /usr/src/app/output  -td ./templates/v1   -d 7
 
 
 
