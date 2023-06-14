@@ -11,10 +11,12 @@ ENV DAGSTER_HOME=/usr/src/app
 
 # Install dependencies
 COPY ./requirements.txt .
+COPY /configs/${implnet}/gleanerconfig.yaml ./gleanerconfig.yaml
+
 RUN pip install -r requirements.txt
-RUN python pygen.py -cf ./configs/${implnet}/gleanerconfig.yaml -od ./generatedCode/implnet-${implnet}/output  -td ./templates/v1   -d 7
+RUN python pygen.py -cf ./configs/${implnet}/gleanerconfig.yaml -od ./generatedCode/output  -td ./templates/v1   -d 7
 # Copy source code
 COPY ./dagster.yaml .
-COPY ./generatedCode/implnet-${implnet}/output .
+COPY ./generatedCode/output .
 
 CMD ["dagit", "-w", "workspace.yaml", "-h", "0.0.0.0", "-p", "3000"]
