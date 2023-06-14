@@ -17,6 +17,7 @@ URL = os.environ.get('PORTAINER_URL')
 APIKEY = os.environ.get('PORTAINER_KEY')
 
 MINIO_URL = os.environ.get('GLEANER_MINIO_URL')
+PYTHON_MINIO_URL = os.environ.get('GLEANER_MINIO_PYTHON_URL')
 MINIO_PORT = os.environ.get('GLEANER_MINIO_PORT')
 MINIO_SSL = os.environ.get('GLEANER_MINIO_SSL')
 MINIO_SECRET = os.environ.get('GLEANER_MINIO_SECRET')
@@ -40,8 +41,8 @@ def load_data(file_or_url):
 
 
 def s3reader(object):
-    server = os.environ.get('GLEANER_MINIO_URL') + ":" + os.environ.get('GLEANER_MINIO_PORT')
-    get_dagster_logger().info(f"S3 URL    : {str(os.environ.get('GLEANER_MINIO_URL'))}")
+    server = os.environ.get('GLEANER_MINIO_PYTHON_URL') + ":" + os.environ.get('GLEANER_MINIO_PORT')
+    get_dagster_logger().info(f"S3 URL    : {str(os.environ.get('GLEANER_MINIO_PYTHON_URL'))}")
     get_dagster_logger().info(f"S3 PORT   : {str(os.environ.get('GLEANER_MINIO_PORT'))}")
     # get_dagster_logger().info(f"S3 read started : {str(os.environ.get('GLEANER_MINIO_KEY'))}")
     # get_dagster_logger().info(f"S3 read started : {str(os.environ.get('GLEANER_MINIO_SECRET'))}")
@@ -63,11 +64,20 @@ def s3reader(object):
 
 
 def s3loader(data, name):
-    server = os.environ.get('GLEANER_MINIO_URL') + ":" + os.environ.get('GLEANER_MINIO_PORT')
+    secure= bool(distutils.util.strtobool(os.environ.get('GLEANER_MINIO_SSL')))
+    if (os.environ.get('GLEANER_MINIO_PORT') and os.environ.get('GLEANER_MINIO_PORT') == 80
+             and secure == False):
+        server = os.environ.get('GLEANER_MINIO_PYTHON_URL')
+    elif (os.environ.get('GLEANER_MINIO_PORT') and os.environ.get('GLEANER_MINIO_PORT') == 443
+                and secure == True):
+        server = os.environ.get('GLEANER_MINIO_PYTHON_URL')
+    else:
+        # it's not on a normal port
+        server = f"{os.environ.get('GLEANER_MINIO_PYTHON_URL')}:{os.environ.get('GLEANER_MINIO_PORT')}"
     client = Minio(
         server,
-        # secure=True,
-        secure = bool(distutils.util.strtobool(os.environ.get('GLEANER_MINIO_SSL'))),
+        secure=secure,
+        #secure = bool(distutils.util.strtobool(os.environ.get('GLEANER_MINIO_SSL'))),
         access_key=os.environ.get('GLEANER_MINIO_KEY'),
         secret_key=os.environ.get('GLEANER_MINIO_SECRET'),
     )
