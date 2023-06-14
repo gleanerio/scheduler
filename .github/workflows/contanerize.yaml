@@ -86,7 +86,8 @@ jobs:
           build-args:
             implnet=${{ matrix.project }}
           file: ./build/Dockerfile
-          context:  "{{defaultContext}}:dagster/implnets"
+          #context:  "{{defaultContext}}:dagster/implnets"
+          context:  "./dagster/implnets"
           tags: ${{ steps.meta.outputs.tags }}
 #          tags: nsfearthcube/ec_facets_client:latest
           labels: ${{ steps.meta.outputs.labels }}
