@@ -14,7 +14,7 @@ RUN pip install -r requirements.txt && python pygen.py -cf ./gleanerconfig.yaml 
 
 # Copy source code
 COPY dagster.yaml /usr/src/app/
-ADD ./output/ /usr/src/app/
+COPY output/ /usr/src/app/
 
 # Change working directory
 WORKDIR /usr/src/app
