@@ -7,7 +7,7 @@ ARG implnet
 WORKDIR ./dagster/implnets
 COPY ./requirements.txt .
 COPY ./configs/${implnet}/gleanerconfig.yaml gleanerconfig.yaml
-RUN mkdir /usr/src/app/output
+RUN mkdir -p /usr/src/app/output
 #COPY ./generatedCode/implnet-${implnet}/output output
 COPY dagster.yaml /usr/src/app/
 
