@@ -71,8 +71,9 @@ jobs:
       - name: Generate
         working-directory:  dagster/implnets
         run: |
+          ls -l ./generatedCode/implnet-${{ matrix.project }}/output
           python pygen.py -cf ./configs/${{ matrix.project }}/gleanerconfig.yaml -od ./generatedCode/implnet-${{ matrix.project }}/output  -td ./templates/v1   -d 7
-
+          ls -l ./generatedCode/implnet-${{ matrix.project }}/output
       - name: Build and push
         id: docker_build
         uses: docker/build-push-action@v4
