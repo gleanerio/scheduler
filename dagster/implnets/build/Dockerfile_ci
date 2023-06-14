@@ -12,7 +12,7 @@ ENV DAGSTER_HOME=/usr/src/app
 # Install dependencies
 COPY ./requirements.txt .
 RUN pip install -r requirements.txt
-RUN python pygen.py -cf ./configs/${{ matrix.project }}/gleanerconfig.yaml -od ../../generatedDocker/implnet-${{ matrix.project }}/output  -td ./templates/v1   -d 7
+RUN python pygen.py -cf ./configs/${{ matrix.project }}/gleanerconfig.yaml -od ./generatedDocker/implnet-${{ matrix.project }}/output  -td ./templates/v1   -d 7
 # Copy source code
 COPY ./dagster.yaml .
 COPY ./generatedDocker/implnet-${implnet}/output .
