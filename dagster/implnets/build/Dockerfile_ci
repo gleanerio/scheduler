@@ -4,12 +4,7 @@ FROM python:3.10-slim
 # docker buildandpush pulls the repo, so we need to put the code at a different location
 
 ARG implnet
-
-# Change working directory
-WORKDIR /usr/src/app
-ENV DAGSTER_HOME=/usr/src/app
-
-# Install dependencies
+WORKDIR dagster/implnets
 COPY ./requirements.txt .
 COPY ./configs/${implnet}/gleanerconfig.yaml gleanerconfig.yaml
 COPY ./generatedCode/implnet-${implnet}/output output
@@ -17,7 +12,12 @@ COPY ./generatedCode/implnet-${implnet}/output output
 RUN pip install -r requirements.txt
 RUN python pygen.py -cf gleanerconfig.yaml -od output  -td ./templates/v1   -d 7
 # Copy source code
-COPY ./dagster.yaml .
-COPY output .
+COPY dagster.yaml /usr/src/app/
+COPY output /usr/src/app/output
+
+# Change working directory
+WORKDIR /usr/src/app
+ENV DAGSTER_HOME=/usr/src/app
+
 
 CMD ["dagit", "-w", "workspace.yaml", "-h", "0.0.0.0", "-p", "3000"]
