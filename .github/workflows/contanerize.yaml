@@ -72,7 +72,7 @@ jobs:
       - name: Generate
         working-directory:  dagster/implnets
         run: |
-          python pygen.py -cf ./configs/${{ matrix.project }}/gleanerconfig.yaml -od ./generatedCode/implnet-${{ matrix.project }}/output  -td ./templates/v1   -d 7
+          python pygen.py -cf ./configs/${{ matrix.project }}/gleanerconfig.yaml -od ./generatedDocker/implnet-${{ matrix.project }}/output  -td ./templates/v1   -d 7
       - name: check
         working-directory:  dagster/implnets
         run: |
@@ -89,7 +89,7 @@ jobs:
           build-args:
             implnet=${{ matrix.project }}
           #file: ./dagster/implnets/build/Dockerfile
-          file: ./build/Dockerfile
+          file: ./build/Dockerfile_ci
           context:  "{{defaultContext}}:dagster/implnets"
           cache-from: type=local,src={{defaultContext}}
           tags: ${{ steps.meta.outputs.tags }}
