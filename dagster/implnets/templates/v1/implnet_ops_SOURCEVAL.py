@@ -23,10 +23,12 @@ MINIO_SSL = os.environ.get('GLEANER_MINIO_SSL')
 MINIO_SECRET = os.environ.get('GLEANER_MINIO_SECRET')
 MINIO_KEY = os.environ.get('GLEANER_MINIO_KEY')
 MINIO_BUCKET = os.environ.get('GLEANER_MINIO_BUCKET')
-if (MINIO_URL.endswith(".amazonaws.com")):
-    PYTHON_MINIO_URL = "s3.amazonaws.com"
-else:
-    PYTHON_MINIO_URL = MINIO_URL
+def _pythonMinioUrl(url):
+    if (url.endswith(".amazonaws.com")):
+        PYTHON_MINIO_URL = "s3.amazonaws.com"
+    else:
+        PYTHON_MINIO_URL = url
+
 def read_file_bytestream(image_path):
     data = open(image_path, 'rb').read()
     return data
@@ -43,7 +45,8 @@ def load_data(file_or_url):
 
 
 def s3reader(object):
-    server = PYTHON_MINIO_URL + ":" + os.environ.get('GLEANER_MINIO_PORT')
+    get_dagster_logger().info(f"S3 read error : {str(err)}")
+    server =  _pythonMinioUrl(os.environ.get('GLEANER_MINIO_URL')) + ":" + os.environ.get('GLEANER_MINIO_PORT')
     get_dagster_logger().info(f"S3 URL    : {str(os.environ.get('GLEANER_MINIO_PYTHON_URL'))}")
     get_dagster_logger().info(f"S3 PORT   : {str(os.environ.get('GLEANER_MINIO_PORT'))}")
     # get_dagster_logger().info(f"S3 read started : {str(os.environ.get('GLEANER_MINIO_KEY'))}")
@@ -69,13 +72,14 @@ def s3loader(data, name):
     secure= bool(distutils.util.strtobool(os.environ.get('GLEANER_MINIO_SSL')))
     if (os.environ.get('GLEANER_MINIO_PORT') and os.environ.get('GLEANER_MINIO_PORT') == 80
              and secure == False):
-        server = PYTHON_MINIO_URLL
+        server = _pythonMinioUrl(os.environ.get('GLEANER_MINIO_URL'))
     elif (os.environ.get('GLEANER_MINIO_PORT') and os.environ.get('GLEANER_MINIO_PORT') == 443
                 and secure == True):
-        server = PYTHON_MINIO_URL
+        server = _pythonMinioUrl(os.environ.get('GLEANER_MINIO_URL'))
     else:
         # it's not on a normal port
-        server = f"{PYTHON_MINIO_URL}:{os.environ.get('GLEANER_MINIO_PORT')}"
+        server = f"{_pythonMinioUrl(os.environ.get('GLEANER_MINIO_URL'))}:{os.environ.get('GLEANER_MINIO_PORT')}"
+
     client = Minio(
         server,
         secure=secure,
