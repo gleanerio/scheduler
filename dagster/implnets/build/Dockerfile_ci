@@ -4,7 +4,7 @@ FROM python:3.10-slim
 # docker buildandpush pulls the repo, so we need to put the code at a different location
 
 ARG implnet
-WORKDIR dagster/implnets
+WORKDIR ./dagster/implnets
 COPY ./requirements.txt .
 COPY ./configs/${implnet}/gleanerconfig.yaml gleanerconfig.yaml
 RUN mkdir output
