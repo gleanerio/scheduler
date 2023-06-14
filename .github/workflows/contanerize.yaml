@@ -91,7 +91,7 @@ jobs:
           #file: ./dagster/implnets/build/Dockerfile
           file: ./build/Dockerfile
           context:  "{{defaultContext}}:dagster/implnets"
-          cache-from: type=local
+          cache-from: type=local,src={{defaultContext}}
           tags: ${{ steps.meta.outputs.tags }}
 #          tags: nsfearthcube/ec_facets_client:latest
           labels: ${{ steps.meta.outputs.labels }}
