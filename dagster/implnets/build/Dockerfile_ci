@@ -8,13 +8,13 @@ WORKDIR dagster/implnets
 COPY ./requirements.txt .
 COPY ./configs/${implnet}/gleanerconfig.yaml gleanerconfig.yaml
 RUN mkdir output
-COPY ./generatedCode/implnet-${implnet}/output output
+#COPY ./generatedCode/implnet-${implnet}/output output
 
 RUN pip install -r requirements.txt
 RUN python pygen.py -cf ./gleanerconfig.yaml -od ./output  -td ./templates/v1   -d 7
 # Copy source code
 COPY dagster.yaml /usr/src/app/
-COPY output /usr/src/app/output
+COPY ./output /usr/src/app/output
 
 # Change working directory
 WORKDIR /usr/src/app
