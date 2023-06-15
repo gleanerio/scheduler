@@ -3,9 +3,11 @@ context:
   strict: true
 contextmaps:
   - prefix: "https://schema.org/"
-    file: "./assets/schemaorg-current-https.jsonld"  # wget http://schema.org/docs/jsonldcontext.jsonld
+#    file: "./assets/schemaorg-current-https.jsonld"  # wget http://schema.org/docs/jsonldcontext.jsonld
+    file: "./jsonldcontext.json"  # wget http://schema.org/docs/jsonldcontext.jsonld
   - prefix: "http://schema.org/"
-    file: "./assets/schemaorg-current-https.jsonld"  # wget http://schema.org/docs/jsonldcontext.jsonld
+#    file: "./assets/schemaorg-current-https.jsonld"  # wget http://schema.org/docs/jsonldcontext.jsonld
+    file: "./jsonldcontext.json"  # wget http://schema.org/docs/jsonldcontext.jsonld
 gleaner:
   mill: true
   runid: runX
@@ -13,7 +15,9 @@ gleaner:
 summoner:
     after: ""
     delay:  # milliseconds (1000 = 1 second) to delay between calls (will FORCE threads to 1)
-    headless: http://geocodes-dev.earthcube.org:9222
+    # will headless, the name of the container "service" work
+    headless: http://headless:9222
+    #headless: http://localhost:9222
     mode: full
     threads: 5
 millers:

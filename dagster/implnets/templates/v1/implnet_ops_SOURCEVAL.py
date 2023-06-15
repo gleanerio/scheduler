@@ -17,12 +17,18 @@ URL = os.environ.get('PORTAINER_URL')
 APIKEY = os.environ.get('PORTAINER_KEY')
 
 MINIO_URL = os.environ.get('GLEANER_MINIO_URL')
+
 MINIO_PORT = os.environ.get('GLEANER_MINIO_PORT')
 MINIO_SSL = os.environ.get('GLEANER_MINIO_SSL')
 MINIO_SECRET = os.environ.get('GLEANER_MINIO_SECRET')
 MINIO_KEY = os.environ.get('GLEANER_MINIO_KEY')
 MINIO_BUCKET = os.environ.get('GLEANER_MINIO_BUCKET')
-
+def _pythonMinioUrl(url):
+    if (url.endswith(".amazonaws.com")):
+        PYTHON_MINIO_URL = "s3.amazonaws.com"
+    else:
+        PYTHON_MINIO_URL = url
+    return PYTHON_MINIO_URL
 
 def read_file_bytestream(image_path):
     data = open(image_path, 'rb').read()
@@ -40,8 +46,9 @@ def load_data(file_or_url):
 
 
 def s3reader(object):
-    server = os.environ.get('GLEANER_MINIO_URL') + ":" + os.environ.get('GLEANER_MINIO_PORT')
+    server =  _pythonMinioUrl(os.environ.get('GLEANER_MINIO_URL')) + ":" + os.environ.get('GLEANER_MINIO_PORT')
     get_dagster_logger().info(f"S3 URL    : {str(os.environ.get('GLEANER_MINIO_URL'))}")
+    get_dagster_logger().info(f"S3 PYTHON SERVER : {server}")
     get_dagster_logger().info(f"S3 PORT   : {str(os.environ.get('GLEANER_MINIO_PORT'))}")
     # get_dagster_logger().info(f"S3 read started : {str(os.environ.get('GLEANER_MINIO_KEY'))}")
     # get_dagster_logger().info(f"S3 read started : {str(os.environ.get('GLEANER_MINIO_SECRET'))}")
@@ -63,11 +70,21 @@ def s3reader(object):
 
 
 def s3loader(data, name):
-    server = os.environ.get('GLEANER_MINIO_URL') + ":" + os.environ.get('GLEANER_MINIO_PORT')
+    secure= bool(distutils.util.strtobool(os.environ.get('GLEANER_MINIO_SSL')))
+    if (os.environ.get('GLEANER_MINIO_PORT') and os.environ.get('GLEANER_MINIO_PORT') == 80
+             and secure == False):
+        server = _pythonMinioUrl(os.environ.get('GLEANER_MINIO_URL'))
+    elif (os.environ.get('GLEANER_MINIO_PORT') and os.environ.get('GLEANER_MINIO_PORT') == 443
+                and secure == True):
+        server = _pythonMinioUrl(os.environ.get('GLEANER_MINIO_URL'))
+    else:
+        # it's not on a normal port
+        server = f"{_pythonMinioUrl(os.environ.get('GLEANER_MINIO_URL'))}:{os.environ.get('GLEANER_MINIO_PORT')}"
+
     client = Minio(
         server,
-        # secure=True,
-        secure = bool(distutils.util.strtobool(os.environ.get('GLEANER_MINIO_SSL'))),
+        secure=secure,
+        #secure = bool(distutils.util.strtobool(os.environ.get('GLEANER_MINIO_SSL'))),
         access_key=os.environ.get('GLEANER_MINIO_KEY'),
         secret_key=os.environ.get('GLEANER_MINIO_SECRET'),
     )
@@ -162,13 +179,17 @@ def gleanerio(mode, source):
     req.add_header('X-API-Key', APIKEY)
     req.add_header('content-type', 'application/json')
     req.add_header('accept', 'application/json')
-    r = request.urlopen(req)
-    c = r.read()
-    d = json.loads(c)
-    cid = d['Id']
-
-    print(r.status)
-    get_dagster_logger().info(f"Create: {str(r.status)}")
+    try:
+        r = request.urlopen(req)
+        c = r.read()
+        d = json.loads(c)
+        cid = d['Id']
+        print(r.status)
+        get_dagster_logger().info(f"Create: {str(r.status)}")
+    except HTTPError as err:
+        print("failed to create container: ", err)
+        get_dagster_logger().info(f"Create Failed: {str(err)}")
+        raise err
 
     # print(cid)
 

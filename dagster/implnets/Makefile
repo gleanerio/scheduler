@@ -12,7 +12,7 @@ eco-clean:
 	cd ./generatedCode/implnet-eco && rm -rf ./output/*
 
 eco-generate:
-	python pygen.py -cf ./configs/eco/gleanerconfig.yaml -od ./generatedCode/implnet-eco/output  -td ./templates/v1   -d 7
+	python3 pygen.py -cf ./configs/eco/gleanerconfig.yaml -od ./generatedCode/implnet-eco/output  -td ./templates/v1   -d 7
 
 eco-build:
 	podman build  --tag="docker.io/fils/dagster_eco:$(VERSION)"  --build-arg implnet=eco --file=./build/Dockerfile .
