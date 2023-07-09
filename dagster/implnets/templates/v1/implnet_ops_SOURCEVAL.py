@@ -29,7 +29,6 @@ URL = os.environ.get('PORTAINER_URL')
 APIKEY = os.environ.get('PORTAINER_KEY')
 
 
-
 GLEANER_MINIO_ADDRESS = os.environ.get('GLEANER_MINIO_ADDRESS')
 GLEANER_MINIO_PORT = os.environ.get('GLEANER_MINIO_PORT')
 GLEANER_MINIO_USE_SSL = os.environ.get('GLEANER_MINIO_USE_SSL')
@@ -41,35 +40,9 @@ GLEANER_HEADLESS_ENDPOINT = os.environ.get('GLEANER_HEADLESS_ENDPOINT')
 GLEANER_GRAPH_URL = os.environ.get('GLEANER_GRAPH_URL')
 GLEANER_GRAPH_NAMESPACE = os.environ.get('GLEANER_GRAPH_NAMESPACE')
 
-def postRelease(source):
-    # revision of EC utilities, will have a insertFromURL
-    #instance =  mg.ManageBlazegraph(os.environ.get('GLEANER_GRAPH_URL'),os.environ.get('GLEANER_GRAPH_NAMESPACE') )
-    proto = "http"
-
-    if os.environ.get('GLEANER_MINIO_USE_SSL'):
-        proto = "https"
-    port = os.environ.get('GLEANER_MINIO_PORT')
-    address = os.environ.get('GLEANER_MINIO_ADDRESS')
-    bucket = os.environ.get('GLEANER_MINIO_BUCKET')
-    path = "graphs/latest"
-    release_url = f"{proto}://{address}:{port}/{bucket}/{path}/{source}_release.nq"
-    url = _graphEndpoint() # f"{os.environ.get('GLEANER_GRAPH_URL')}/namespace/{os.environ.get('GLEANER_GRAPH_NAMESPACE')}/sparql?uri={release_url}"
-    get_dagster_logger().info(f'graph: insert "{source}" to {url} ')
-    r = requests.post(url)
-    log.debug(f' status:{r.status_code}')  # status:404
-    get_dagster_logger().info(f'graph: insert: status:{r.status_code}')
-    if r.status_code == 200:
-        # '<?xml version="1.0"?><data modified="0" milliseconds="7"/>'
-        if 'data modified="0"' in r.text:
-            get_dagster_logger().info(f'graph: no data inserted ')
-            raise Exception("No Data Added: " + r.text)
-        return True
-    else:
-        get_dagster_logger().info(f'graph: error')
-        raise Exception(f' graph: insert failed: status:{r.status_code}')
 
 def _graphEndpoint():
-    url = f"{os.environ.get('GLEANER_GRAPH_URL')}/namespace/{os.environ.get('GLEANER_GRAPH_NAMESPACE')}/sparql?uri={release_url}"
+    url = f"{os.environ.get('GLEANER_GRAPH_URL')}/namespace/{os.environ.get('GLEANER_GRAPH_NAMESPACE')}/sparql"
     return url
 
 def _pythonMinioUrl(url):
@@ -161,6 +134,32 @@ def s3loader(data, name):
                       content_type="text/plain"
                          )
     get_dagster_logger().info(f"Log uploaded: {str(objPrefix)}")
+def postRelease(source):
+    # revision of EC utilities, will have a insertFromURL
+    #instance =  mg.ManageBlazegraph(os.environ.get('GLEANER_GRAPH_URL'),os.environ.get('GLEANER_GRAPH_NAMESPACE') )
+    proto = "http"
+
+    if os.environ.get('GLEANER_MINIO_USE_SSL'):
+        proto = "https"
+    port = os.environ.get('GLEANER_MINIO_PORT')
+    address = os.environ.get('GLEANER_MINIO_ADDRESS')
+    bucket = os.environ.get('GLEANER_MINIO_BUCKET')
+    path = "graphs/latest"
+    release_url = f"{proto}://{address}:{port}/{bucket}/{path}/{source}_release.nq"
+    url = f"{_graphEndpoint()}?uri={release_url}" # f"{os.environ.get('GLEANER_GRAPH_URL')}/namespace/{os.environ.get('GLEANER_GRAPH_NAMESPACE')}/sparql?uri={release_url}"
+    get_dagster_logger().info(f'graph: insert "{source}" to {url} ')
+    r = requests.post(url)
+    log.debug(f' status:{r.status_code}')  # status:404
+    get_dagster_logger().info(f'graph: insert: status:{r.status_code}')
+    if r.status_code == 200:
+        # '<?xml version="1.0"?><data modified="0" milliseconds="7"/>'
+        if 'data modified="0"' in r.text:
+            get_dagster_logger().info(f'graph: no data inserted ')
+            raise Exception("No Data Added: " + r.text)
+        return True
+    else:
+        get_dagster_logger().info(f'graph: error')
+        raise Exception(f' graph: insert failed: status:{r.status_code}')
 
 
 def gleanerio(mode, source):
@@ -183,7 +182,7 @@ def gleanerio(mode, source):
         ARCHIVE_FILE = os.environ.get('GLEANERIO_NABU_ARCHIVE_OBJECT')
         ARCHIVE_PATH = os.environ.get('GLEANERIO_NABU_ARCHIVE_PATH')
         CMD = ["--cfg", "/nabu/nabuconfig.yaml", "prune", "--prefix", "summoned/" + source]
-        NAME = "nabu_prune_" + source
+        NAME = "nabu01_prune_" + source
         WorkingDir = "/nabu/"
         Entrypoint = "nabu"
         # LOGFILE = 'log_nabu.txt'  # only used for local log file writing
@@ -192,7 +191,7 @@ def gleanerio(mode, source):
         ARCHIVE_FILE = os.environ.get('GLEANERIO_NABU_ARCHIVE_OBJECT')
         ARCHIVE_PATH = os.environ.get('GLEANERIO_NABU_ARCHIVE_PATH')
         CMD = ["--cfg", "/nabu/nabuconfig.yaml", "prefix", "--prefix", "prov/" + source]
-        NAME = "nabu_prov_" + source
+        NAME = "nabu01_prov_" + source
         WorkingDir = "/nabu/"
         Entrypoint = "nabu"
         # LOGFILE = 'log_nabu.txt'  # only used for local log file writing
@@ -201,7 +200,7 @@ def gleanerio(mode, source):
         ARCHIVE_FILE = os.environ.get('GLEANERIO_NABU_ARCHIVE_OBJECT')
         ARCHIVE_PATH = os.environ.get('GLEANERIO_NABU_ARCHIVE_PATH')
         CMD = ["--cfg", "/nabu/nabuconfig.yaml", "prefix", "--prefix", "orgs"]
-        NAME = "nabu_orgs_" + source
+        NAME = "nabu01_orgs_" + source
         WorkingDir = "/nabu/"
         Entrypoint = "nabu"
         # LOGFILE = 'log_nabu.txt'  # only used for local log file writing
@@ -210,7 +209,7 @@ def gleanerio(mode, source):
         ARCHIVE_FILE = os.environ.get('GLEANERIO_NABU_ARCHIVE_OBJECT')
         ARCHIVE_PATH = os.environ.get('GLEANERIO_NABU_ARCHIVE_PATH')
         CMD = ["--cfg", "/nabu/nabuconfig.yaml", "release", "--prefix", "summoned/" + source]
-        NAME = "nabu_release_" + source
+        NAME = "nabu01_release_" + source
         WorkingDir = "/nabu/"
         Entrypoint = "nabu"
         # LOGFILE = 'log_nabu.txt'  # only used for local log file writing
@@ -425,7 +424,7 @@ def SOURCEVAL_gleaner(context):
     return r
 
 @op
-def SOURCEVAL_nabuprune(context, msg: str):
+def SOURCEVAL_nabu_prune(context, msg: str):
     returned_value = gleanerio(("nabu"), "SOURCEVAL")
     r = str('returned value:{}'.format(returned_value))
     return msg + r
@@ -529,7 +528,7 @@ def harvest_SOURCEVAL():
 
     report1 =SOURCEVAL_missingreport_s3(harvest)
     #report1 = missingreport_s3(harvest, source="SOURCEVAL")
-    load1 = SOURCEVAL_nabuprune(harvest)
+    load1 = SOURCEVAL_nabu_prune(harvest)
     load2 = SOURCEVAL_nabuprov(load1)
     load3 = SOURCEVAL_nabuorg(load2)
     load4 = SOURCEVAL_naburelease(load3)
