@@ -25,10 +25,19 @@ networks:
 volumes:
   dagster-postgres:
         driver: local
-#  dagster-project:
-#    external: true
-#    name: dagster-${PROJECT}
+  dagster-project:
+    external: true
+    #name: dagster-${PROJECT:-eco}
+    name: dagster_gleaner_configs
 # external so it could be shared accross docker swarms
+configs:
+  gleaner:
+    name: gleaner-${PROJECT:-eco}
+    external: true
+  nabu:
+    name: nabu-${PROJECT:-eco}
+    external: true
+
 secrets:
   MINIO_ROOT_ACCESS_KEY:
     external: true
@@ -42,6 +51,7 @@ services:
           - MINIO_ROOT_ACCESS_KEY
           - MINIO_ROOT_SECRET_KEY
         environment: &env
+            - DEGUB=${DEBUG:-False}
             - PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python
             - PORTAINER_URL=${PORTAINER_URL}
             - PORTAINER_KEY=${PORTAINER_KEY}
@@ -129,6 +139,7 @@ services:
         networks:
            - dagster_host
     headless:
+      # GLEANER_HEADLESS_ENDPOINT=http://headless:9222
       # image: chromedp/headless-shell:stable
       # stable after 105 causes "devtool: CreateURL: Using unsafe HTTP verb GET to invoke /json/new. This action supports only PUT verb.",
       image: chromedp/headless-shell:105.0.5195.127
@@ -138,7 +149,7 @@ services:
       restart: unless-stopped
       shm_size: "2gb"
       labels:
-        -  "traefik.enable=true"
+        -  "traefik.enable=false"
         - "traefik.backend=headlesschrome"
         - "traefik.port=9222"
         - "traefik.http.routers.headlesschrome-${PROJECT:-eco}.entrypoints=http"
@@ -163,5 +174,30 @@ services:
       networks:
         - dagster_host
         - headless
+        # in code, use names defined in network above
+
+    configs_volume:
+      # image: chromedp/headless-shell:stable
+      # stable after 105 causes "devtool: CreateURL: Using unsafe HTTP verb GET to invoke /json/new. This action supports only PUT verb.",
+      image: busybox
+      #    build:
+  #      context: .
+  #      shm_size: "2gb"
+     # restart: unless-stopped
+      volumes:
+        - dagster-project:/configs
+      #command: ["/bin/busybox", "httpd", "-f", "-p", "8080"]
+      configs:
+            - source: gleaner
+              target: /configs/gleanerconfig.yaml
+             # uid: "103"
+             # gid: "103"
+              mode: 0444
+            - source: nabu
+              target: /configs/nabuconfig.yaml
+             # uid: "103"
+             # gid: "103"
+              mode: 0444
+
         # in code, use names defined in network above
 
