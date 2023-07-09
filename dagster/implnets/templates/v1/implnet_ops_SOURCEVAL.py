@@ -28,12 +28,7 @@ GLEANER_HEADLESS_NETWORK=os.environ.get('GLEANER_HEADLESS_NETWORK')
 URL = os.environ.get('PORTAINER_URL')
 APIKEY = os.environ.get('PORTAINER_KEY')
 
-def _pythonMinioUrl(url):
-    if (url.endswith(".amazonaws.com")):
-        PYTHON_MINIO_URL = "s3.amazonaws.com"
-    else:
-        PYTHON_MINIO_URL = url
-    return PYTHON_MINIO_URL
+
 
 GLEANER_MINIO_ADDRESS = os.environ.get('GLEANER_MINIO_ADDRESS')
 GLEANER_MINIO_PORT = os.environ.get('GLEANER_MINIO_PORT')
