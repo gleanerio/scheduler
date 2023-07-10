@@ -32,10 +32,10 @@ volumes:
 # external so it could be shared accross docker swarms
 configs:
   gleaner:
-    name: gleaner-${PROJECT:-eco}
+    name: ${GLEANER_GLEANER_DOCKER_CONFIG:-gleaner}
     external: true
   nabu:
-    name: nabu-${PROJECT:-eco}
+    name: ${GLEANER_NABU_DOCKER_CONFIG:-nabu}
     external: true
 
 secrets:
@@ -51,7 +51,6 @@ services:
           - MINIO_ROOT_ACCESS_KEY
           - MINIO_ROOT_SECRET_KEY
         environment: &env
-            - DEGUB=${DEBUG:-False}
             - PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python
             - PORTAINER_URL=${PORTAINER_URL}
             - PORTAINER_KEY=${PORTAINER_KEY}
@@ -139,7 +138,6 @@ services:
         networks:
            - dagster_host
     headless:
-      # GLEANER_HEADLESS_ENDPOINT=http://headless:9222
       # image: chromedp/headless-shell:stable
       # stable after 105 causes "devtool: CreateURL: Using unsafe HTTP verb GET to invoke /json/new. This action supports only PUT verb.",
       image: chromedp/headless-shell:105.0.5195.127
@@ -147,7 +145,7 @@ services:
   #      context: .
   #      shm_size: "2gb"
       restart: unless-stopped
-      shm_size: "2gb"
+      shm_size: 1gb
       labels:
         -  "traefik.enable=false"
         - "traefik.backend=headlesschrome"
@@ -183,21 +181,19 @@ services:
       #    build:
   #      context: .
   #      shm_size: "2gb"
-     # restart: unless-stopped
+    #  restart: unless-stopped
       volumes:
         - dagster-project:/configs
       #command: ["/bin/busybox", "httpd", "-f", "-p", "8080"]
       configs:
             - source: gleaner
-              target: /configs/gleanerconfig.yaml
+              target: /configs/gleaner/gleanerconfig.yaml
              # uid: "103"
              # gid: "103"
               mode: 0444
             - source: nabu
-              target: /configs/nabuconfig.yaml
+              target: /configs/nabu/nabuconfig.yaml
              # uid: "103"
              # gid: "103"
               mode: 0444
-
         # in code, use names defined in network above
-

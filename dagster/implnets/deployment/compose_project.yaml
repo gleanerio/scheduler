@@ -27,8 +27,17 @@ volumes:
         driver: local
   dagster-project:
     external: true
-    name: ${GLEANER_VOLUME:-dagster_gleaner_configs}
+    #name: dagster-${PROJECT:-eco}
+    name: dagster_gleaner_configs
 # external so it could be shared accross docker swarms
+configs:
+  gleaner:
+    name: ${GLEANER_GLEANER_DOCKER_CONFIG:-gleaner}
+    external: true
+  nabu:
+    name: ${GLEANER_NABU_DOCKER_CONFIG:-nabu}
+    external: true
+
 secrets:
   MINIO_ROOT_ACCESS_KEY:
     external: true
@@ -136,9 +145,9 @@ services:
   #      context: .
   #      shm_size: "2gb"
       restart: unless-stopped
-      shm_size: "2gb"
+      shm_size: 1gb
       labels:
-        -  "traefik.enable=true"
+        -  "traefik.enable=false"
         - "traefik.backend=headlesschrome"
         - "traefik.port=9222"
         - "traefik.http.routers.headlesschrome-${PROJECT:-eco}.entrypoints=http"
@@ -164,6 +173,7 @@ services:
         - dagster_host
         - headless
         # in code, use names defined in network above
+
     configs_volume:
       # image: chromedp/headless-shell:stable
       # stable after 105 causes "devtool: CreateURL: Using unsafe HTTP verb GET to invoke /json/new. This action supports only PUT verb.",
