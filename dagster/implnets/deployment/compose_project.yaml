@@ -25,9 +25,9 @@ networks:
 volumes:
   dagster-postgres:
         driver: local
-#  dagster-project:
-#    external: true
-#    name: dagster-${PROJECT}
+  dagster-project:
+    external: true
+    name: ${GLEANER_VOLUME:-dagster_gleaner_configs}
 # external so it could be shared accross docker swarms
 secrets:
   MINIO_ROOT_ACCESS_KEY:
@@ -164,4 +164,26 @@ services:
         - dagster_host
         - headless
         # in code, use names defined in network above
-
+    configs_volume:
+      # image: chromedp/headless-shell:stable
+      # stable after 105 causes "devtool: CreateURL: Using unsafe HTTP verb GET to invoke /json/new. This action supports only PUT verb.",
+      image: busybox
+      #    build:
+  #      context: .
+  #      shm_size: "2gb"
+    #  restart: unless-stopped
+      volumes:
+        - dagster-project:/configs
+      #command: ["/bin/busybox", "httpd", "-f", "-p", "8080"]
+      configs:
+            - source: gleaner
+              target: /configs/gleaner/gleanerconfig.yaml
+             # uid: "103"
+             # gid: "103"
+              mode: 0444
+            - source: nabu
+              target: /configs/nabu/nabuconfig.yaml
+             # uid: "103"
+             # gid: "103"
+              mode: 0444
+        # in code, use names defined in network above
