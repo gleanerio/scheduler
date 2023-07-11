@@ -307,7 +307,7 @@ def gleanerio(mode, source):
             cid = d['Id']
             print(r.status)
             get_dagster_logger().info(f"Create: {str(r.status)}")
-        except HTTPError as err:
+        except HTTPError or requests.HTTPError as err:
             if (err.code == 409):
                 print("failed to create container: container exists; use docker container ls -a : ", err)
                 get_dagster_logger().info(f"Create Failed: exsting container:  container exists; use docker container ls -a : {str(err)}")
@@ -322,7 +322,7 @@ def gleanerio(mode, source):
             print("failed to create container:  unknown reason: ", err)
             get_dagster_logger().info(f"Create Failed: unknown reason {str(err)}")
             raise err
-        # print(cid)
+        print(f"containerid:{cid}")
 
         ## ------------  Archive to load, which is how to send in the config (from where?)
 
@@ -333,7 +333,7 @@ def gleanerio(mode, source):
         query_string = urllib.parse.urlencode(params)
         url = url + "?" + query_string
 
-        # print(url)
+        get_dagster_logger().info(f"Container archive url: {url}")
 
         # DATA = read_file_bytestream(ARCHIVE_FILE)
         DATA = s3reader(ARCHIVE_FILE)
@@ -353,9 +353,12 @@ def gleanerio(mode, source):
         # print(d)
 
         ## ------------  Start
-
+        ## note new issue:
+        # {"message": "starting container with non-empty request body was deprecated since API v1.22 and removed in v1.24"}
+        EMPTY_DATA="{}".encode('utf-8')
         url = URL + 'containers/' + cid + '/start'
-        req = request.Request(url, method="POST")
+        get_dagster_logger().info(f"Container start url: {url}")
+        req = request.Request(url,data=EMPTY_DATA, method="POST")
         req.add_header('X-API-Key', APIKEY)
         req.add_header('content-type', 'application/json')
         req.add_header('accept', 'application/json')
@@ -374,7 +377,7 @@ def gleanerio(mode, source):
         ## ------------  Wait expect 200
 
         url = URL + 'containers/' + cid + '/wait'
-        req = request.Request(url, method="POST")
+        req = request.Request(url, data=EMPTY_DATA, method="POST")
         req.add_header('X-API-Key', APIKEY)
         req.add_header('content-type', 'application/json')
         req.add_header('accept', 'application/json')

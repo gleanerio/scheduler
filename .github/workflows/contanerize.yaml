@@ -10,7 +10,7 @@ on:
       - main
       - dev
       - dev_eco
-      -  dev_eco_voume
+      -  dev_dv
     tags:
       - "v*.*.*"
 
