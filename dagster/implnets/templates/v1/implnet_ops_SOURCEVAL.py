@@ -362,8 +362,8 @@ def gleanerio(mode, source):
         try:
             r = request.urlopen(req)
         except HTTPError as err:
-            err.code
             get_dagster_logger().fatal(f"Container Start failed: {str(err.code)} reason: {err.reason}")
+            raise err
         print(r.status)
         get_dagster_logger().info(f"Start container: {str(r.status)}")
 
