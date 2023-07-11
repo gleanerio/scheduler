@@ -167,6 +167,13 @@ services:
         - 9222:9222
       environment:
         - SERVICE_PORTS=9222
+          # method to get a bigger shm space, since shm_size does not work on a swarm
+      tmpfs:
+        - /tmp:size=512M
+      volumes:
+
+        - type: tmpfs
+          target: /dev/shm
       # adding the "bridge" network does not work to give access to the 'gleaner and nabu' containers started
       # by this process. There is no name resolution on that network.
       networks:

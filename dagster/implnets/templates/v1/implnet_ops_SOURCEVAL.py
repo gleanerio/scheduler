@@ -295,7 +295,7 @@ def gleanerio(mode, source):
         url = url + "?" + query_string
 
         get_dagster_logger().info(f"URL: {str(url)}")
-
+        get_dagster_logger().info(f"container config: {str(json.dumps(data))}")
         req = request.Request(url, str.encode(json.dumps(data) ))
         req.add_header('X-API-Key', APIKEY)
         req.add_header('content-type', 'application/json')
