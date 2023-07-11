@@ -274,8 +274,6 @@ def gleanerio(mode, source):
         enva.append(str("GLEANER_HEADLESS_ENDPOINT={}".format(os.environ.get('GLEANER_HEADLESS_ENDPOINT'))))
         enva.append(str("GLEANER_HEADLESS_NETWORK={}".format(os.environ.get('GLEANER_HEADLESS_NETWORK'))))
 
-        GLEANER_CONFIG_VOLUME= os.environ.get('GLEANER_CONFIG_VOLUME')
-
         data["Env"] = enva
         data["HostConfig"] = {
             "NetworkMode": GLEANER_HEADLESS_NETWORK,
