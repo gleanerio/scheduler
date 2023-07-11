@@ -17,7 +17,7 @@ from ec.graph.manageGraph import ManageBlazegraph as mg
 import requests
 import logging as log
 
-from requests import HTTPError
+from urllib.error import HTTPError
 from ec.reporting.report import missingReport
 from ec.datastore import s3
 
@@ -363,6 +363,10 @@ def gleanerio(mode, source):
             r = request.urlopen(req)
         except HTTPError as err:
             get_dagster_logger().fatal(f"Container Start failed: {str(err.code)} reason: {err.reason}")
+            raise err
+        except Exception as err:
+            print("failed to start container:  unknown reason: ", err)
+            get_dagster_logger().info(f"Create Failed: unknown reason {str(err)}")
             raise err
         print(r.status)
         get_dagster_logger().info(f"Start container: {str(r.status)}")
