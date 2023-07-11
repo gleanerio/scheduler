@@ -359,7 +359,11 @@ def gleanerio(mode, source):
         req.add_header('X-API-Key', APIKEY)
         req.add_header('content-type', 'application/json')
         req.add_header('accept', 'application/json')
-        r = request.urlopen(req)
+        try:
+            r = request.urlopen(req)
+        except HTTPError as err:
+            err.code
+            get_dagster_logger().fatal(f"Container Start failed: {str(err.code)} reason: {err.reason}")
         print(r.status)
         get_dagster_logger().info(f"Start container: {str(r.status)}")
 
