@@ -7,3 +7,4 @@ venv/**
 /dagster/.logs_queue/
 /dagster/.telemetry/
 /dagster/.telemetry/
+.env
