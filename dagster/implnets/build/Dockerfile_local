@@ -9,6 +9,10 @@ COPY ./requirements.txt .
 
 RUN pip install -r requirements.txt
 
+# these are the configs.
+# might mount locally in docker_compose
+COPY . scheduler
+COPY ./configs/${implnet}/gleanerconfig.yaml scheduler/gleanerconfig.yaml
 #COPY ./dagster.yaml /usr/src/app/output/dagster.yaml
 COPY ./dagster.yaml /usr/src/app/dagster.yaml
 # Change working directory

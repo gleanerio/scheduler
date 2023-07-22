@@ -23,7 +23,9 @@ configs:
   nabu:
     name: ${GLEANER_NABU_DOCKER_CONFIG:-nabu}
     file: ../configs/${PROJECT:-eco}/nabuconfig.yaml
-
+# DO NOT START IN PYCHARM (unless you set the env variables in your runconfig
+# USE:
+# ./docker_localstart.sh
 services:
     dagster-dagit:
         platform: linux/x86_64
