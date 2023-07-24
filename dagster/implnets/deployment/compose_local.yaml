@@ -1,55 +1,42 @@
 version: "3.9"
-# this NEEDS
-# $HOST
-# $PROJECT
 
-
-# not sure is a named external network works well with traffik, or if the label
-#            - "traefik.docker.network=traefik_proxy"
-# is even needed if the network is defined.
-
-# secrets not working... these become files, so not really working
+# networks: production uses traefik_proxy, buth
+#  this is local testing
 networks:
   traefik_proxy:
-    external: true
+  #  driver: bridge
   headless:
     external: true
-    name: headless_gleanerio
-  dagster_host:
-    driver: overlay
-    # using project name is a bit tricky from dagster code, and needs to be external for a
-    # container to use them
-    #name: dagster-${PROJECT:-eco}
-    name: dagster_host
-    attachable: true
+    name: ${GLEANER_HEADLESS_NETWORK:-headless_gleanerio}
 volumes:
-  dagster-postgres:
+    dagster-postgres:
         driver: local
-  dagster-project:
-    external: true
-    #name: dagster-${PROJECT:-eco}
-    name: dagster_gleaner_configs
-# external so it could be shared accross docker swarms
+    dagster-project:
+      driver: local
+      #name: dagster-${PROJECT:-eco}
+      name: ${GLEANER_CONFIG_VOLUME:-dagster_gleaner_configs}
+# let yourself use local configuration
 configs:
   gleaner:
     name: ${GLEANER_GLEANER_DOCKER_CONFIG:-gleaner}
-    external: true
+    file: ../configs/${PROJECT:-eco}/gleanerconfig.yaml
   nabu:
     name: ${GLEANER_NABU_DOCKER_CONFIG:-nabu}
-    external: true
-
-secrets:
-  MINIO_ROOT_ACCESS_KEY:
-    external: true
-  MINIO_ROOT_SECRET_KEY:
-    external: true
+    file: ../configs/${PROJECT:-eco}/nabuconfig.yaml
+# DO NOT START IN PYCHARM (unless you set the env variables in your runconfig
+# USE:
+# ./docker_localstart.sh
 services:
     dagster-dagit:
-        image: docker.io/nsfearthcube/dagster-${PROJECT:-eco}:${CONTAINER_TAG:-latest}
-
-        secrets:
-          - MINIO_ROOT_ACCESS_KEY
-          - MINIO_ROOT_SECRET_KEY
+        platform: linux/x86_64
+        build:
+          #context: .
+          context: ..
+          dockerfile: build/Dockerfile_local
+        image: dagster-${PROJECT:-eco}:latest4
+        volumes: &vol
+          - ../dagster.yaml:/usr/src/app/dagster.yaml
+          - ../generatedCode/implnet-${PROJECT:-eco}/output/:/usr/src/app/output
         environment: &env
             - PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python
             - PORTAINER_URL=${PORTAINER_URL}
@@ -72,62 +59,47 @@ services:
             - GLEANER_GRAPH_URL=${GLEANER_GRAPH_URL}
             - GLEANER_GRAPH_NAMESPACE=${GLEANER_GRAPH_NAMESPACE}
             - GLEANER_CONFIG_VOLUME=${GLEANER_CONFIG_VOLUME}
-#            - GLEANER_MINIO_KEY=/run/secrets/MINIO_ROOT_ACCESS_KEY
-#            - GLEANER_MINIO_SECRET=/run/secrets/MINIO_ROOT_SECRET_KEY
-            - GLEANER_BASE=${GLEANER_BASE}
-            - GLEANER_OBJECTS=${GLEANER_OBJECTS}
-            - GLEANER_MEILI=${GLEANER_MEILI}
-            - GLEANER_GRAPH=${GLEANER_GRAPH}
-            - GLEANER_GRAPH_CONF=${GLEANER_GRAPH_CONF}
-            - GLEANER_TRAEFIK=${GLEANER_TRAEFIK}
-            - GLEANER_DOMAIN=${GLEANER_DOMAIN}
-            - GLEANER_OSS_DOMAIN=${GLEANER_OSS_DOMAIN}
-            - GLEANER_GRAPH_DOMAIN=${GLEANER_GRAPH_DOMAIN}
-            - GLEANER_WEB_DOMAIN=${GLEANER_WEB_DOMAIN}
-            - GLEANER_WEB2_DOMAIN=${GLEANER_WEB2_DOMAIN}
-            - GLEANER_INDEX_DOMAIN=${GLEANER_INDEX_DOMAIN}
-            - GLEANER_ADMIN_DOMAIN=${GLEANER_ADMIN_DOMAIN}
+            - GLEANERIO_NABU_CONFIG_PATH=${GLEANER_GLEANER_DOCKER_CONFIG:-/configs/gleaner/nabuconfig.yaml}
+            - GLEANERIO_GLEANER_CONFIG_PATH=${GLEANER_NABU_DOCKER_CONFIG:-/configs/gleaner/gleanerconfig.yaml}
         ports:
             - 3000:3000
         networks:
           - traefik_proxy
-          - dagster_host
         depends_on:
             - dagster-postgres
         labels:
               - "traefik.enable=true"
-              - "traefik.http.routers.sched-${PROJECT:-eco}.entrypoints=http"
-              - "traefik.http.routers.sched-${PROJECT:-eco}.priority=13"
-              - "traefik.http.routers.sched-${PROJECT:-eco}.rule=Host(`sched.${HOST? HOST is required}`)"
+              - "traefik.http.routers.sched.entrypoints=http"
+              - "traefik.http.routers.sched.priority=13"
+              - "traefik.http.routers.sched.rule=Host(`localhost`)"
               - "traefik.http.middlewares.sched-https-redirect.redirectscheme.scheme=https"
-              - "traefik.http.routers.sched-${PROJECT:-eco}.middlewares=sched-https-redirect"
-              - "traefik.http.routers.sched-${PROJECT:-eco}-secure.entrypoints=https"
-              - "traefik.http.routers.sched-${PROJECT:-eco}-secure.priority=12"
-              - "traefik.http.routers.sched-${PROJECT:-eco}-secure.rule=Host(`sched.${HOST? HOST is required}`)"
-              - "traefik.http.routers.sched-${PROJECT:-eco}-secure.tls=true"
-              - "traefik.http.routers.sched-${PROJECT:-eco}-secure.tls.certresolver=httpresolver"
-              - "traefik.http.routers.sched-${PROJECT:-eco}-secure.service=sched-${PROJECT}"
-              - "traefik.http.services.sched-${PROJECT:-eco}.loadbalancer.server.port=3000"
+              - "traefik.http.routers.sched.middlewares=sched-https-redirect"
+              - "traefik.http.routers.sched-secure.entrypoints=https"
+              - "traefik.http.routers.sched-secure.priority=12"
+              - "traefik.http.routers.sched-secure.rule=Host(`localhost`)"
+              - "traefik.http.routers.sched-secure.tls=true"
+              - "traefik.http.routers.sched-secure.tls.certresolver=httpresolver"
+              - "traefik.http.routers.sched-secure.service=sched"
+              - "traefik.http.services.sched.loadbalancer.server.port=3000"
               - "traefik.docker.network=traefik_proxy"
-              - "traefik.http.middlewares.sched-${PROJECT:-eco}.headers.accesscontrolallowmethods=GET,OPTIONS,POST"
-              - "traefik.http.middlewares.sched-${PROJECT:-eco}.headers.accesscontrolalloworigin=*"
-              - "traefik.http.middlewares.sched-${PROJECT:-eco}.headers.accesscontrolmaxage=100"
-              - "traefik.http.middlewares.sched-${PROJECT:-eco}.headers.addvaryheader=true"
+              - "traefik.http.middlewares.sched.headers.accesscontrolallowmethods=GET,OPTIONS,POST"
+              - "traefik.http.middlewares.sched.headers.accesscontrolalloworigin=*"
+              - "traefik.http.middlewares.sched.headers.accesscontrolmaxage=100"
+              - "traefik.http.middlewares.sched.headers.addvaryheader=true"
     dagster-daemon:
-        image: docker.io/nsfearthcube/dagster-${PROJECT:-eco}:${CONTAINER_TAG:-latest}
-
-
-
-        secrets:
-          - MINIO_ROOT_ACCESS_KEY
-          - MINIO_ROOT_SECRET_KEY
+        platform: linux/x86_64
+        build:
+          #context: .
+          context: ..
+          dockerfile: build/Dockerfile_local
+        image: dagster-${PROJECT:-eco}:latest
         environment: *env
-
-        command: "dagster-daemon run"
+        command: "dagster-daemon run -w ./output/workspace.yaml"
+        volumes: *vol
         depends_on:
             - dagster-postgres
         networks:
-            - dagster_host
+            - traefik_proxy
     dagster-postgres:
         image: postgres:13.3
         ports:
@@ -137,8 +109,9 @@ services:
         volumes:
             - dagster-postgres:/var/lib/postgresql/data
         networks:
-           - dagster_host
+           - traefik_proxy
     headless:
+      platform: linux/x86_64
       # image: chromedp/headless-shell:stable
       # stable after 105 causes "devtool: CreateURL: Using unsafe HTTP verb GET to invoke /json/new. This action supports only PUT verb.",
       image: chromedp/headless-shell:105.0.5195.127
@@ -178,7 +151,7 @@ services:
       # adding the "bridge" network does not work to give access to the 'gleaner and nabu' containers started
       # by this process. There is no name resolution on that network.
       networks:
-        - dagster_host
+        - traefik_proxy
         - headless
         # in code, use names defined in network above
 
@@ -205,3 +178,4 @@ services:
              # gid: "103"
               mode: 0444
         # in code, use names defined in network above
+
