@@ -23,6 +23,7 @@ configs:
   nabu:
     name: ${GLEANER_NABU_DOCKER_CONFIG:-nabu}
     file: ../configs/${PROJECT:-eco}/nabuconfig.yaml
+
 # DO NOT START IN PYCHARM (unless you set the env variables in your runconfig
 # USE:
 # ./docker_localstart.sh
@@ -33,7 +34,11 @@ services:
           #context: .
           context: ..
           dockerfile: build/Dockerfile_local
-        image: dagster-${PROJECT:-eco}:latest4
+          args:
+            implnet: ${PROJECT:-eco}
+        # you should be able to change the source locally, without a full rebuild.
+        #image: dagster-${PROJECT:-eco}:latest
+        image: dagster-gleanerio-local:latest
         volumes: &vol
           - ../dagster.yaml:/usr/src/app/dagster.yaml
           - ../generatedCode/implnet-${PROJECT:-eco}/output/:/usr/src/app/output
@@ -59,8 +64,9 @@ services:
             - GLEANER_GRAPH_URL=${GLEANER_GRAPH_URL}
             - GLEANER_GRAPH_NAMESPACE=${GLEANER_GRAPH_NAMESPACE}
             - GLEANER_CONFIG_VOLUME=${GLEANER_CONFIG_VOLUME}
-            - GLEANERIO_NABU_CONFIG_PATH=${GLEANER_GLEANER_DOCKER_CONFIG:-/configs/gleaner/nabuconfig.yaml}
-            - GLEANERIO_GLEANER_CONFIG_PATH=${GLEANER_NABU_DOCKER_CONFIG:-/configs/gleaner/gleanerconfig.yaml}
+            - GLEANERIO_NABU_CONFIG_PATH=${GLEANERIO_NABU_CONFIG_PATH:-/configs/gleaner/nabuconfig.yaml}
+            - GLEANERIO_GLEANER_CONFIG_PATH=${GLEANERIO_GLEANER_CONFIG_PATH:-/configs/gleaner/gleanerconfig.yaml}
+
         ports:
             - 3000:3000
         networks:
@@ -92,7 +98,11 @@ services:
           #context: .
           context: ..
           dockerfile: build/Dockerfile_local
-        image: dagster-${PROJECT:-eco}:latest
+          args:
+            implnet: ${PROJECT:-eco}
+        # you should be able to change the source locally, without a full rebuild.
+       #image: dagster-${PROJECT:-eco}:latest
+        image: dagster-gleanerio-local:latest
         environment: *env
         command: "dagster-daemon run -w ./output/workspace.yaml"
         volumes: *vol
@@ -119,7 +129,7 @@ services:
   #      context: .
   #      shm_size: "2gb"
       restart: unless-stopped
-      shm_size: 1gb
+      shm_size: 265mb
       labels:
         -  "traefik.enable=false"
         - "traefik.backend=headlesschrome"
@@ -143,7 +153,7 @@ services:
         - SERVICE_PORTS=9222
         # method to get a bigger shm space, since shm_size does not work on a swarm
       tmpfs:
-        - /tmp:size=512M
+        - /tmp:size=256M
       volumes:
         - type: tmpfs
           target: /dev/shm

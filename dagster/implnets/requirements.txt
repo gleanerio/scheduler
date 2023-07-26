@@ -7,7 +7,6 @@ dagster-aws
 ipython-genutils==0.2.0
 advertools==0.13.2
 minio==7.1.13
-
 docker>=6.1.0
 
 earthcube-utilities>=0.1.17

@@ -21,6 +21,18 @@ from urllib.error import HTTPError
 from ec.reporting.report import missingReport
 from ec.datastore import s3
 
+from typing import Any, Mapping, Optional, Sequence
+
+import docker
+from dagster import Field, In, Nothing, OpExecutionContext, StringSource, op
+from dagster._annotations import experimental
+from dagster._core.utils import parse_env_var
+from dagster._serdes.utils import hash_str
+
+from dagster_docker.container_context import DockerContainerContext
+from dagster_docker.docker_run_launcher import DockerRunLauncher
+from dagster_docker.utils import DOCKER_CONFIG_SCHEMA, validate_docker_image
+
 DEBUG=os.environ.get('DEBUG')
 GLEANER_CONFIG_VOLUME=os.environ.get('GLEANER_CONFIG_VOLUME')
 # Vars and Envs
@@ -162,11 +174,62 @@ def postRelease(source):
         get_dagster_logger().info(f'graph: error')
         raise Exception(f' graph: insert failed: status:{r.status_code}')
 
+def _get_client(docker_container_context: DockerContainerContext):
+    headers = {'X-API-Key': APIKEY}
+    client = docker.DockerClient(base_url=URL, version="1.43" )
+    #client = docker.APIClient(base_url=URL, version="1.35")
+    get_dagster_logger().info(f"creat docker client")
+    if (client.api._general_configs):
+        client.api._general_configs["HttpHeaders"] = headers
+    else:
+        client.api._general_configs={"HttpHeaders":headers}
+    client.api.headers['X-API-Key'] = APIKEY
+    get_dagster_logger().info(f" docker version {client.version()}")
+    if docker_container_context.registry:
+        client.login(
+            registry=docker_container_context.registry["url"],
+            username=docker_container_context.registry["username"],
+            password=docker_container_context.registry["password"],
+        )
+    return client
 
-def gleanerio(mode, source):
+
+def _get_container_name(run_id, op_name, retry_number):
+    container_name = hash_str(run_id + op_name)
+
+    retry_number = retry_number
+    if retry_number > 0:
+        container_name = f"{container_name}-{retry_number}"
+
+    return container_name
+
+
+def _create_container(
+    op_context: OpExecutionContext,
+    client,
+    container_context: DockerContainerContext,
+    image: str,
+    entrypoint: Optional[Sequence[str]],
+    command: Optional[Sequence[str]],
+        name=""
+):
+    env_vars = dict([parse_env_var(env_var) for env_var in container_context.env_vars])
+    get_dagster_logger().info(f"creat docker container")
+    return client.containers.create(
+        image,
+        name=name if len(name) else _get_container_name(op_context.run_id, op_context.op.name, op_context.retry_number),
+        detach=True,
+        network=container_context.networks[0] if len(container_context.networks) else None,
+  #      entrypoint=entrypoint,
+        command=command,
+        environment=env_vars,
+        **container_context.container_kwargs,
+    )
+
+def gleanerio(context, mode, source):
     ## ------------   Create
 
-    get_dagster_logger().info(f"Create: {str(mode)}")
+    get_dagster_logger().info(f"Gleanerio mode: {str(mode)}")
 
     if str(mode) == "gleaner":
         IMAGE = os.environ.get('GLEANERIO_GLEANER_IMAGE')
@@ -216,6 +279,16 @@ def gleanerio(mode, source):
         # LOGFILE = 'log_nabu.txt'  # only used for local log file writing
     else:
         return 1
+
+    # from docker0dagster
+    run_container_context = DockerContainerContext.create_for_run(
+        context.dagster_run,
+        context.instance.run_launcher
+        if isinstance(context.instance.run_launcher, DockerRunLauncher)
+        else None,
+    )
+    validate_docker_image(IMAGE)
+
     try:
         # setup data/body for  container create
         data = {}
@@ -285,72 +358,53 @@ def gleanerio(mode, source):
         # we would like this to be "dagster-${PROJECT:-eco}" but that is a bit tricky
         # end setup of data
 
-        url = URL + 'containers/create'
-        params = {
-            "name": NAME
+# docker dagster
+        get_dagster_logger().info(f"start docker code region: ")
+        # trying to get headers in:
+        # https://github.com/docker/docker-py/blob/84414e343e526cf93f285284dd2c2c40f703e4a9/docker/utils/decorators.py#L45
+        op_container_context = DockerContainerContext(
+            # registry=registry,
+            env_vars=enva,
+            networks=[GLEANER_HEADLESS_NETWORK],
+            container_kwargs={"working_dir": data["WorkingDir"],
+                              "volumes": {
+                                                          f"{GLEANER_CONFIG_VOLUME}":
+                                                              {'bind': '/configs', 'mode': 'rw'}
+                                                          },
 
-        }
 
-        query_string = urllib.parse.urlencode(params)
-        url = url + "?" + query_string
+            },
+        )
+        container_context = run_container_context.merge(op_container_context)
+        get_dagster_logger().info(f"call docker _get_client: ")
+        client = _get_client(container_context)
 
-        get_dagster_logger().info(f"URL: {str(url)}")
-        get_dagster_logger().info(f"container config: {str(json.dumps(data))}")
-        req = request.Request(url, str.encode(json.dumps(data) ))
-        req.add_header('X-API-Key', APIKEY)
-        req.add_header('content-type', 'application/json')
-        req.add_header('accept', 'application/json')
         try:
-            r = request.urlopen(req)
-            c = r.read()
-            d = json.loads(c)
-            cid = d['Id']
-            print(r.status)
-            get_dagster_logger().info(f"Create: {str(r.status)}")
-        except HTTPError or requests.HTTPError as err:
-            if (err.code == 409):
-                print("failed to create container: container exists; use docker container ls -a : ", err)
-                get_dagster_logger().info(f"Create Failed: exsting container:  container exists; use docker container ls -a : {str(err)}")
-            elif (err.code == 404):
-                print("failed to create container: missing GLEANER_CONTAINER_IMAGE: load into portainer/docker : ", err)
-                get_dagster_logger().info(f"Create Failed: bad GLEANER_CONTAINER_IMAGE: load into portainer/docker : reason {str(err)}")
-            else:
-                print("failed to create container:  unknown reason: ", err)
-                get_dagster_logger().info(f"Create Failed: unknown reason {str(err)}")
-            raise err
-        except Exception as err:
-            print("failed to create container:  unknown reason: ", err)
-            get_dagster_logger().info(f"Create Failed: unknown reason {str(err)}")
-            raise err
-        print(f"containerid:{cid}")
+            get_dagster_logger().info(f"try docker _create_container: ")
+            container = _create_container(
+                context, client, container_context, IMAGE, "", data["Cmd"], name=NAME
+            )
+        except docker.errors.ImageNotFound:
+            client.images.pull(IMAGE)
+            container = _create_container(
+                context, client, container_context, IMAGE, "", data["Cmd"], name=NAME
+            )
+
+        if len(container_context.networks) > 1:
+            for network_name in container_context.networks[1:]:
+                network = client.networks.get(network_name)
+                network.connect(container)
+
+        cid = container.id # legacy til the start get's fixed
+
+
 
         ## ------------  Archive to load, which is how to send in the config (from where?)
 
-        url = URL + 'containers/' + cid + '/archive'
-        params = {
-            'path': ARCHIVE_PATH
-        }
-        query_string = urllib.parse.urlencode(params)
-        url = url + "?" + query_string
 
-        get_dagster_logger().info(f"Container archive url: {url}")
-
-        # DATA = read_file_bytestream(ARCHIVE_FILE)
         DATA = s3reader(ARCHIVE_FILE)
+        container.put_archive(ARCHIVE_PATH,DATA )
 
-        req = request.Request(url, data=DATA, method="PUT")
-        req.add_header('X-API-Key', APIKEY)
-        req.add_header('content-type', 'application/x-compressed')
-        req.add_header('accept', 'application/json')
-        r = request.urlopen(req)
-
-        print(r.status)
-        get_dagster_logger().info(f"Container Archive added: {str(r.status)}")
-
-        # c = r.read()
-        # print(c)
-        # d = json.loads(c)
-        # print(d)
 
         ## ------------  Start
         ## note new issue:
@@ -374,38 +428,24 @@ def gleanerio(mode, source):
         print(r.status)
         get_dagster_logger().info(f"Start container: {str(r.status)}")
 
-        ## ------------  Wait expect 200
+        # container.start()
+        # client.api.start(container=container.id)
+        ## start is not working
 
-        url = URL + 'containers/' + cid + '/wait'
-        req = request.Request(url, data=EMPTY_DATA, method="POST")
-        req.add_header('X-API-Key', APIKEY)
-        req.add_header('content-type', 'application/json')
-        req.add_header('accept', 'application/json')
-        r = request.urlopen(req)
-        print(r.status)
-        get_dagster_logger().info(f"Container Wait: {str(r.status)}")
+        for line in container.logs(stdout=True, stderr=True, stream=True, follow=True):
+            get_dagster_logger().debug(line)  # noqa: T201
+
+        # ## ------------  Wait expect 200
+        exit_status = container.wait()["StatusCode"]
+        get_dagster_logger().info(f"Container Wait Exit status:  {exit_status}")
+
+
+
 
         ## ------------  Copy logs  expect 200
 
-        url = URL + 'containers/' + cid + '/logs'
-        params = {
-            'stdout': 'true',
-            'stderr': 'false'
-        }
-        query_string = urllib.parse.urlencode(params)
 
-        url = url + "?" + query_string
-        req = request.Request(url, method="GET")
-        req.add_header('X-API-Key', APIKEY)
-        req.add_header('accept', 'application/json')
-        r = request.urlopen(req)
-        print(r.status)
-        c = r.read().decode('latin-1')
-
-        # write to file
-        # f = open(LOGFILE, 'w')
-        # f.write(str(c))
-        # f.close()
+        c = container.logs(stdout=True, stderr=True, stream=False, follow=True).decode('latin-1')
 
         # write to s3
 
@@ -416,8 +456,6 @@ def gleanerio(mode, source):
         get_dagster_logger().info(f"container Logs to s3: {str(r.status)}")
 
 ## get log files
-
-        ## ------------  Remove   expect 204
         url = URL + 'containers/' + cid + '/archive'
         params = {
             'path': f"{WorkingDir}/logs"
@@ -426,7 +464,7 @@ def gleanerio(mode, source):
         url = url + "?" + query_string
 
         # print(url)
-        req = request.Request(url,  method="GET")
+        req = request.Request(url, method="GET")
         req.add_header('X-API-Key', APIKEY)
         req.add_header('content-type', 'application/x-compressed')
         req.add_header('accept', 'application/json')
@@ -434,8 +472,23 @@ def gleanerio(mode, source):
 
         log.info(f"{r.status} ")
         get_dagster_logger().info(f"Container Archive Retrieved: {str(r.status)}")
-       # s3loader(r.read().decode('latin-1'), NAME)
-        s3loader(r.read(), f"{source}_runlogs")
+        # s3loader(r.read().decode('latin-1'), NAME)
+        s3loader(r.read(), f"{source}_{mode}_runlogs")
+    # Future, need to extraxct files, and upload
+    # pw_tar = tarfile.TarFile(fileobj=StringIO(d.decode('utf-8')))
+    #    pw_tar.extractall("extract_to/")
+
+    # looks like get_archive also has issues. Returns nothing,
+       #  strm, stat =  container.get_archive(f"{WorkingDir}/logs/")
+       #  get_dagster_logger().info(f"container Logs to s3: {str(stat)}")
+       #
+       #  i =0
+       #  for d in strm:
+       #      r = d.decode('utf-8')
+       # # s3loader(r.read().decode('latin-1'), NAME)
+       #      s3loader(r.encode(), f"{source}_{i}_runlogs")
+       #      i+=1
+
     finally:
         if (not DEBUG) :
             if (cid):
@@ -457,32 +510,32 @@ def gleanerio(mode, source):
 
 @op
 def ssdbiodp_gleaner(context):
-    returned_value = gleanerio(("gleaner"), "ssdbiodp")
+    returned_value = gleanerio(context, ("gleaner"), "ssdbiodp")
     r = str('returned value:{}'.format(returned_value))
     get_dagster_logger().info(f"Gleaner notes are  {r} ")
     return r
 
 @op
 def ssdbiodp_nabu_prune(context, msg: str):
-    returned_value = gleanerio(("nabu"), "ssdbiodp")
+    returned_value = gleanerio(context,("nabu"), "ssdbiodp")
     r = str('returned value:{}'.format(returned_value))
     return msg + r
 
 @op
 def ssdbiodp_nabuprov(context, msg: str):
-    returned_value = gleanerio(("prov"), "ssdbiodp")
+    returned_value = gleanerio(context,("prov"), "ssdbiodp")
     r = str('returned value:{}'.format(returned_value))
     return msg + r
 
 @op
 def ssdbiodp_nabuorg(context, msg: str):
-    returned_value = gleanerio(("orgs"), "ssdbiodp")
+    returned_value = gleanerio(context,("orgs"), "ssdbiodp")
     r = str('returned value:{}'.format(returned_value))
     return msg + r
 
 @op
 def ssdbiodp_naburelease(context, msg: str):
-    returned_value = gleanerio(("release"), "ssdbiodp")
+    returned_value = gleanerio(context,("release"), "ssdbiodp")
     r = str('returned value:{}'.format(returned_value))
     return msg + r
 @op
