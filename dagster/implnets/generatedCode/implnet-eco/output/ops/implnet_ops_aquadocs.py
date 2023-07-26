@@ -1,25 +1,22 @@
 import distutils
 
-from dagster import op, graph, get_dagster_logger
-import subprocess
+from dagster import job, op, graph, get_dagster_logger
 import os, json, io
 import urllib
 from urllib import request
+from urllib.error import HTTPError
 from dagster import job, op, get_dagster_logger
 from ec.gleanerio.gleaner import getGleaner, getSitemapSourcesFromGleaner
+import json
+
 from minio import Minio
 from minio.error import S3Error
 from datetime import datetime
-from ec.reporting.report import missingReport, generateGraphReportsRepo, reportTypes
+from ec.reporting.report import missingReport, generateGraphReportsRepo, reportTypes, generateIdentifierRepo
 from ec.datastore import s3
-from ec.graph.manageGraph import ManageBlazegraph as mg
-
 import requests
 import logging as log
-
 from urllib.error import HTTPError
-from ec.reporting.report import missingReport
-from ec.datastore import s3
 
 from typing import Any, Mapping, Optional, Sequence
 
@@ -33,10 +30,11 @@ from dagster_docker.container_context import DockerContainerContext
 from dagster_docker.docker_run_launcher import DockerRunLauncher
 from dagster_docker.utils import DOCKER_CONFIG_SCHEMA, validate_docker_image
 
-DEBUG=os.environ.get('DEBUG')
-GLEANER_CONFIG_VOLUME=os.environ.get('GLEANER_CONFIG_VOLUME')
+DEBUG=(os.getenv('DEBUG', 'False').lower()  == 'true')
+# volume and netowrk need to be the names in docker, and not the names of the object in docker compose
+GLEANER_CONFIG_VOLUME=os.environ.get('GLEANER_CONFIG_VOLUME', "dagster_gleaner_configs")
 # Vars and Envs
-GLEANER_HEADLESS_NETWORK=os.environ.get('GLEANER_HEADLESS_NETWORK')
+GLEANER_HEADLESS_NETWORK=os.environ.get('GLEANER_HEADLESS_NETWORK', "headless_gleanerio")
 # env items
 URL = os.environ.get('PORTAINER_URL')
 APIKEY = os.environ.get('PORTAINER_KEY')
@@ -48,11 +46,12 @@ GLEANER_MINIO_USE_SSL = os.environ.get('GLEANER_MINIO_USE_SSL')
 GLEANER_MINIO_SECRET_KEY = os.environ.get('GLEANER_MINIO_SECRET_KEY')
 GLEANER_MINIO_ACCESS_KEY = os.environ.get('GLEANER_MINIO_ACCESS_KEY')
 GLEANER_MINIO_BUCKET = os.environ.get('GLEANER_MINIO_BUCKET')
-GLEANER_HEADLESS_ENDPOINT = os.environ.get('GLEANER_HEADLESS_ENDPOINT')
+GLEANER_HEADLESS_ENDPOINT = os.environ.get('GLEANER_HEADLESS_ENDPOINT', "http://headless:9222")
 # using GLEANER, even though this is a nabu property... same prefix seems easier
 GLEANER_GRAPH_URL = os.environ.get('GLEANER_GRAPH_URL')
 GLEANER_GRAPH_NAMESPACE = os.environ.get('GLEANER_GRAPH_NAMESPACE')
-
+GLEANERIO_GLEANER_CONFIG_PATH= os.environ.get('GLEANERIO_GLEANER_CONFIG_PATH', "/gleaner/gleanerconfig.yaml")
+GLEANERIO_NABU_CONFIG_PATH= os.environ.get('GLEANERIO_NABU_CONFIG_PATH', "/nabu/nabuconfig.yaml")
 
 def _graphEndpoint():
     url = f"{os.environ.get('GLEANER_GRAPH_URL')}/namespace/{os.environ.get('GLEANER_GRAPH_NAMESPACE')}/sparql"
@@ -236,8 +235,8 @@ def gleanerio(context, mode, source):
         ARCHIVE_FILE = os.environ.get('GLEANERIO_GLEANER_ARCHIVE_OBJECT')
         ARCHIVE_PATH = os.environ.get('GLEANERIO_GLEANER_ARCHIVE_PATH')
        # CMD = f"gleaner --cfg/gleaner/gleanerconfig.yaml -source {source} --rude"
-        CMD = ["--cfg", "/gleaner/gleanerconfig.yaml","-source", source, "--rude"]
-        NAME = "gleaner01_" + source
+        CMD = ["--cfg", GLEANERIO_GLEANER_CONFIG_PATH,"-source", source, "--rude"]
+        NAME = f"gleaner01_{source}_{str(mode)}"
         WorkingDir = "/gleaner/"
         #Entrypoint = ["/gleaner/gleaner", "--cfg", "/gleaner/gleanerconfig.yaml", "-source", source, "--rude"]
         # LOGFILE = 'log_gleaner.txt'  # only used for local log file writing
@@ -245,8 +244,8 @@ def gleanerio(context, mode, source):
         IMAGE = os.environ.get('GLEANERIO_NABU_IMAGE')
         ARCHIVE_FILE = os.environ.get('GLEANERIO_NABU_ARCHIVE_OBJECT')
         ARCHIVE_PATH = os.environ.get('GLEANERIO_NABU_ARCHIVE_PATH')
-        CMD = ["--cfg", "/nabu/nabuconfig.yaml", "prune", "--prefix", "summoned/" + source]
-        NAME = f"nabu01_{source}_prune"
+        CMD = ["--cfg", GLEANERIO_NABU_CONFIG_PATH, "prune", "--prefix", "summoned/" + source]
+        NAME = f"nabu01_{source}_{str(mode)}"
         WorkingDir = "/nabu/"
         Entrypoint = "nabu"
         # LOGFILE = 'log_nabu.txt'  # only used for local log file writing
@@ -254,8 +253,8 @@ def gleanerio(context, mode, source):
         IMAGE = os.environ.get('GLEANERIO_NABU_IMAGE')
         ARCHIVE_FILE = os.environ.get('GLEANERIO_NABU_ARCHIVE_OBJECT')
         ARCHIVE_PATH = os.environ.get('GLEANERIO_NABU_ARCHIVE_PATH')
-        CMD = ["--cfg", "/nabu/nabuconfig.yaml", "prefix", "--prefix", "prov/" + source]
-        NAME = f"nabu01_{source}_prov"
+        CMD = ["--cfg",  GLEANERIO_NABU_CONFIG_PATH, "prefix", "--prefix", "prov/" + source]
+        NAME = f"nabu01_{source}_{str(mode)}"
         WorkingDir = "/nabu/"
         Entrypoint = "nabu"
         # LOGFILE = 'log_nabu.txt'  # only used for local log file writing
@@ -263,8 +262,8 @@ def gleanerio(context, mode, source):
         IMAGE = os.environ.get('GLEANERIO_NABU_IMAGE')
         ARCHIVE_FILE = os.environ.get('GLEANERIO_NABU_ARCHIVE_OBJECT')
         ARCHIVE_PATH = os.environ.get('GLEANERIO_NABU_ARCHIVE_PATH')
-        CMD = ["--cfg", "/nabu/nabuconfig.yaml", "prefix", "--prefix", "orgs"]
-        NAME = f"nabu01_{source}_orgs"
+        CMD = ["--cfg",  GLEANERIO_NABU_CONFIG_PATH, "prefix", "--prefix", "orgs"]
+        NAME = f"nabu01_{source}_{str(mode)}"
         WorkingDir = "/nabu/"
         Entrypoint = "nabu"
         # LOGFILE = 'log_nabu.txt'  # only used for local log file writing
@@ -272,8 +271,8 @@ def gleanerio(context, mode, source):
         IMAGE = os.environ.get('GLEANERIO_NABU_IMAGE')
         ARCHIVE_FILE = os.environ.get('GLEANERIO_NABU_ARCHIVE_OBJECT')
         ARCHIVE_PATH = os.environ.get('GLEANERIO_NABU_ARCHIVE_PATH')
-        CMD = ["--cfg", "/nabu/nabuconfig.yaml", "release", "--prefix", "summoned/" + source]
-        NAME = f"nabu01_{source}_release"
+        CMD = ["--cfg",  GLEANERIO_NABU_CONFIG_PATH, "release", "--prefix", "summoned/" + source]
+        NAME = f"nabu01_{source}_{str(mode)}"
         WorkingDir = "/nabu/"
         Entrypoint = "nabu"
         # LOGFILE = 'log_nabu.txt'  # only used for local log file writing
@@ -344,8 +343,8 @@ def gleanerio(context, mode, source):
         enva.append(str("MINIO_ACCESS_KEY={}".format(GLEANER_MINIO_ACCESS_KEY)))
         enva.append(str("MINIO_BUCKET={}".format(GLEANER_MINIO_BUCKET)))
         enva.append(str("SPARQL_ENDPOINT={}".format(_graphEndpoint())))
-        enva.append(str("GLEANER_HEADLESS_ENDPOINT={}".format(os.environ.get('GLEANER_HEADLESS_ENDPOINT'))))
-        enva.append(str("GLEANER_HEADLESS_NETWORK={}".format(os.environ.get('GLEANER_HEADLESS_NETWORK'))))
+        enva.append(str("GLEANER_HEADLESS_ENDPOINT={}".format(GLEANER_HEADLESS_ENDPOINT)))
+        enva.append(str("GLEANER_HEADLESS_NETWORK={}".format(GLEANER_HEADLESS_NETWORK)))
 
         data["Env"] = enva
         data["HostConfig"] = {
@@ -489,6 +488,8 @@ def gleanerio(context, mode, source):
        #      s3loader(r.encode(), f"{source}_{i}_runlogs")
        #      i+=1
 
+       # s3loader(r.read().decode('latin-1'), NAME)
+        s3loader(r.read(), f"{source}_{str(mode)}_runlogs")
     finally:
         if (not DEBUG) :
             if (cid):
@@ -599,6 +600,32 @@ def aquadocs_graph_reports(context, msg: str):
 
     return msg + r
 
+@op
+def aquadocs_identifier_stats(context, msg: str):
+    source = getSitemapSourcesFromGleaner("/scheduler/gleanerconfig.yaml", sourcename="aquadocs")
+    s3Minio = s3.MinioDatastore(_pythonMinioUrl(GLEANER_MINIO_ADDRESS), None)
+    bucket = GLEANER_MINIO_BUCKET
+    source_name = "aquadocs"
+
+    returned_value = generateIdentifierRepo(source_name, bucket, s3Minio)
+    r = str('returned value:{}'.format(returned_value))
+    #r = str('identifier stats returned value:{}'.format(returned_value))
+    report = returned_value.to_json()
+    s3Minio.putReportFile(bucket, source_name, "identifier_stats.json", report)
+    return msg + r
+
+def aquadocs_bucket_urls(context, msg: str):
+    s3Minio = s3.MinioDatastore(_pythonMinioUrl(GLEANER_MINIO_ADDRESS), None)
+    bucket = GLEANER_MINIO_BUCKET
+    source_name = "aquadocs"
+
+    res = s3Minio.listSummonedUrls(bucket, source_name)
+    r = str('returned value:{}'.format(res))
+    bucketurls = json.dumps(res, indent=2)
+    s3Minio.putReportFile(GLEANER_MINIO_BUCKET, source_name, "bucketutil_urls.json", bucketurls)
+    return msg + r
+
+
 #Can we simplify and use just a method. Then import these methods?
 # def missingreport_s3(context, msg: str, source="aquadocs"):
 #
@@ -618,13 +645,23 @@ def aquadocs_graph_reports(context, msg: str):
 def harvest_aquadocs():
     harvest = aquadocs_gleaner()
 
-    report1 =aquadocs_missingreport_s3(harvest)
+    report_ms3 = aquadocs_missingreport_s3(harvest)
+    report_idstat = aquadocs_identifier_stats(report_ms3)
+    # for some reason, this causes a msg parameter missing
+   # report_bucketurl = aquadocs_bucket_urls(report_idstat)
+
     #report1 = missingreport_s3(harvest, source="aquadocs")
-    load1 = aquadocs_nabu_prune(harvest)
-    load2 = aquadocs_nabuprov(load1)
-    load3 = aquadocs_nabuorg(load2)
-    load4 = aquadocs_naburelease(load3)
-    load5 = aquadocs_uploadrelease(load4)
-    report2=aquadocs_missingreport_graph(load5)
-    report3=aquadocs_graph_reports(report2)
+    load_release = aquadocs_naburelease(harvest)
+    load_uploadrelease = aquadocs_uploadrelease(load_release)
+
+    load_prune = aquadocs_nabu_prune(load_uploadrelease)
+    load_prov = aquadocs_nabuprov(load_prune)
+    load_org = aquadocs_nabuorg(load_prov)
+
+# run after load
+    report_msgraph=aquadocs_missingreport_graph(load_org)
+    report_graph=aquadocs_graph_reports(report_msgraph)
+
+
+
 

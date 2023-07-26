@@ -7,6 +7,7 @@ from urllib import request
 from urllib.error import HTTPError
 from dagster import job, op, get_dagster_logger
 from ec.gleanerio.gleaner import getGleaner, getSitemapSourcesFromGleaner
+import json
 
 from minio import Minio
 from minio.error import S3Error
@@ -606,11 +607,23 @@ def SOURCEVAL_identifier_stats(context, msg: str):
     bucket = GLEANER_MINIO_BUCKET
     source_name = "SOURCEVAL"
 
-    returned_value = generateIdentifierRepo(source_name, s3Minio)
+    returned_value = generateIdentifierRepo(source_name, bucket, s3Minio)
+    r = str('returned value:{}'.format(returned_value))
     #r = str('identifier stats returned value:{}'.format(returned_value))
-    report = returned_value.to_csv(index=False)
-    s3Minio.putReportFile(bucket, source_name, "identifier_stats.csv", report)
-    return msg
+    report = returned_value.to_json()
+    s3Minio.putReportFile(bucket, source_name, "identifier_stats.json", report)
+    return msg + r
+
+def SOURCEVAL_bucket_urls(context, msg: str):
+    s3Minio = s3.MinioDatastore(_pythonMinioUrl(GLEANER_MINIO_ADDRESS), None)
+    bucket = GLEANER_MINIO_BUCKET
+    source_name = "SOURCEVAL"
+
+    res = s3Minio.listSummonedUrls(bucket, source_name)
+    r = str('returned value:{}'.format(res))
+    bucketurls = json.dumps(res, indent=2)
+    s3Minio.putReportFile(GLEANER_MINIO_BUCKET, source_name, "bucketutil_urls.json", bucketurls)
+    return msg + r
 
 
 #Can we simplify and use just a method. Then import these methods?
@@ -632,21 +645,23 @@ def SOURCEVAL_identifier_stats(context, msg: str):
 def harvest_SOURCEVAL():
     harvest = SOURCEVAL_gleaner()
 
+    report_ms3 = SOURCEVAL_missingreport_s3(harvest)
+    report_idstat = SOURCEVAL_identifier_stats(report_ms3)
+    # for some reason, this causes a msg parameter missing
+   # report_bucketurl = SOURCEVAL_bucket_urls(report_idstat)
 
-    report1 =SOURCEVAL_missingreport_s3(harvest)
-    report4 = SOURCEVAL_identifier_stats(report1)
     #report1 = missingreport_s3(harvest, source="SOURCEVAL")
-    load1 = SOURCEVAL_naburelease(harvest)
-    load2 = SOURCEVAL_uploadrelease(load1)
+    load_release = SOURCEVAL_naburelease(harvest)
+    load_uploadrelease = SOURCEVAL_uploadrelease(load_release)
 
-    load3 = SOURCEVAL_nabu_prune(load2)
-    load4 = SOURCEVAL_nabuprov(load3)
-    load5 = SOURCEVAL_nabuorg(load4)
+    load_prune = SOURCEVAL_nabu_prune(load_uploadrelease)
+    load_prov = SOURCEVAL_nabuprov(load_prune)
+    load_org = SOURCEVAL_nabuorg(load_prov)
 
 # run after load
-    report2=SOURCEVAL_missingreport_graph(load5)
-    report3=SOURCEVAL_graph_reports(report2)
+    report_msgraph=SOURCEVAL_missingreport_graph(load_org)
+    report_graph=SOURCEVAL_graph_reports(report_msgraph)
 
-    
+
 
 
