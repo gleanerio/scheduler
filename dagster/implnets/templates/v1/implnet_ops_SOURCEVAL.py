@@ -1,25 +1,18 @@
 import distutils
 
-from dagster import op, graph, get_dagster_logger
-import subprocess
+from dagster import job, op, graph, get_dagster_logger
 import os, json, io
 import urllib
 from urllib import request
-from dagster import job, op, get_dagster_logger
-from ec.gleanerio.gleaner import getGleaner, getSitemapSourcesFromGleaner
+from ec.gleanerio.gleaner import getSitemapSourcesFromGleaner
 from minio import Minio
 from minio.error import S3Error
 from datetime import datetime
-from ec.reporting.report import missingReport, generateGraphReportsRepo, reportTypes
+from ec.reporting.report import missingReport, generateGraphReportsRepo, reportTypes, generateIdentifierRepo
 from ec.datastore import s3
-from ec.graph.manageGraph import ManageBlazegraph as mg
-
 import requests
 import logging as log
-
 from urllib.error import HTTPError
-from ec.reporting.report import missingReport
-from ec.datastore import s3
 
 DEBUG=os.environ.get('DEBUG')
 GLEANER_CONFIG_VOLUME=os.environ.get('GLEANER_CONFIG_VOLUME')
@@ -546,6 +539,20 @@ def SOURCEVAL_graph_reports(context, msg: str):
 
     return msg + r
 
+@op
+def SOURCEVAL_identifier_stats(context, msg: str):
+    source = getSitemapSourcesFromGleaner("/scheduler/gleanerconfig.yaml", sourcename="SOURCEVAL")
+    s3Minio = s3.MinioDatastore(_pythonMinioUrl(GLEANER_MINIO_ADDRESS), None)
+    bucket = GLEANER_MINIO_BUCKET
+    source_name = "SOURCEVAL"
+
+    returned_value = generateIdentifierRepo(source_name, s3Minio)
+    #r = str('identifier stats returned value:{}'.format(returned_value))
+    report = returned_value.to_csv(index=False)
+    s3Minio.putReportFile(bucket, source_name, "identifier_stats.csv", report)
+    return msg
+
+
 #Can we simplify and use just a method. Then import these methods?
 # def missingreport_s3(context, msg: str, source="SOURCEVAL"):
 #
@@ -565,13 +572,13 @@ def SOURCEVAL_graph_reports(context, msg: str):
 def harvest_SOURCEVAL():
     harvest = SOURCEVAL_gleaner()
 
-    report1 =SOURCEVAL_missingreport_s3(harvest)
-    #report1 = missingreport_s3(harvest, source="SOURCEVAL")
+    report1 = SOURCEVAL_missingreport_s3(harvest)
     load1 = SOURCEVAL_nabu_prune(harvest)
     load2 = SOURCEVAL_nabuprov(load1)
     load3 = SOURCEVAL_nabuorg(load2)
     load4 = SOURCEVAL_naburelease(load3)
     load5 = SOURCEVAL_uploadrelease(load4)
-    report2=SOURCEVAL_missingreport_graph(load5)
-    report3=SOURCEVAL_graph_reports(report2)
+    report2 = SOURCEVAL_missingreport_graph(load5)
+    report3 = SOURCEVAL_graph_reports(report2)
+    report4 = SOURCEVAL_identifier_stats(report3)
 
