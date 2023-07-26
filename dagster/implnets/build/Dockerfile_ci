@@ -1,4 +1,4 @@
-FROM python:3.10-slim
+FROM python:3.11-slim
 
 # Read the ARG implnet to set who to build for.
 
@@ -7,6 +7,7 @@ FROM python:3.10-slim
 ARG implnet=eco
 RUN mkdir -p /usr/src/app/
 
+RUN pip install --upgrade pip
 ## this is a base for the project. Build this 'layer' first
 COPY ./requirements.txt .
 RUN pip install -r requirements.txt

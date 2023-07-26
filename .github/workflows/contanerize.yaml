@@ -10,7 +10,7 @@ on:
       - main
       - dev
       - dev_eco
-      -  dev_dv
+      - dv_docker
     tags:
       - "v*.*.*"
 
