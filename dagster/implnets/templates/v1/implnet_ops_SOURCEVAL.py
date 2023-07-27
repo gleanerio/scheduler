@@ -366,10 +366,10 @@ def gleanerio(context, mode, source):
             env_vars=enva,
             networks=[GLEANER_HEADLESS_NETWORK],
             container_kwargs={"working_dir": data["WorkingDir"],
-                              "volumes": {
-                                                          f"{GLEANER_CONFIG_VOLUME}":
-                                                              {'bind': '/configs', 'mode': 'rw'}
-                                                          },
+                              # "volumes": {
+                              #                             f"{GLEANER_CONFIG_VOLUME}":
+                              #                                 {'bind': '/configs', 'mode': 'rw'}
+                              #                             },
 
 
             },
@@ -489,7 +489,7 @@ def gleanerio(context, mode, source):
        #      i+=1
 
        # s3loader(r.read().decode('latin-1'), NAME)
-        s3loader(r.read(), f"{source}_{str(mode)}_runlogs")
+
     finally:
         if (not DEBUG) :
             if (cid):

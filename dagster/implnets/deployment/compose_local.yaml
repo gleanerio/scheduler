@@ -11,10 +11,7 @@ networks:
 volumes:
     dagster-postgres:
         driver: local
-    dagster-project:
-      driver: local
-      #name: dagster-${PROJECT:-eco}
-      name: ${GLEANER_CONFIG_VOLUME:-dagster_gleaner_configs}
+
 # let yourself use local configuration
 configs:
   gleaner:
@@ -63,7 +60,6 @@ services:
             - GLEANER_HEADLESS_NETWORK=${GLEANER_HEADLESS_NETWORK}
             - GLEANER_GRAPH_URL=${GLEANER_GRAPH_URL}
             - GLEANER_GRAPH_NAMESPACE=${GLEANER_GRAPH_NAMESPACE}
-            - GLEANER_CONFIG_VOLUME=${GLEANER_CONFIG_VOLUME}
             - GLEANERIO_NABU_CONFIG_PATH=${GLEANERIO_NABU_CONFIG_PATH:-/configs/gleaner/nabuconfig.yaml}
             - GLEANERIO_GLEANER_CONFIG_PATH=${GLEANERIO_GLEANER_CONFIG_PATH:-/configs/gleaner/gleanerconfig.yaml}
 
@@ -165,27 +161,5 @@ services:
         - headless
         # in code, use names defined in network above
 
-    configs_volume:
-      # image: chromedp/headless-shell:stable
-      # stable after 105 causes "devtool: CreateURL: Using unsafe HTTP verb GET to invoke /json/new. This action supports only PUT verb.",
-      image: busybox
-      #    build:
-  #      context: .
-  #      shm_size: "2gb"
-      restart: "no"
-      volumes:
-        - dagster-project:/configs
-      #command: ["/bin/busybox", "httpd", "-f", "-p", "8080"]
-      configs:
-            - source: gleaner
-              target: /configs/gleaner/gleanerconfig.yaml
-             # uid: "103"
-             # gid: "103"
-              mode: 0444
-            - source: nabu
-              target: /configs/nabu/nabuconfig.yaml
-             # uid: "103"
-             # gid: "103"
-              mode: 0444
-        # in code, use names defined in network above
+
 
