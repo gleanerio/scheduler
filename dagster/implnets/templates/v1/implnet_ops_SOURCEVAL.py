@@ -510,44 +510,44 @@ def gleanerio(context, mode, source):
     return 0
 
 @op
-def SOURCEVAL_gleaner(context):
+def SOURCEVAL_gleaner(context)-> str:
     returned_value = gleanerio(context, ("gleaner"), "SOURCEVAL")
     r = str('returned value:{}'.format(returned_value))
     get_dagster_logger().info(f"Gleaner notes are  {r} ")
     return r
 
 @op
-def SOURCEVAL_nabu_prune(context, msg: str):
+def SOURCEVAL_nabu_prune(context, msg: str)-> str:
     returned_value = gleanerio(context,("nabu"), "SOURCEVAL")
     r = str('returned value:{}'.format(returned_value))
     return msg + r
 
 @op
-def SOURCEVAL_nabuprov(context, msg: str):
+def SOURCEVAL_nabuprov(context, msg: str)-> str:
     returned_value = gleanerio(context,("prov"), "SOURCEVAL")
     r = str('returned value:{}'.format(returned_value))
     return msg + r
 
 @op
-def SOURCEVAL_nabuorg(context, msg: str):
+def SOURCEVAL_nabuorg(context, msg: str)-> str:
     returned_value = gleanerio(context,("orgs"), "SOURCEVAL")
     r = str('returned value:{}'.format(returned_value))
     return msg + r
 
 @op
-def SOURCEVAL_naburelease(context, msg: str):
+def SOURCEVAL_naburelease(context, msg: str) -> str:
     returned_value = gleanerio(context,("release"), "SOURCEVAL")
     r = str('returned value:{}'.format(returned_value))
     return msg + r
 @op
-def SOURCEVAL_uploadrelease(context, msg: str):
+def SOURCEVAL_uploadrelease(context, msg: str) -> str:
     returned_value = postRelease("SOURCEVAL")
     r = str('returned value:{}'.format(returned_value))
     return msg + r
 
 
 @op
-def SOURCEVAL_missingreport_s3(context, msg: str):
+def SOURCEVAL_missingreport_s3(context, msg: str) -> str:
     source = getSitemapSourcesFromGleaner("/scheduler/gleanerconfig.yaml", sourcename="SOURCEVAL")
     source_url = source.get('url')
     s3Minio = s3.MinioDatastore(_pythonMinioUrl(GLEANER_MINIO_ADDRESS), None)
@@ -562,7 +562,7 @@ def SOURCEVAL_missingreport_s3(context, msg: str):
     s3Minio.putReportFile(bucket, source_name, "missing_report_s3.json", report)
     return msg + r
 @op
-def SOURCEVAL_missingreport_graph(context, msg: str):
+def SOURCEVAL_missingreport_graph(context, msg: str) -> str:
     source = getSitemapSourcesFromGleaner("/scheduler/gleanerconfig.yaml", sourcename="SOURCEVAL")
     source_url = source.get('url')
     s3Minio = s3.MinioDatastore(_pythonMinioUrl(GLEANER_MINIO_ADDRESS), None)
@@ -581,7 +581,7 @@ def SOURCEVAL_missingreport_graph(context, msg: str):
 
     return msg + r
 @op
-def SOURCEVAL_graph_reports(context, msg: str):
+def SOURCEVAL_graph_reports(context, msg: str) -> str:
     source = getSitemapSourcesFromGleaner("/scheduler/gleanerconfig.yaml", sourcename="SOURCEVAL")
     #source_url = source.get('url')
     s3Minio = s3.MinioDatastore(_pythonMinioUrl(GLEANER_MINIO_ADDRESS), None)
@@ -601,7 +601,7 @@ def SOURCEVAL_graph_reports(context, msg: str):
     return msg + r
 
 @op
-def SOURCEVAL_identifier_stats(context, msg: str):
+def SOURCEVAL_identifier_stats(context, msg: str) -> str:
     source = getSitemapSourcesFromGleaner("/scheduler/gleanerconfig.yaml", sourcename="SOURCEVAL")
     s3Minio = s3.MinioDatastore(_pythonMinioUrl(GLEANER_MINIO_ADDRESS), None)
     bucket = GLEANER_MINIO_BUCKET
@@ -614,7 +614,8 @@ def SOURCEVAL_identifier_stats(context, msg: str):
     s3Minio.putReportFile(bucket, source_name, "identifier_stats.json", report)
     return msg + r
 
-def SOURCEVAL_bucket_urls(context, msg: str):
+@op()
+def SOURCEVAL_bucket_urls(context, msg: str) -> str:
     s3Minio = s3.MinioDatastore(_pythonMinioUrl(GLEANER_MINIO_ADDRESS), None)
     bucket = GLEANER_MINIO_BUCKET
     source_name = "SOURCEVAL"
@@ -648,7 +649,7 @@ def harvest_SOURCEVAL():
     report_ms3 = SOURCEVAL_missingreport_s3(harvest)
     report_idstat = SOURCEVAL_identifier_stats(report_ms3)
     # for some reason, this causes a msg parameter missing
-   # report_bucketurl = SOURCEVAL_bucket_urls(report_idstat)
+    report_bucketurl = SOURCEVAL_bucket_urls(report_idstat)
 
     #report1 = missingreport_s3(harvest, source="SOURCEVAL")
     load_release = SOURCEVAL_naburelease(harvest)
