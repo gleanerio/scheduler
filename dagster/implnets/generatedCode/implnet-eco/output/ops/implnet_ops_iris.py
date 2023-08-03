@@ -227,7 +227,7 @@ def _create_container(
 
 def gleanerio(context, mode, source):
     ## ------------   Create
-
+    returnCode = 0
     get_dagster_logger().info(f"Gleanerio mode: {str(mode)}")
 
     if str(mode) == "gleaner":
@@ -277,7 +277,9 @@ def gleanerio(context, mode, source):
         Entrypoint = "nabu"
         # LOGFILE = 'log_nabu.txt'  # only used for local log file writing
     else:
-        return 1
+
+        returnCode = 1
+        return returnCode
 
     # from docker0dagster
     run_container_context = DockerContainerContext.create_for_run(
@@ -430,13 +432,23 @@ def gleanerio(context, mode, source):
         # container.start()
         # client.api.start(container=container.id)
         ## start is not working
-
-        for line in container.logs(stdout=True, stderr=True, stream=True, follow=True):
-            get_dagster_logger().debug(line)  # noqa: T201
+        try:
+            for line in container.logs(stdout=True, stderr=True, stream=True, follow=True):
+                get_dagster_logger().debug(line)  # noqa: T201
+        except docker.errors.APIError as ex:
+            get_dagster_logger().info(f"watch container logs failed Docker API ISSUE: ", ex)
+            returnCode = 1
+        except Exception as ex:
+            get_dagster_logger().info(f"watch container logs failed other issue: ", ex)
+            returnCode = 1
 
         # ## ------------  Wait expect 200
+        # we want to get the logs, no matter what, so do not exit, yet.
+        ## or should logs be moved into finally?
+        ### in which case they need to be methods that don't send back errors.
         exit_status = container.wait()["StatusCode"]
         get_dagster_logger().info(f"Container Wait Exit status:  {exit_status}")
+        returnCode = exit_status
 
 
 
@@ -444,7 +456,7 @@ def gleanerio(context, mode, source):
         ## ------------  Copy logs  expect 200
 
 
-        c = container.logs(stdout=True, stderr=True, stream=False, follow=True).decode('latin-1')
+        c = container.logs(stdout=True, stderr=True, stream=False, follow=False).decode('latin-1')
 
         # write to s3
 
@@ -489,65 +501,72 @@ def gleanerio(context, mode, source):
        #      i+=1
 
        # s3loader(r.read().decode('latin-1'), NAME)
-        s3loader(r.read(), f"{source}_{str(mode)}_runlogs")
+
     finally:
         if (not DEBUG) :
-            if (cid):
-                url = URL + 'containers/' + cid
-                req = request.Request(url, method="DELETE")
-                req.add_header('X-API-Key', APIKEY)
-                # req.add_header('content-type', 'application/json')
-                req.add_header('accept', 'application/json')
-                r = request.urlopen(req)
-                print(r.status)
+            # if (cid):
+            #     url = URL + 'containers/' + cid
+            #     req = request.Request(url, method="DELETE")
+            #     req.add_header('X-API-Key', APIKEY)
+            #     # req.add_header('content-type', 'application/json')
+            #     req.add_header('accept', 'application/json')
+            #     r = request.urlopen(req)
+            #     print(r.status)
+            #     get_dagster_logger().info(f"Container Remove: {str(r.status)}")
+            # else:
+            #     get_dagster_logger().info(f"Container Not created, so not removed.")
+            if (container):
+                container.remove(force=True)
                 get_dagster_logger().info(f"Container Remove: {str(r.status)}")
             else:
                 get_dagster_logger().info(f"Container Not created, so not removed.")
         else:
             get_dagster_logger().info(f"Container NOT Remove: DEBUG ENABLED")
 
-
-    return 0
+    if (returnCode != 0):
+        get_dagster_logger().info(f"Gleaner/Nabu container non-zero exit code. See logs in S3")
+        raise Exception("Gleaner/Nabu container non-zero exit code. See logs in S3")
+    return returnCode
 
 @op
-def iris_gleaner(context):
+def iris_gleaner(context)-> str:
     returned_value = gleanerio(context, ("gleaner"), "iris")
     r = str('returned value:{}'.format(returned_value))
     get_dagster_logger().info(f"Gleaner notes are  {r} ")
     return r
 
 @op
-def iris_nabu_prune(context, msg: str):
+def iris_nabu_prune(context, msg: str)-> str:
     returned_value = gleanerio(context,("nabu"), "iris")
     r = str('returned value:{}'.format(returned_value))
     return msg + r
 
 @op
-def iris_nabuprov(context, msg: str):
+def iris_nabuprov(context, msg: str)-> str:
     returned_value = gleanerio(context,("prov"), "iris")
     r = str('returned value:{}'.format(returned_value))
     return msg + r
 
 @op
-def iris_nabuorg(context, msg: str):
+def iris_nabuorg(context, msg: str)-> str:
     returned_value = gleanerio(context,("orgs"), "iris")
     r = str('returned value:{}'.format(returned_value))
     return msg + r
 
 @op
-def iris_naburelease(context, msg: str):
+def iris_naburelease(context, msg: str) -> str:
     returned_value = gleanerio(context,("release"), "iris")
     r = str('returned value:{}'.format(returned_value))
     return msg + r
 @op
-def iris_uploadrelease(context, msg: str):
+def iris_uploadrelease(context, msg: str) -> str:
     returned_value = postRelease("iris")
     r = str('returned value:{}'.format(returned_value))
     return msg + r
 
 
 @op
-def iris_missingreport_s3(context, msg: str):
+def iris_missingreport_s3(context, msg: str) -> str:
     source = getSitemapSourcesFromGleaner("/scheduler/gleanerconfig.yaml", sourcename="iris")
     source_url = source.get('url')
     s3Minio = s3.MinioDatastore(_pythonMinioUrl(GLEANER_MINIO_ADDRESS), None)
@@ -562,7 +581,7 @@ def iris_missingreport_s3(context, msg: str):
     s3Minio.putReportFile(bucket, source_name, "missing_report_s3.json", report)
     return msg + r
 @op
-def iris_missingreport_graph(context, msg: str):
+def iris_missingreport_graph(context, msg: str) -> str:
     source = getSitemapSourcesFromGleaner("/scheduler/gleanerconfig.yaml", sourcename="iris")
     source_url = source.get('url')
     s3Minio = s3.MinioDatastore(_pythonMinioUrl(GLEANER_MINIO_ADDRESS), None)
@@ -581,7 +600,7 @@ def iris_missingreport_graph(context, msg: str):
 
     return msg + r
 @op
-def iris_graph_reports(context, msg: str):
+def iris_graph_reports(context, msg: str) -> str:
     source = getSitemapSourcesFromGleaner("/scheduler/gleanerconfig.yaml", sourcename="iris")
     #source_url = source.get('url')
     s3Minio = s3.MinioDatastore(_pythonMinioUrl(GLEANER_MINIO_ADDRESS), None)
@@ -601,7 +620,7 @@ def iris_graph_reports(context, msg: str):
     return msg + r
 
 @op
-def iris_identifier_stats(context, msg: str):
+def iris_identifier_stats(context, msg: str) -> str:
     source = getSitemapSourcesFromGleaner("/scheduler/gleanerconfig.yaml", sourcename="iris")
     s3Minio = s3.MinioDatastore(_pythonMinioUrl(GLEANER_MINIO_ADDRESS), None)
     bucket = GLEANER_MINIO_BUCKET
@@ -614,7 +633,8 @@ def iris_identifier_stats(context, msg: str):
     s3Minio.putReportFile(bucket, source_name, "identifier_stats.json", report)
     return msg + r
 
-def iris_bucket_urls(context, msg: str):
+@op()
+def iris_bucket_urls(context, msg: str) -> str:
     s3Minio = s3.MinioDatastore(_pythonMinioUrl(GLEANER_MINIO_ADDRESS), None)
     bucket = GLEANER_MINIO_BUCKET
     source_name = "iris"
@@ -648,7 +668,7 @@ def harvest_iris():
     report_ms3 = iris_missingreport_s3(harvest)
     report_idstat = iris_identifier_stats(report_ms3)
     # for some reason, this causes a msg parameter missing
-   # report_bucketurl = iris_bucket_urls(report_idstat)
+    report_bucketurl = iris_bucket_urls(report_idstat)
 
     #report1 = missingreport_s3(harvest, source="iris")
     load_release = iris_naburelease(harvest)

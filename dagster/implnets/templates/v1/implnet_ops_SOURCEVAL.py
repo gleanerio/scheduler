@@ -227,7 +227,7 @@ def _create_container(
 
 def gleanerio(context, mode, source):
     ## ------------   Create
-
+    returnCode = 0
     get_dagster_logger().info(f"Gleanerio mode: {str(mode)}")
 
     if str(mode) == "gleaner":
@@ -277,7 +277,9 @@ def gleanerio(context, mode, source):
         Entrypoint = "nabu"
         # LOGFILE = 'log_nabu.txt'  # only used for local log file writing
     else:
-        return 1
+
+        returnCode = 1
+        return returnCode
 
     # from docker0dagster
     run_container_context = DockerContainerContext.create_for_run(
@@ -431,12 +433,24 @@ def gleanerio(context, mode, source):
         # client.api.start(container=container.id)
         ## start is not working
 
-        for line in container.logs(stdout=True, stderr=True, stream=True, follow=True):
-            get_dagster_logger().debug(line)  # noqa: T201
+        # do not let a possible issue with container logs  stop log upload.
+        ## I thinkthis happens when a container exits immediately.
+        try:
+            for line in container.logs(stdout=True, stderr=True, stream=True, follow=True):
+                get_dagster_logger().debug(line)  # noqa: T201
+        except docker.errors.APIError as ex:
+            get_dagster_logger().info(f"watch container logs failed Docker API ISSUE: ", ex)
+        except Exception as ex:
+            get_dagster_logger().info(f"watch container logs failed other issue: ", ex)
+
 
         # ## ------------  Wait expect 200
+        # we want to get the logs, no matter what, so do not exit, yet.
+        ## or should logs be moved into finally?
+        ### in which case they need to be methods that don't send back errors.
         exit_status = container.wait()["StatusCode"]
         get_dagster_logger().info(f"Container Wait Exit status:  {exit_status}")
+        returnCode = exit_status
 
 
 
@@ -444,7 +458,7 @@ def gleanerio(context, mode, source):
         ## ------------  Copy logs  expect 200
 
 
-        c = container.logs(stdout=True, stderr=True, stream=False, follow=True).decode('latin-1')
+        c = container.logs(stdout=True, stderr=True, stream=False, follow=False).decode('latin-1')
 
         # write to s3
 
@@ -489,7 +503,7 @@ def gleanerio(context, mode, source):
        #      i+=1
 
        # s3loader(r.read().decode('latin-1'), NAME)
-        s3loader(r.read(), f"{source}_{str(mode)}_runlogs")
+
     finally:
         if (not DEBUG) :
             # if (cid):
@@ -511,8 +525,10 @@ def gleanerio(context, mode, source):
         else:
             get_dagster_logger().info(f"Container NOT Remove: DEBUG ENABLED")
 
-
-    return 0
+    if (returnCode != 0):
+        get_dagster_logger().info(f"Gleaner/Nabu container non-zero exit code. See logs in S3")
+        raise Exception("Gleaner/Nabu container non-zero exit code. See logs in S3")
+    return returnCode
 
 @op
 def SOURCEVAL_gleaner(context)-> str:
