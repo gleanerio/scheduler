@@ -179,7 +179,9 @@ services:
       #    build:
   #      context: .
   #      shm_size: "2gb"
-      restart: "no"
+      deploy:
+          restart_policy:
+            condition: none
       volumes:
         - dagster-project:/configs
       #command: ["/bin/busybox", "httpd", "-f", "-p", "8080"]
