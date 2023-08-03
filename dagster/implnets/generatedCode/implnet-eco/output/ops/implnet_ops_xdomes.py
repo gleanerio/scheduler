@@ -1,11 +1,10 @@
 import distutils
 
-from dagster import job, op, graph, get_dagster_logger
+from dagster import job, op, graph,In, Nothing, get_dagster_logger
 import os, json, io
 import urllib
 from urllib import request
 from urllib.error import HTTPError
-from dagster import job, op, get_dagster_logger
 from ec.gleanerio.gleaner import getGleaner, getSitemapSourcesFromGleaner
 import json
 
@@ -52,7 +51,8 @@ GLEANER_GRAPH_URL = os.environ.get('GLEANER_GRAPH_URL')
 GLEANER_GRAPH_NAMESPACE = os.environ.get('GLEANER_GRAPH_NAMESPACE')
 GLEANERIO_GLEANER_CONFIG_PATH= os.environ.get('GLEANERIO_GLEANER_CONFIG_PATH', "/gleaner/gleanerconfig.yaml")
 GLEANERIO_NABU_CONFIG_PATH= os.environ.get('GLEANERIO_NABU_CONFIG_PATH', "/nabu/nabuconfig.yaml")
-
+GLEANERIO_GLEANER_IMAGE = os.environ.get('GLEANERIO_GLEANER_IMAGE', 'nsfearthcube/gleaner:latest')
+GLEANERIO_NABU_IMAGE = os.environ.get('GLEANERIO_NABU_IMAGE', 'nsfearthcube/nabu:latest')
 def _graphEndpoint():
     url = f"{os.environ.get('GLEANER_GRAPH_URL')}/namespace/{os.environ.get('GLEANER_GRAPH_NAMESPACE')}/sparql"
     return url
@@ -432,15 +432,17 @@ def gleanerio(context, mode, source):
         # container.start()
         # client.api.start(container=container.id)
         ## start is not working
+
+        # do not let a possible issue with container logs  stop log upload.
+        ## I thinkthis happens when a container exits immediately.
         try:
             for line in container.logs(stdout=True, stderr=True, stream=True, follow=True):
                 get_dagster_logger().debug(line)  # noqa: T201
         except docker.errors.APIError as ex:
             get_dagster_logger().info(f"watch container logs failed Docker API ISSUE: ", ex)
-            returnCode = 1
         except Exception as ex:
             get_dagster_logger().info(f"watch container logs failed other issue: ", ex)
-            returnCode = 1
+
 
         # ## ------------  Wait expect 200
         # we want to get the logs, no matter what, so do not exit, yet.
@@ -529,44 +531,61 @@ def gleanerio(context, mode, source):
     return returnCode
 
 @op
-def xdomes_gleaner(context)-> str:
+def xdomes_getImage(context):
+    run_container_context = DockerContainerContext.create_for_run(
+        context.dagster_run,
+        context.instance.run_launcher
+        if isinstance(context.instance.run_launcher, DockerRunLauncher)
+        else None,
+    )
+    get_dagster_logger().info(f"call docker _get_client: ")
+    client = _get_client(run_container_context)
+    client.images.pull(GLEANERIO_GLEANER_IMAGE)
+    client.images.pull(GLEANERIO_NABU_IMAGE)
+@op(ins={"start": In(Nothing)})
+def xdomes_gleaner(context):
     returned_value = gleanerio(context, ("gleaner"), "xdomes")
     r = str('returned value:{}'.format(returned_value))
-    get_dagster_logger().info(f"Gleaner notes are  {r} ")
-    return r
+    get_dagster_logger().info(f"Gleaner returned  {r} ")
+    return
 
-@op
-def xdomes_nabu_prune(context, msg: str)-> str:
+@op(ins={"start": In(Nothing)})
+def xdomes_nabu_prune(context):
     returned_value = gleanerio(context,("nabu"), "xdomes")
     r = str('returned value:{}'.format(returned_value))
-    return msg + r
+    get_dagster_logger().info(f"nabu prune returned  {r} ")
+    return
 
-@op
-def xdomes_nabuprov(context, msg: str)-> str:
+@op(ins={"start": In(Nothing)})
+def xdomes_nabuprov(context):
     returned_value = gleanerio(context,("prov"), "xdomes")
     r = str('returned value:{}'.format(returned_value))
-    return msg + r
+    get_dagster_logger().info(f"nabu prov returned  {r} ")
+    return
 
-@op
-def xdomes_nabuorg(context, msg: str)-> str:
+@op(ins={"start": In(Nothing)})
+def xdomes_nabuorg(context):
     returned_value = gleanerio(context,("orgs"), "xdomes")
     r = str('returned value:{}'.format(returned_value))
-    return msg + r
+    get_dagster_logger().info(f"nabu org load returned  {r} ")
+    return
 
-@op
-def xdomes_naburelease(context, msg: str) -> str:
+@op(ins={"start": In(Nothing)})
+def xdomes_naburelease(context):
     returned_value = gleanerio(context,("release"), "xdomes")
     r = str('returned value:{}'.format(returned_value))
-    return msg + r
-@op
-def xdomes_uploadrelease(context, msg: str) -> str:
+    get_dagster_logger().info(f"nabu release returned  {r} ")
+    return
+@op(ins={"start": In(Nothing)})
+def xdomes_uploadrelease(context):
     returned_value = postRelease("xdomes")
     r = str('returned value:{}'.format(returned_value))
-    return msg + r
+    get_dagster_logger().info(f"upload release returned  {r} ")
+    return
 
 
-@op
-def xdomes_missingreport_s3(context, msg: str) -> str:
+@op(ins={"start": In(Nothing)})
+def xdomes_missingreport_s3(context):
     source = getSitemapSourcesFromGleaner("/scheduler/gleanerconfig.yaml", sourcename="xdomes")
     source_url = source.get('url')
     s3Minio = s3.MinioDatastore(_pythonMinioUrl(GLEANER_MINIO_ADDRESS), None)
@@ -579,9 +598,10 @@ def xdomes_missingreport_s3(context, msg: str) -> str:
     r = str('missing repoort returned value:{}'.format(returned_value))
     report = json.dumps(returned_value, indent=2)
     s3Minio.putReportFile(bucket, source_name, "missing_report_s3.json", report)
-    return msg + r
-@op
-def xdomes_missingreport_graph(context, msg: str) -> str:
+    get_dagster_logger().info(f"missing s3 report  returned  {r} ")
+    return
+@op(ins={"start": In(Nothing)})
+def xdomes_missingreport_graph(context):
     source = getSitemapSourcesFromGleaner("/scheduler/gleanerconfig.yaml", sourcename="xdomes")
     source_url = source.get('url')
     s3Minio = s3.MinioDatastore(_pythonMinioUrl(GLEANER_MINIO_ADDRESS), None)
@@ -597,10 +617,10 @@ def xdomes_missingreport_graph(context, msg: str) -> str:
     report = json.dumps(returned_value, indent=2)
 
     s3Minio.putReportFile(bucket, source_name, "missing_report_graph.json", report)
-
-    return msg + r
-@op
-def xdomes_graph_reports(context, msg: str) -> str:
+    get_dagster_logger().info(f"missing graph  report  returned  {r} ")
+    return
+@op(ins={"start": In(Nothing)})
+def xdomes_graph_reports(context) :
     source = getSitemapSourcesFromGleaner("/scheduler/gleanerconfig.yaml", sourcename="xdomes")
     #source_url = source.get('url')
     s3Minio = s3.MinioDatastore(_pythonMinioUrl(GLEANER_MINIO_ADDRESS), None)
@@ -616,11 +636,11 @@ def xdomes_graph_reports(context, msg: str) -> str:
     #report = json.dumps(returned_value, indent=2) # value already json.dumps
     report = returned_value
     s3Minio.putReportFile(bucket, source_name, "graph_stats.json", report)
+    get_dagster_logger().info(f"graph report  returned  {r} ")
+    return
 
-    return msg + r
-
-@op
-def xdomes_identifier_stats(context, msg: str) -> str:
+@op(ins={"start": In(Nothing)})
+def xdomes_identifier_stats(context):
     source = getSitemapSourcesFromGleaner("/scheduler/gleanerconfig.yaml", sourcename="xdomes")
     s3Minio = s3.MinioDatastore(_pythonMinioUrl(GLEANER_MINIO_ADDRESS), None)
     bucket = GLEANER_MINIO_BUCKET
@@ -631,10 +651,11 @@ def xdomes_identifier_stats(context, msg: str) -> str:
     #r = str('identifier stats returned value:{}'.format(returned_value))
     report = returned_value.to_json()
     s3Minio.putReportFile(bucket, source_name, "identifier_stats.json", report)
-    return msg + r
+    get_dagster_logger().info(f"identifer stats report  returned  {r} ")
+    return
 
-@op()
-def xdomes_bucket_urls(context, msg: str) -> str:
+@op(ins={"start": In(Nothing)})
+def xdomes_bucket_urls(context):
     s3Minio = s3.MinioDatastore(_pythonMinioUrl(GLEANER_MINIO_ADDRESS), None)
     bucket = GLEANER_MINIO_BUCKET
     source_name = "xdomes"
@@ -643,7 +664,8 @@ def xdomes_bucket_urls(context, msg: str) -> str:
     r = str('returned value:{}'.format(res))
     bucketurls = json.dumps(res, indent=2)
     s3Minio.putReportFile(GLEANER_MINIO_BUCKET, source_name, "bucketutil_urls.json", bucketurls)
-    return msg + r
+    get_dagster_logger().info(f"bucker urls report  returned  {r} ")
+    return
 
 
 #Can we simplify and use just a method. Then import these methods?
@@ -663,24 +685,28 @@ def xdomes_bucket_urls(context, msg: str) -> str:
 #     return msg + r
 @graph
 def harvest_xdomes():
-    harvest = xdomes_gleaner()
+    containers = xdomes_getImage()
+    harvest = xdomes_gleaner(start=containers)
 
-    report_ms3 = xdomes_missingreport_s3(harvest)
-    report_idstat = xdomes_identifier_stats(report_ms3)
+# defingin nothing dependencies
+    # https://docs.dagster.io/concepts/ops-jobs-graphs/graphs#defining-nothing-dependencies
+
+    report_ms3 = xdomes_missingreport_s3(start=harvest)
+    report_idstat = xdomes_identifier_stats(start=report_ms3)
     # for some reason, this causes a msg parameter missing
-    report_bucketurl = xdomes_bucket_urls(report_idstat)
+    report_bucketurl = xdomes_bucket_urls(start=report_idstat)
 
     #report1 = missingreport_s3(harvest, source="xdomes")
-    load_release = xdomes_naburelease(harvest)
-    load_uploadrelease = xdomes_uploadrelease(load_release)
+    load_release = xdomes_naburelease(start=harvest)
+    load_uploadrelease = xdomes_uploadrelease(start=load_release)
 
-    load_prune = xdomes_nabu_prune(load_uploadrelease)
-    load_prov = xdomes_nabuprov(load_prune)
-    load_org = xdomes_nabuorg(load_prov)
+    load_prune = xdomes_nabu_prune(start=load_uploadrelease)
+    load_prov = xdomes_nabuprov(start=load_prune)
+    load_org = xdomes_nabuorg(start=load_prov)
 
 # run after load
-    report_msgraph=xdomes_missingreport_graph(load_org)
-    report_graph=xdomes_graph_reports(report_msgraph)
+    report_msgraph=xdomes_missingreport_graph(start=load_org)
+    report_graph=xdomes_graph_reports(start=report_msgraph)
 
 
 
