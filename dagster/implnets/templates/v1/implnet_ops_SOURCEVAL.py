@@ -368,10 +368,10 @@ def gleanerio(context, mode, source):
             env_vars=enva,
             networks=[GLEANER_HEADLESS_NETWORK],
             container_kwargs={"working_dir": data["WorkingDir"],
-                              "volumes": {
-                                                          f"{GLEANER_CONFIG_VOLUME}":
-                                                              {'bind': '/configs', 'mode': 'rw'}
-                                                          },
+                              # "volumes": {
+                              #                             f"{GLEANER_CONFIG_VOLUME}":
+                              #                                 {'bind': '/configs', 'mode': 'rw'}
+                              #                             },
 
 
             },
