@@ -439,9 +439,9 @@ def gleanerio(context, mode, source):
             for line in container.logs(stdout=True, stderr=True, stream=True, follow=True):
                 get_dagster_logger().debug(line)  # noqa: T201
         except docker.errors.APIError as ex:
-            get_dagster_logger().info(f"watch container logs failed Docker API ISSUE: ", ex)
+            get_dagster_logger().info(f"watch container logs failed Docker API ISSUE: {str(ex)} ")
         except Exception as ex:
-            get_dagster_logger().info(f"watch container logs failed other issue: ", ex)
+            get_dagster_logger().info(f"watch container logs failed other issue: {str(ex)}")
 
 
         # ## ------------  Wait expect 200
