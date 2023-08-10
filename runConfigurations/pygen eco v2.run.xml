@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="pygen eco v2" type="PythonConfigurationType" factoryName="Python">
+  <configuration default="false" name="pygen eco v2" type="PythonConfigurationType" factoryName="Python" folderName="pygen">
     <module name="scheduler" />
     <option name="INTERPRETER_OPTIONS" value="" />
     <option name="PARENT_ENVS" value="true" />

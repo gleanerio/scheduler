@@ -45,3 +45,5 @@ disable="""
     duplicate-code,
     wrong-import-order
     """
+[tool.dagster]
+module_name = "workflows.tasks.tasks"

@@ -162,7 +162,7 @@ sources:
 - sourcetype: sitemap
   name: opentopography
   logo: https://opentopography.org/sites/opentopography.org/files/ot_transp_logo_2.png
-  url: https://opentopography.org/sitemap.xml
+  url: https://portal.opentopography.org/sitemap.xml
   headless: false
   pid: https://www.re3data.org/repository/r3d100010655
   propername: OpenTopography
@@ -380,4 +380,42 @@ sources:
   other: {}
   headlesswait: 0
   delay: 0
+- sourcetype: googledrive
+  name: ecrr_submitted
+  logo: https://www.earthcube.org/sites/default/files/doc-repository/logo_earthcube_full_horizontal.png
+  url: https://drive.google.com/drive/u/0/folders/1TacUQqjpBbGsPQ8JPps47lBXMQsNBRnd
+  headless: false
+  pid: ""
+  propername: Earthcube Resource Registry
+  domain: http://www.earthcube.org/resourceregistry/
+  active: false
+  credentialsfile: configs/credentials/gleaner-331805-030e15e1d9c4.json
+  other: {}
+  headlesswait: 0
+  delay: 0
+  identifierpath: ""
+  apipagelimit: 0
+  identifiertype: identifierstring
+  fixcontextoption: 0
+  acceptcontenttype: application/ld+json, text/html
+  jsonprofile: application/ld+json
+- sourcetype: sitemap
+  name: ecrr_examples
+  logo: https://www.earthcube.org/sites/default/files/doc-repository/logo_earthcube_full_horizontal.png
+  url: https://raw.githubusercontent.com/earthcube/ecrro/gh-pages/Examples/sitemap.xml
+  headless: false
+  pid: ""
+  propername: Earthcube Resource Registry Examples
+  domain: http://www.earthcube.org/resourceregistry/examples
+  active: false
+  credentialsfile: ""
+  other: {}
+  headlesswait: 0
+  delay: 0
+  identifierpath: ""
+  apipagelimit: 0
+  identifiertype: identifierstring
+  fixcontextoption: 0
+  acceptcontenttype: application/ld+json, text/html
+  jsonprofile: application/ld+json
 

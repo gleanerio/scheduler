@@ -28,7 +28,7 @@ fi
 if [ -f $envfile ]
   then
     echo "using " $envfile
-    export $(cat ${envfile} | xargs)
+    export $(sed  '/^[ \t]*#/d' $envfile |  sed '/^$/d' | xargs)
   else
     echo "missing environment file. pass flag, or copy and edit file"
     echo "cp envFile.env .env"
@@ -97,3 +97,15 @@ else
       fi
 fi
 
+if [  "$(docker config ls  | grep -${GLEANERIO_WORKSPACE_CONFIG_PATH})" ] ; then
+   echo ${GLEANERIO_WORKSPACE_CONFIG_PATH} config exists;
+else
+   echo creating config
+
+      if `docker config create workspace-${PROJECT} ../configs/${PROJECT}/workspace.yaml`; then
+         echo 'Created gleaner config  workspace-${PROJECT} ${GLEANERIO_WORKSPACE_CONFIG_PATH}'
+      else
+         echo "ERROR: *** Failed to create config. "
+          exit 1
+      fi
+fi

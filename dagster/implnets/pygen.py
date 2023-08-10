@@ -20,8 +20,8 @@ def gencode(cf, od, td, days) -> str:
 
         # Get the count and divide into the hour count range (time
         # interval) we want to sprad thm over.
-        hours = int(days) * 24  # make 7 a cli param for the number of days to work over
-        inc = round(hours / len(c["sources"]))
+        hours = int(days) * 24  # days is the cli param for the number of days to work over
+        inc = round(hours / len(c["sources"])) # divide hours we want to run over by number of source to get increment
 
         print("index event every {} hours over {} day(s) period for {} items".format(inc, days, len(c["sources"])))
 
@@ -52,7 +52,7 @@ def gencode(cf, od, td, days) -> str:
                     di = int(days)
                     q = (((i * inc) / 24) % di) // 1
                     r = (i * inc) % 24
-                    new_cron_schedule = "0 {} * * {}".format(r, int(q))
+                    new_cron_schedule = "0 {} {} * *".format(r, int(q)+1)
                     pattern = r'cron_schedule="(.+?)"'
                     # print("index {}::  {}".format(i,new_cron_schedule))
                     for line in fileinput.input(dst, inplace=True):

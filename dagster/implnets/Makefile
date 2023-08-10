@@ -47,7 +47,7 @@ oih-clean:
 	cd ./generatedCode/implnet-oih && rm -rf ./output/*
 
 oih-generate:
-	python pygen.py -cf ./configs/oih/gleanerconfig.yaml -od ./generatedCode/implnet-oih/output  -td ./templates/v1   -d 7
+	python pygen.py -cf ./configs/oih/gleanerconfig.yaml -od ./generatedCode/implnet-oih/output  -td ./templates/v1   -d 14
 
 oih-build:
 	podman build  --tag="docker.io/fils/dagster_oih:$(VERSION)"  --build-arg implnet=oih --file=./build/Dockerfile .
@@ -64,7 +64,7 @@ iow-clean:
 	cd ./generatedCode/implnet-iow && rm -rf ./output/*
 
 iow-generate:
-	python pygen.py -cf ./configs/iow/gleanerconfig.yaml -od ./generatedCode/implnet-iow/output  -td ./templates/v1   -d 21
+	python pygen.py -cf ./configs/iow/gleanerconfig.yaml -od ./generatedCode/implnet-iow/output  -td ./templates/v1   -d 27
 
 iow-build:
 	podman build  --tag="docker.io/fils/dagster_iow:$(VERSION)"  --build-arg implnet=iow --file=./build/Dockerfile .
