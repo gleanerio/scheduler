@@ -45,7 +45,14 @@ secrets:
 services:
     dagster-dagit:
         image: docker.io/nsfearthcube/dagster-gleanerio:${CONTAINER_DAGSTER_TAG:-latest}
-        command: 'dagster-webserver  -w ${GLEANERIO_WORKSPACE_CONFIG_PATH:-/usr/src/app/workspace.yaml}  -h "0.0.0.0" -p 3000'
+        command:
+          - "dagster-webserver"
+          - "-w"
+          - "${GLEANERIO_WORKSPACE_CONFIG_PATH:-/usr/src/app/workspace.yaml}"
+          - "-h"
+          - "0.0.0.0"
+          - "-p"
+          - "3000"
         configs: &configs
           - source: workspace
             target: /usr/src/app/workspace.yaml
@@ -131,7 +138,11 @@ services:
           - MINIO_ROOT_SECRET_KEY
         environment: *env
 
-        command: "dagster-daemon run -w ${GLEANERIO_WORKSPACE_CONFIG_PATH:-/usr/src/app/workspace.yaml}"
+        command:
+           - "dagster-daemon"
+           - "run"
+           - "-w"
+           - "${GLEANERIO_WORKSPACE_CONFIG_PATH:-/usr/src/app/workspace.yaml}"
         depends_on:
             - dagster-postgres
         networks:
@@ -213,7 +224,7 @@ services:
         depends_on:
             - dagster-postgres
         networks:
-            - traefik_proxy
+            - dagster_host
     dagster-code-project:
         # you should be able to change the source locally, without a full rebuild.
        #image: dagster-${PROJECT:-eco}:latest
@@ -236,4 +247,4 @@ services:
         depends_on:
             - dagster-postgres
         networks:
-            - traefik_proxy
+            - dagster_host

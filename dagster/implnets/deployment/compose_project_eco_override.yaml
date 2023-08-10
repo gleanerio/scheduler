@@ -38,14 +38,25 @@ services:
             - GLEANERIO_GLEANER_DOCKER_CONFIG=${GLEANERIO_GLEANER_DOCKER_CONFIG:-gleaner}
             - ECRR_MINIO_BUCKET="ECRR"
             - ECRR_GRAPH_NAMESPACE="ECRR"
-        command: 'dagster-webserver  -w workspace.yaml  -h "0.0.0.0" -p 3000'
+        command:
+            - "dagster-webserver"
+            - "-w"
+            - "workspace.yaml"
+            - "-h"
+            - "0.0.0.0"
+            - "-p"
+            - "3000"
         depends_on: &deps
             -   dagster-code-project
             - dagster-code-tasks
 
     dagster-daemon:
         environment: *env
-        command: "dagster-daemon run -w workspace.yaml  "
+        command:
+        - "dagster-daemon"
+        - "run"
+        - "-w"
+        - "workspace.yaml"
         depends_on:
             - dagster-postgres
             - dagster-code-project
@@ -78,5 +89,5 @@ services:
         depends_on:
             - dagster-postgres
         networks:
-            - traefik_proxy
+            - dagster_host
 
