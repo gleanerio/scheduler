@@ -38,7 +38,7 @@ services:
             - GLEANERIO_GLEANER_DOCKER_CONFIG=${GLEANERIO_GLEANER_DOCKER_CONFIG:-gleaner}
             - ECRR_MINIO_BUCKET="ECRR"
             - ECRR_GRAPH_NAMESPACE="ECRR"
-#        command:
+            - #        command:
 #            - "dagster-webserver"
 #            - "-w"
 #            - "workspace.yaml"
@@ -52,6 +52,7 @@ services:
 
     dagster-daemon:
         environment: *env
+# portainer issue, merging commandsmay need to create a combined customised on
 #        command:
 #        - "dagster-daemon"
 #        - "run"

@@ -43,6 +43,8 @@ services:
             - GLEANERIO_GLEANER_DOCKER_CONFIG=${GLEANERIO_GLEANER_DOCKER_CONFIG:-gleaner}
             - ECRR_MINIO_BUCKET="ECRR"
             - ECRR_GRAPH_NAMESPACE="ECRR"
+# caution for a portainer additional file deply
+    # portainer issue, merging commands may need to create a combined customised on
         command: 'dagster-webserver  -w workspace.yaml  -h "0.0.0.0" -p 3000'
         depends_on: &deps
             - dagster-postgres
@@ -51,6 +53,8 @@ services:
             - dagster-code-eco-ecrr
 
     dagster-daemon:
+# caution for a portainer additional file deply
+    # portainer issue, merging commands may need to create a combined customised on
         command: "dagster-daemon run -w workspace.yaml  "
         depends_on: *deps
 
