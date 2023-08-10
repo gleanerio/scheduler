@@ -15,7 +15,7 @@ RUN pip install -r requirements.txt
 #COPY . scheduler
 #COPY ./configs/${implnet}/gleanerconfig.yaml scheduler/gleanerconfig.yaml
 #
-#COPY ./deployment/dagster.yaml /usr/src/app/
+COPY ./deployment/dagster.yaml /usr/src/app/
 #
 #WORKDIR scheduler
 #
