@@ -191,7 +191,6 @@ services:
         # in code, use names defined in network above
 
     dagster-code-tasks:
-        platform: linux/x86_64
         # you should be able to change the source locally, without a full rebuild.
        #image: dagster-${PROJECT:-eco}:latest
         image: docker.io/nsfearthcube/dagster-gleanerio-${PROJECT:-eco}:${CONTAINER_CODE_TAG:-latest}
@@ -216,7 +215,6 @@ services:
         networks:
             - traefik_proxy
     dagster-code-project:
-        platform: linux/x86_64
         # you should be able to change the source locally, without a full rebuild.
        #image: dagster-${PROJECT:-eco}:latest
         image: docker.io/nsfearthcube/dagster-gleanerio-${PROJECT:-eco}:${CONTAINER_CODE_TAG:-latest}

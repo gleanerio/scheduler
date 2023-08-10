@@ -56,7 +56,6 @@ services:
 ## GRPC servers are not just serving the code
 # they need to compile it, so same image for all dagster-*
     dagster-code-eco-ecrr:
-        platform: linux/x86_64
         # you should be able to change the source locally, without a full rebuild.
        #image: dagster-${PROJECT:-eco}:latest
         image: docker.io/nsfearthcube/dagster-gleanerio-${PROJECT:-eco}:${CONTAINER_CODE_TAG:-latest}
