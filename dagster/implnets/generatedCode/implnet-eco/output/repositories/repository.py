@@ -9,10 +9,6 @@ from jobs.implnet_jobs_unidata import implnet_job_unidata
 from sch.implnet_sch_unidata  import implnet_sch_unidata
 from jobs.implnet_jobs_aquadocs import implnet_job_aquadocs
 from sch.implnet_sch_aquadocs  import implnet_sch_aquadocs
-from jobs.implnet_jobs_opentopography import implnet_job_opentopography
-from sch.implnet_sch_opentopography  import implnet_sch_opentopography
-from jobs.implnet_jobs_iris import implnet_job_iris
-from sch.implnet_sch_iris  import implnet_sch_iris
 from jobs.implnet_jobs_edi import implnet_job_edi
 from sch.implnet_sch_edi  import implnet_sch_edi
 from jobs.implnet_jobs_bcodmo import implnet_job_bcodmo
@@ -61,11 +57,11 @@ from jobs.implnet_jobs_ecrr_examples import implnet_job_ecrr_examples
 from sch.implnet_sch_ecrr_examples  import implnet_sch_ecrr_examples
 from jobs.implnet_jobs_geocodes_examples import implnet_job_geocodes_examples
 from sch.implnet_sch_geocodes_examples  import implnet_sch_geocodes_examples
- 
+
 @repository
 def gleaner():
 	jobs = [implnet_job_neotomadb, implnet_job_resource_registry, implnet_job_datadiscoverystudio, implnet_job_unidata, implnet_job_aquadocs, implnet_job_opentopography, implnet_job_iris, implnet_job_edi, implnet_job_bcodmo, implnet_job_hydroshare, implnet_job_iedadata, implnet_job_opentopography, implnet_job_unavco, implnet_job_ssdbiodp, implnet_job_linkedearth, implnet_job_lipdverse, implnet_job_iris, implnet_job_ucar, implnet_job_opencoredata, implnet_job_magic, implnet_job_earthchem, implnet_job_neon, implnet_job_designsafe, implnet_job_r2r, implnet_job_geocodes_demo_datasets, implnet_job_usapdc, implnet_job_cchdo, implnet_job_amgeo, implnet_job_wifire, implnet_job_ecrr_examples, implnet_job_geocodes_examples]
 	schedules = [implnet_sch_neotomadb, implnet_sch_resource_registry, implnet_sch_datadiscoverystudio, implnet_sch_unidata, implnet_sch_aquadocs, implnet_sch_opentopography, implnet_sch_iris, implnet_sch_edi, implnet_sch_bcodmo, implnet_sch_hydroshare, implnet_sch_iedadata, implnet_sch_opentopography, implnet_sch_unavco, implnet_sch_ssdbiodp, implnet_sch_linkedearth, implnet_sch_lipdverse, implnet_sch_iris, implnet_sch_ucar, implnet_sch_opencoredata, implnet_sch_magic, implnet_sch_earthchem, implnet_sch_neon, implnet_sch_designsafe, implnet_sch_r2r, implnet_sch_geocodes_demo_datasets, implnet_sch_usapdc, implnet_sch_cchdo, implnet_sch_amgeo, implnet_sch_wifire, implnet_sch_ecrr_examples, implnet_sch_geocodes_examples]
 
- 
+
 	return jobs + schedules
