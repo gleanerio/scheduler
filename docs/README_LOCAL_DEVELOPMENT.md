@@ -60,13 +60,13 @@ will run just the task, and in editable form, i think.
 
 `dagster dev`
 
-!!! note
+??? note
     YOU CANNOT SET BREAKPOINTS IN TEMPLATES
     YOU NEED TO cd generatedCode/PROJECT/output/jobs and set them in the job you are testing.
 
 ## TESTING CONTAINERS
 
-Containers a tested approach. We deploy these container
+Containers are a well tested approach. We deploy these container
 to production, so it's a good way to test.
 There are a set of required files:
 
@@ -123,7 +123,7 @@ for local development three configs
 
 ### Editing/testing code
 
-if you run pygen, then you need to go to 
+if you run pygen, then you need to regnerate code. the makefile or a pycharm run config is the best way. 
 
 ### MOVING TO PRODUCTION
 
@@ -132,12 +132,18 @@ if you run pygen, then you need to go to
 you need to create a compose_project_PROJECT_override.yaml
 
 After copying fragment from `compose_local_PROJECT_override.yaml`
-CHANGE THE IMAGE TO `docker.io/nsfearthcube/dagster-gleanerio-${PROJECT:-eco}:${CONTAINER_TAG:-latest}`
+1) CHANGE THE IMAGE TO `docker.io/nsfearthcube/dagster-gleanerio-${PROJECT:-eco}:${CONTAINER_CODE_TAG:-latest}`
+2) remove the line: platform: linux/x86_64
 
 
-For portainer, use additional_file to add this to the stack
+# For portainer, 
+Create a stack, and add override file using  "additional_file" to add this to the stack
 
 
+# command line deploy
+docker compose -env .env -f compose_project.yaml -f compose_project_PROJECT_override.yaml up
+
+# system not supporting multiple configs
 If you are not using portainer, you need to create a merged config file.
 
 Then you will merge the files. Preview with: 

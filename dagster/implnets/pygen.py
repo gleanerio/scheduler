@@ -131,7 +131,8 @@ def main():
     parser.add_argument("-od", "--outputs", help="Directory for output")
     parser.add_argument("-td", "--templates", help="Directory where the template files are")
     parser.add_argument("-d", "--days", help="Days to spread the run over")
-
+    parser.add_argument("-w", "--weekly", help="Spread the run over a week")
+    parser.add_argument("-m", "--monthly", help="Spread the run over a month")
     args = parser.parse_args()
 
     cf = args.config
