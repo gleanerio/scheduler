@@ -11,7 +11,12 @@ GLEANER_MINIO_USE_SSL = os.environ.get('GLEANERIO_MINIO_USE_SSL')
 GLEANER_MINIO_SECRET_KEY = os.environ.get('GLEANERIO_MINIO_SECRET_KEY')
 GLEANER_MINIO_ACCESS_KEY = os.environ.get('GLEANERIO_MINIO_ACCESS_KEY')
 GLEANER_MINIO_BUCKET = os.environ.get('GLEANERIO_MINIO_BUCKET')
+# set for the earhtcube utiltiies
+MINIO_OPTIONS={"secure":GLEANER_MINIO_USE_SSL
 
+              ,"access_key": GLEANER_MINIO_ACCESS_KEY
+              ,"secret_key": GLEANER_MINIO_SECRET_KEY
+               }
 REPORT_PATH = "reports/"
 ORG_PATH = "orgs/"
 STAT_FILE_NAME = "missing_report_graph.json"
@@ -27,7 +32,7 @@ def getName(name):
     return name.replace("orgs/","").replace(".nq","")
 @asset()
 def source_list() -> None:
-    s3Minio = s3.MinioDatastore(_pythonMinioUrl(GLEANER_MINIO_ADDRESS), None)
+    s3Minio = s3.MinioDatastore(_pythonMinioUrl(GLEANER_MINIO_ADDRESS), MINIO_OPTIONS)
     orglist = s3Minio.listPath(GLEANER_MINIO_BUCKET, ORG_PATH,recursive=False)
     sources = map( lambda f: { "name": getName(f.object_name)}, orglist )
 
@@ -40,7 +45,7 @@ def source_list() -> None:
 @asset(deps=[source_list])
 def loadstats() -> None:
     logger = get_dagster_logger()
-    s3Minio = s3.MinioDatastore(_pythonMinioUrl(GLEANER_MINIO_ADDRESS), None)
+    s3Minio = s3.MinioDatastore(_pythonMinioUrl(GLEANER_MINIO_ADDRESS),MINIO_OPTIONS)
  #   sourcelist = list(s3Minio.listPath(GLEANER_MINIO_BUCKET, ORG_PATH,recursive=False))
 
     with open("data/source_list.json","r" ) as f:
