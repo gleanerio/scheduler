@@ -4,7 +4,8 @@ minio:
   port:
   accesskey:
   secretkey:
-  ssl: false
+  ssl:
+  region:
 context:
     cache: true
     strict: true
@@ -15,6 +16,10 @@ contextmaps:
     file: "/assets/schemaorg-current-http.jsonld"  # wget http://schema.org/docs/jsonldcontext.jsonld
 sparql:
   endpoint:
+  endpointBulk: http://192.168.134.190:7200/repositories/iow/statements
+  endpointMethod: POST
+  contentType: text/x-nquads
+  authenticate: false
 objects:
   domain: us-east-1
   prefix:
