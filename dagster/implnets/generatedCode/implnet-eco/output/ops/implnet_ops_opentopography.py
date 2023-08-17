@@ -1,4 +1,5 @@
 import distutils
+import logging
 import time
 
 from dagster import job, op, graph,In, Nothing, get_dagster_logger
@@ -8,7 +9,7 @@ from urllib import request
 from urllib.error import HTTPError
 
 from docker.types import RestartPolicy, ServiceMode
-from ec.gleanerio.gleaner import getGleaner, getSitemapSourcesFromGleaner
+from ec.gleanerio.gleaner import getGleaner, getSitemapSourcesFromGleaner, endpointUpdateNamespace
 import json
 
 from minio import Minio
@@ -16,6 +17,8 @@ from minio.error import S3Error
 from datetime import datetime
 from ec.reporting.report import missingReport, generateGraphReportsRepo, reportTypes, generateIdentifierRepo
 from ec.datastore import s3
+from ec.summarize import summaryDF2ttl, get_summary4graph, get_summary4repoSubset
+from ec.graph.manageGraph import ManageBlazegraph as mg
 import requests
 import logging as log
 from urllib.error import HTTPError
@@ -76,10 +79,17 @@ GLEANERIO_NABU_ARCHIVE_OBJECT=str(os.environ.get('GLEANERIO_NABU_ARCHIVE_OBJECT'
 GLEANERIO_NABU_ARCHIVE_PATH=str(os.environ.get('GLEANERIO_NABU_ARCHIVE_PATH', '/nabu/'))
 GLEANERIO_GLEANER_DOCKER_CONFIG=str(os.environ.get('GLEANERIO_GLEANER_DOCKER_CONFIG', 'gleaner'))
 GLEANERIO_NABU_DOCKER_CONFIG=str(os.environ.get('GLEANERIO_NABU_DOCKER_CONFIG', 'nabu'))
+#GLEANERIO_SUMMARY_GRAPH_ENDPOINT = os.environ.get('GLEANERIO_SUMMARY_GRAPH_ENDPOINT')
+GLEANERIO_SUMMARY_GRAPH_NAMESPACE = os.environ.get('GLEANERIO_SUMMARY_GRAPH_NAMESPACE',f"{GLEANER_GRAPH_NAMESPACE}_summary" )
+
+SUMMARY_PATH = 'graphs/summary'
+RELEASE_PATH = 'graphs/latest'
 def _graphEndpoint():
     url = f"{GLEANER_GRAPH_URL}/namespace/{GLEANER_GRAPH_NAMESPACE}/sparql"
     return url
-
+def _graphSummaryEndpoint():
+    url = f"{GLEANER_GRAPH_URL}/namespace/{GLEANERIO_SUMMARY_GRAPH_NAMESPACE}/sparql"
+    return url
 def _pythonMinioUrl(url):
 
     if (url.endswith(".amazonaws.com")):
@@ -169,7 +179,7 @@ def s3loader(data, name):
                       content_type="text/plain"
                          )
     get_dagster_logger().info(f"Log uploaded: {str(objPrefix)}")
-def postRelease(source):
+def post_to_graph(source, path=RELEASE_PATH, extension="nq", graphendpoint=_graphEndpoint()):
     # revision of EC utilities, will have a insertFromURL
     #instance =  mg.ManageBlazegraph(os.environ.get('GLEANER_GRAPH_URL'),os.environ.get('GLEANER_GRAPH_NAMESPACE') )
     proto = "http"
@@ -179,22 +189,43 @@ def postRelease(source):
     port = GLEANER_MINIO_PORT
     address = GLEANER_MINIO_ADDRESS
     bucket = GLEANER_MINIO_BUCKET
-    path = "graphs/latest"
-    release_url = f"{proto}://{address}:{port}/{bucket}/{path}/{source}_release.nq"
-    url = f"{_graphEndpoint()}?uri={release_url}" # f"{os.environ.get('GLEANER_GRAPH_URL')}/namespace/{os.environ.get('GLEANER_GRAPH_NAMESPACE')}/sparql?uri={release_url}"
+    release_url = f"{proto}://{address}:{port}/{bucket}/{path}/{source}_release.{extension}"
+    # BLAZEGRAPH SPECIFIC
+    # url = f"{_graphEndpoint()}?uri={release_url}"  # f"{os.environ.get('GLEANER_GRAPH_URL')}/namespace/{os.environ.get('GLEANER_GRAPH_NAMESPACE')}/sparql?uri={release_url}"
+    # get_dagster_logger().info(f'graph: insert "{source}" to {url} ')
+    # r = requests.post(url)
+    # log.debug(f' status:{r.status_code}')  # status:404
+    # get_dagster_logger().info(f'graph: insert: status:{r.status_code}')
+    # if r.status_code == 200:
+    #     # '<?xml version="1.0"?><data modified="0" milliseconds="7"/>'
+    #     if 'data modified="0"' in r.text:
+    #         get_dagster_logger().info(f'graph: no data inserted ')
+    #         raise Exception("No Data Added: " + r.text)
+    #     return True
+    # else:
+    #     get_dagster_logger().info(f'graph: error')
+    #     raise Exception(f' graph: insert failed: status:{r.status_code}')
+
+    ### GENERIC LOAD FROM
+    url = f"{graphendpoint}" # f"{os.environ.get('GLEANER_GRAPH_URL')}/namespace/{os.environ.get('GLEANER_GRAPH_NAMESPACE')}/sparql?uri={release_url}"
     get_dagster_logger().info(f'graph: insert "{source}" to {url} ')
-    r = requests.post(url)
+    loadfrom = {'update': f'LOAD <{release_url}>'}
+    headers = {
+        'Content-Type': 'application/x-www-form-urlencoded'
+    }
+    r = requests.post(url, headers=headers, data=loadfrom )
     log.debug(f' status:{r.status_code}')  # status:404
-    get_dagster_logger().info(f'graph: insert: status:{r.status_code}')
+    get_dagster_logger().info(f'graph: LOAD from {release_url}: status:{r.status_code}')
     if r.status_code == 200:
+        get_dagster_logger().info(f'graph load response: {str(r.text)} ')
         # '<?xml version="1.0"?><data modified="0" milliseconds="7"/>'
-        if 'data modified="0"' in r.text:
+        if 'mutationCount=0' in r.text:
             get_dagster_logger().info(f'graph: no data inserted ')
-            raise Exception("No Data Added: " + r.text)
+            #raise Exception("No Data Added: " + r.text)
         return True
     else:
-        get_dagster_logger().info(f'graph: error')
-        raise Exception(f' graph: insert failed: status:{r.status_code}')
+        get_dagster_logger().info(f'graph: error {str(r.text)}')
+        raise Exception(f' graph: failed,  LOAD from {release_url}: status:{r.status_code}')
 
 def _get_client(docker_container_context: DockerContainerContext):
     headers = {'X-API-Key': APIKEY}
@@ -608,7 +639,7 @@ def opentopography_naburelease(context):
     return
 @op(ins={"start": In(Nothing)})
 def opentopography_uploadrelease(context):
-    returned_value = postRelease("opentopography")
+    returned_value = post_to_graph("opentopography", extension="nq")
     r = str('returned value:{}'.format(returned_value))
     get_dagster_logger().info(f"upload release returned  {r} ")
     return
@@ -697,6 +728,50 @@ def opentopography_bucket_urls(context):
     get_dagster_logger().info(f"bucker urls report  returned  {r} ")
     return
 
+class S3ObjectInfo:
+    bucket_name=""
+    object_name=""
+
+@op(ins={"start": In(Nothing)})
+def opentopography_summarize(context) :
+    s3Minio = s3.MinioDatastore(_pythonMinioUrl(GLEANER_MINIO_ADDRESS), MINIO_OPTIONS)
+    bucket = GLEANER_MINIO_BUCKET
+    source_name = "opentopography"
+    endpoint = _graphEndpoint() # getting data, not uploading data
+    summary_namespace = _graphSummaryEndpoint()
+
+
+    try:
+
+        summarydf = get_summary4repoSubset(endpoint, source_name)
+        nt, g = summaryDF2ttl(summarydf, source_name)  # let's try the new generator
+        summaryttl = g.serialize(format='longturtle')
+        # Lets always write out file to s3, and insert as a separate process
+        # we might be able to make this an asset..., but would need to be acessible by http
+        # if not stored in s3
+        objectname = f"{SUMMARY_PATH}/{source_name}_release.ttl" # needs to match that is expected by post
+        s3ObjectInfo= S3ObjectInfo()
+        s3ObjectInfo.bucket_name=bucket
+        s3ObjectInfo.object_name=objectname
+
+        s3Minio.putTextFileToStore(summaryttl, s3ObjectInfo )
+        #inserted = sumnsgraph.insert(bytes(summaryttl, 'utf-8'), content_type="application/x-turtle")
+        #if not inserted:
+        #    raise Exception("Loading to graph failed.")
+    except Exception as e:
+        # use dagster logger
+        get_dagster_logger().error(f"Summary. Issue creating graph  {str(e)} ")
+        raise Exception(f"Loading Summary graph failed. {str(e)}")
+        return 1
+
+    return
+
+@op(ins={"start": In(Nothing)})
+def opentopography_upload_summarize(context):
+    returned_value = post_to_graph("opentopography",path=SUMMARY_PATH, extension="ttl", graphendpoint=_graphSummaryEndpoint())
+    r = str('returned value:{}'.format(returned_value))
+    get_dagster_logger().info(f"upload summary returned  {r} ")
+    return
 
 #Can we simplify and use just a method. Then import these methods?
 # def missingreport_s3(context, msg: str, source="opentopography"):
@@ -734,9 +809,15 @@ def harvest_opentopography():
     load_prov = opentopography_nabuprov(start=load_prune)
     load_org = opentopography_nabuorg(start=load_prov)
 
+    summarize = opentopography_summarize(start=load_uploadrelease)
+    upload_summarize = opentopography_upload_summarize(start=summarize)
+
 # run after load
-    report_msgraph=opentopography_missingreport_graph(start=load_org)
-    report_graph=opentopography_graph_reports(start=report_msgraph)
+    report_msgraph = opentopography_missingreport_graph(start=summarize)
+    report_graph = opentopography_graph_reports(start=report_msgraph)
+
+
+
 
 
 
