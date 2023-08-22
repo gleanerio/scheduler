@@ -140,15 +140,8 @@ def s3reader(object):
 
 def s3loader(data, name):
     secure= GLEANER_MINIO_USE_SSL
-    if (GLEANER_MINIO_PORT and GLEANER_MINIO_PORT == "80"
-             and secure == False):
-        server = _pythonMinioAddress(GLEANER_MINIO_ADDRESS, GLEANER_MINIO_PORT)
-    elif (GLEANER_MINIO_PORT and GLEANER_MINIO_PORT == "443"
-                and secure == True):
-        server = _pythonMinioAddress(GLEANER_MINIO_ADDRESS, GLEANER_MINIO_PORT)
-    else:
-        # it's not on a normal port
-        server = _pythonMinioAddress(GLEANER_MINIO_ADDRESS, GLEANER_MINIO_PORT)
+
+    server = _pythonMinioAddress(GLEANER_MINIO_ADDRESS, GLEANER_MINIO_PORT)
 
     client = Minio(
         server,
