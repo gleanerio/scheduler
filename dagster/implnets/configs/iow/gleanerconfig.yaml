@@ -1,30 +1,32 @@
----
-minio:
-  address: 192.168.202.114
-  port: 49155
-  accessKey:
-  secretKey:
-  ssl: false
-  bucket: iow
-gleaner:
-  runid: iow # this will be the bucket the output is placed in...
-  summon: true # do we want to visit the web sites and pull down the files
-  mill: false
 context:
   cache: true
+  strict: true
 contextmaps:
-- prefix: "https://schema.org/"
-  file: "./jsonldcontext.json"  # wget http://schema.org/docs/jsonldcontext.jsonld
-- prefix: "http://schema.org/"
-  file: "./jsonldcontext.json"  # wget http://schema.org/docs/jsonldcontext.jsonld
+  - prefix: "https://schema.org/"
+    file: "/assets/schemaorg-current-https.jsonld"  # wget http://schema.org/docs/jsonldcontext.jsonld
+  - prefix: "http://schema.org/"
+    file: "/assets/schemaorg-current-http.jsonld"  # wget http://schema.org/docs/jsonldcontext.jsonld
+gleaner:
+  mill: false
+  runid: iow
+  summon: true
 summoner:
-  after: ""      # "21 May 20 10:00 UTC"   
-  mode: full  # full || diff:  If diff compare what we have currently in gleaner to sitemap, get only new, delete missing
-  threads: 5
-  delay:  # milliseconds (1000 = 1 second) to delay between calls (will FORCE threads to 1) 
-  headless: http://0.0.0.0:9222  # URL for headless see docs/headless
+    after: ""
+    delay:  # milliseconds (1000 = 1 second) to delay between calls (will FORCE threads to 1)
+    # will headless, the name of the container "service" work
+    headless: http://headless:9222
+    #headless: http://localhost:9222
+    mode: full
+    threads: 5
 millers:
   graph: true
+minio:
+  address:
+  port:
+  ssl:
+  accessKey:
+  secretKey:
+  bucket:
 sources:
 - active: 'true'
   domain: https://geoconnex.us
