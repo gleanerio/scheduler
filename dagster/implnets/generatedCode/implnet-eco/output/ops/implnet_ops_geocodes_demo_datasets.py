@@ -90,12 +90,14 @@ def _graphEndpoint():
 def _graphSummaryEndpoint():
     url = f"{GLEANER_GRAPH_URL}/namespace/{GLEANERIO_SUMMARY_GRAPH_NAMESPACE}/sparql"
     return url
-def _pythonMinioUrl(url):
+def _pythonMinioAddress(url, port = None):
 
     if (url.endswith(".amazonaws.com")):
         PYTHON_MINIO_URL = "s3.amazonaws.com"
     else:
         PYTHON_MINIO_URL = url
+    if port is not None:
+        PYTHON_MINIO_URL = f"{PYTHON_MINIO_URL}:{port}"
     return PYTHON_MINIO_URL
 def read_file_bytestream(image_path):
     data = open(image_path, 'rb').read()
@@ -113,7 +115,7 @@ def load_data(file_or_url):
 
 
 def s3reader(object):
-    server =  _pythonMinioUrl(GLEANER_MINIO_ADDRESS) + ":" + GLEANER_MINIO_PORT
+    server =  _pythonMinioAddress(GLEANER_MINIO_ADDRESS,GLEANER_MINIO_PORT )
     get_dagster_logger().info(f"S3 URL    : {GLEANER_MINIO_ADDRESS}")
     get_dagster_logger().info(f"S3 PYTHON SERVER : {server}")
     get_dagster_logger().info(f"S3 PORT   : {GLEANER_MINIO_PORT}")
@@ -140,13 +142,13 @@ def s3loader(data, name):
     secure= GLEANER_MINIO_USE_SSL
     if (GLEANER_MINIO_PORT and GLEANER_MINIO_PORT == "80"
              and secure == False):
-        server = _pythonMinioUrl(GLEANER_MINIO_ADDRESS)
+        server = _pythonMinioAddress(GLEANER_MINIO_ADDRESS, GLEANER_MINIO_PORT)
     elif (GLEANER_MINIO_PORT and GLEANER_MINIO_PORT == "443"
                 and secure == True):
-        server = _pythonMinioUrl(GLEANER_MINIO_ADDRESS)
+        server = _pythonMinioAddress(GLEANER_MINIO_ADDRESS, GLEANER_MINIO_PORT)
     else:
         # it's not on a normal port
-        server = f"{_pythonMinioUrl(GLEANER_MINIO_ADDRESS)}:{GLEANER_MINIO_PORT}"
+        server = f" {_pythonMinioAddress(GLEANER_MINIO_ADDRESS, GLEANER_MINIO_PORT) }"
 
     client = Minio(
         server,
@@ -187,9 +189,9 @@ def post_to_graph(source, path=RELEASE_PATH, extension="nq", graphendpoint=_grap
     if GLEANER_MINIO_USE_SSL:
         proto = "https"
     port = GLEANER_MINIO_PORT
-    address = GLEANER_MINIO_ADDRESS
+    address = _pythonMinioAddress(GLEANER_MINIO_ADDRESS, GLEANER_MINIO_PORT)
     bucket = GLEANER_MINIO_BUCKET
-    release_url = f"{proto}://{address}:{port}/{bucket}/{path}/{source}_release.{extension}"
+    release_url = f"{proto}://{address}/{bucket}/{path}/{source}_release.{extension}"
     # BLAZEGRAPH SPECIFIC
     # url = f"{_graphEndpoint()}?uri={release_url}"  # f"{os.environ.get('GLEANER_GRAPH_URL')}/namespace/{os.environ.get('GLEANER_GRAPH_NAMESPACE')}/sparql?uri={release_url}"
     # get_dagster_logger().info(f'graph: insert "{source}" to {url} ')
@@ -416,7 +418,7 @@ def gleanerio(context, mode, source):
 
         # TODO: Build SPARQL_ENDPOINT from  GLEANER_GRAPH_URL, GLEANER_GRAPH_NAMESPACE
         enva = []
-        enva.append(str("MINIO_ADDRESS={}".format(GLEANER_MINIO_ADDRESS)))
+        enva.append(str("MINIO_ADDRESS={}".format(GLEANER_MINIO_ADDRESS))) # the python needs to be wrapped, this does not
         enva.append(str("MINIO_PORT={}".format(GLEANER_MINIO_PORT)))
         enva.append(str("MINIO_USE_SSL={}".format(GLEANER_MINIO_USE_SSL)))
         enva.append(str("MINIO_SECRET_KEY={}".format(GLEANER_MINIO_SECRET_KEY)))
@@ -649,7 +651,7 @@ def geocodes_demo_datasets_uploadrelease(context):
 def geocodes_demo_datasets_missingreport_s3(context):
     source = getSitemapSourcesFromGleaner(DAGSTER_GLEANER_CONFIG_PATH, sourcename="geocodes_demo_datasets")
     source_url = source.get('url')
-    s3Minio = s3.MinioDatastore(_pythonMinioUrl(GLEANER_MINIO_ADDRESS), MINIO_OPTIONS)
+    s3Minio = s3.MinioDatastore(_pythonMinioAddress(GLEANER_MINIO_ADDRESS, GLEANER_MINIO_PORT), MINIO_OPTIONS)
     bucket = GLEANER_MINIO_BUCKET
     source_name = "geocodes_demo_datasets"
     graphendpoint = None
@@ -665,7 +667,7 @@ def geocodes_demo_datasets_missingreport_s3(context):
 def geocodes_demo_datasets_missingreport_graph(context):
     source = getSitemapSourcesFromGleaner(DAGSTER_GLEANER_CONFIG_PATH, sourcename="geocodes_demo_datasets")
     source_url = source.get('url')
-    s3Minio = s3.MinioDatastore(_pythonMinioUrl(GLEANER_MINIO_ADDRESS), MINIO_OPTIONS)
+    s3Minio = s3.MinioDatastore(_pythonMinioAddress(GLEANER_MINIO_ADDRESS, GLEANER_MINIO_PORT), MINIO_OPTIONS)
     bucket = GLEANER_MINIO_BUCKET
     source_name = "geocodes_demo_datasets"
 
@@ -684,7 +686,7 @@ def geocodes_demo_datasets_missingreport_graph(context):
 def geocodes_demo_datasets_graph_reports(context) :
     source = getSitemapSourcesFromGleaner(DAGSTER_GLEANER_CONFIG_PATH, sourcename="geocodes_demo_datasets")
     #source_url = source.get('url')
-    s3Minio = s3.MinioDatastore(_pythonMinioUrl(GLEANER_MINIO_ADDRESS), MINIO_OPTIONS)
+    s3Minio = s3.MinioDatastore(_pythonMinioAddress(GLEANER_MINIO_ADDRESS, GLEANER_MINIO_PORT), MINIO_OPTIONS)
     bucket = GLEANER_MINIO_BUCKET
     source_name = "geocodes_demo_datasets"
 
@@ -703,7 +705,7 @@ def geocodes_demo_datasets_graph_reports(context) :
 @op(ins={"start": In(Nothing)})
 def geocodes_demo_datasets_identifier_stats(context):
     source = getSitemapSourcesFromGleaner(DAGSTER_GLEANER_CONFIG_PATH, sourcename="geocodes_demo_datasets")
-    s3Minio = s3.MinioDatastore(_pythonMinioUrl(GLEANER_MINIO_ADDRESS), MINIO_OPTIONS)
+    s3Minio = s3.MinioDatastore(_pythonMinioAddress(GLEANER_MINIO_ADDRESS, GLEANER_MINIO_PORT), MINIO_OPTIONS)
     bucket = GLEANER_MINIO_BUCKET
     source_name = "geocodes_demo_datasets"
 
@@ -717,7 +719,7 @@ def geocodes_demo_datasets_identifier_stats(context):
 
 @op(ins={"start": In(Nothing)})
 def geocodes_demo_datasets_bucket_urls(context):
-    s3Minio = s3.MinioDatastore(_pythonMinioUrl(GLEANER_MINIO_ADDRESS), MINIO_OPTIONS)
+    s3Minio = s3.MinioDatastore(_pythonMinioAddress(GLEANER_MINIO_ADDRESS, GLEANER_MINIO_PORT), MINIO_OPTIONS)
     bucket = GLEANER_MINIO_BUCKET
     source_name = "geocodes_demo_datasets"
 
@@ -734,7 +736,7 @@ class S3ObjectInfo:
 
 @op(ins={"start": In(Nothing)})
 def geocodes_demo_datasets_summarize(context) :
-    s3Minio = s3.MinioDatastore(_pythonMinioUrl(GLEANER_MINIO_ADDRESS), MINIO_OPTIONS)
+    s3Minio = s3.MinioDatastore(_pythonMinioAddress(GLEANER_MINIO_ADDRESS, GLEANER_MINIO_PORT), MINIO_OPTIONS)
     bucket = GLEANER_MINIO_BUCKET
     source_name = "geocodes_demo_datasets"
     endpoint = _graphEndpoint() # getting data, not uploading data
@@ -778,7 +780,7 @@ def geocodes_demo_datasets_upload_summarize(context):
 #
 #     source= getSitemapSourcesFromGleaner("/scheduler/gleanerconfig.yaml", sourcename=source)
 #     source_url = source.get('url')
-#     s3Minio = s3.MinioDatastore(_pythonMinioUrl(GLEANER_MINIO_ADDRESS), None)
+#     s3Minio = s3.MinioDatastore(_pythonMinioUrl(GLEANER_MINIO_ADDRESS, GLEANER_MINIO_PORT), MINIO_OPTIONS)
 #     bucket = GLEANER_MINIO_BUCKET
 #     source_name="geocodes_demo_datasets"
 #
