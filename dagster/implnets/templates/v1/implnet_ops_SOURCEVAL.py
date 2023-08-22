@@ -148,7 +148,7 @@ def s3loader(data, name):
         server = _pythonMinioAddress(GLEANER_MINIO_ADDRESS, GLEANER_MINIO_PORT)
     else:
         # it's not on a normal port
-        server = f" {_pythonMinioAddress(GLEANER_MINIO_ADDRESS, GLEANER_MINIO_PORT) }"
+        server = _pythonMinioAddress(GLEANER_MINIO_ADDRESS, GLEANER_MINIO_PORT)
 
     client = Minio(
         server,
