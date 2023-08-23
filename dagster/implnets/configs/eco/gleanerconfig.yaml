@@ -1,6 +1,6 @@
 context:
   cache: true
-  strict: true
+  strict: false
 contextmaps:
   - prefix: "https://schema.org/"
     file: "/assets/schemaorg-current-https.jsonld"  # wget http://schema.org/docs/jsonldcontext.jsonld
@@ -44,7 +44,7 @@ sources:
     identifierpath: ""
     apipagelimit: 0
     identifiertype: identifiersha
-    fixcontextoption: 0
+    fixcontextoption: 1
     acceptcontenttype: application/ld+json, text/html
     jsonprofile: application/ld+json
   - sourcetype: sitegraph
