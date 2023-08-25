@@ -114,7 +114,7 @@ services:
               - "traefik.http.services.sched.loadbalancer.server.port=3000"
               - "traefik.docker.network=traefik_proxy"
               - "traefik.http.middlewares.sched.headers.accesscontrolallowmethods=GET,OPTIONS,POST"
-              - "traefik.http.middlewares.sched.headers.accesscontrolalloworigin=*"
+              - "traefik.http.middlewares.sched.headers.accessControlAllowOriginList=*"
               - "traefik.http.middlewares.sched.headers.accesscontrolmaxage=100"
               - "traefik.http.middlewares.sched.headers.addvaryheader=true"
     dagster-daemon:
