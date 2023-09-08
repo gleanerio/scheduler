@@ -48,7 +48,7 @@ GLEANER_HEADLESS_NETWORK=os.environ.get('GLEANERIO_HEADLESS_NETWORK', "headless_
 # env items
 URL = os.environ.get('PORTAINER_URL')
 APIKEY = os.environ.get('PORTAINER_KEY')
-
+CONTAINER_WAIT_TIMEOUT= os.environ.get('GLEANERIO_CONTAINER_WAIT_SECONDS', 5)
 
 GLEANER_MINIO_ADDRESS = str(os.environ.get('GLEANERIO_MINIO_ADDRESS'))
 GLEANER_MINIO_PORT = str(os.environ.get('GLEANERIO_MINIO_PORT'))
@@ -138,7 +138,7 @@ def s3reader(object):
         get_dagster_logger().info(f"S3 read error : {str(err)}")
 
 
-def s3loader(data, name):
+def s3loader(data, name, date_string=datetime.now().strftime("%Y_%m_%d_%H_%M_%S")):
     secure= GLEANER_MINIO_USE_SSL
 
     server = _pythonMinioAddress(GLEANER_MINIO_ADDRESS, GLEANER_MINIO_PORT)
@@ -158,8 +158,8 @@ def s3loader(data, name):
     # else:
     #     print("Bucket 'X' already exists")
 
-    now = datetime.now()
-    date_string = now.strftime("%Y_%m_%d_%H_%M_%S")
+    # now = datetime.now()
+    # date_string = now.strftime("%Y_%m_%d_%H_%M_%S")
 
     logname = name + '_{}.log'.format(date_string)
     objPrefix = GLEANERIO_LOG_PREFIX + logname
@@ -307,7 +307,7 @@ def gleanerio(context, mode, source):
     ## ------------   Create
     returnCode = 0
     get_dagster_logger().info(f"Gleanerio mode: {str(mode)}")
-
+    date_string = datetime.now().strftime("%Y_%m_%d_%H_%M_%S")
     if str(mode) == "gleaner":
         IMAGE =GLEANERIO_GLEANER_IMAGE
 
@@ -424,13 +424,8 @@ def gleanerio(context, mode, source):
         data["Env"] = enva
         data["HostConfig"] = {
             "NetworkMode": GLEANER_HEADLESS_NETWORK,
-           # "Binds":  [f"{GLEANER_CONFIG_VOLUME}:/configs"]
         }
-        # data["Volumes"] = [
-        #     "dagster-project:/configs"
-        # ]
-        # we would like this to be "dagster-${PROJECT:-eco}" but that is a bit tricky
-        # end setup of data
+
 
 # docker dagster
         get_dagster_logger().info(f"start docker code region: ")
@@ -468,102 +463,74 @@ def gleanerio(context, mode, source):
         cid = container.id # legacy til the start get's fixed
 
 
+# Removed watching the logs, in favor of periodic upload
+        wait_count = 0
+        while True:
+            wait_count += 1
+            try:
+                container.wait(timeout=CONTAINER_WAIT_TIMEOUT)
+                exit_status = container.wait()["StatusCode"]
+                get_dagster_logger().info(f"Container Wait Exit status:  {exit_status}")
+                # WE PULL THE LOGS, then will throw an error
+                returnCode = exit_status
+                c = container.logs(stdout=True, stderr=True, stream=False, follow=False).decode('latin-1')
 
-        ## ------------  Archive to load, which is how to send in the config (from where?)
+                # write to s3
 
+                s3loader(str(c).encode(), NAME, date_string=date_string)  # s3loader needs a bytes like object
+                # s3loader(str(c).encode('utf-8'), NAME)  # s3loader needs a bytes like object
+                # write to minio (would need the minio info here)
 
+                get_dagster_logger().info(f"container Logs to s3: ")
+# this needs to be address at some point. https://www.appsloveworld.com/docker/100/85/docker-py-getarchive-destination-folder
+                path = f"{WorkingDir}/logs"
+                tar_archive_stream, tar_stat = container.get_archive(path)
+                archive = bytearray()
+                for chunk in tar_archive_stream:
+                    archive.extend(chunk)
+                s3loader(archive, f"{source}_{mode}_runlogs", date_string=date_string)
+                get_dagster_logger().info(f"uploaded logs : {source}_{mode}_runlogs to  {path}")
+                break
+            except requests.exceptions.ReadTimeout as ex:
+                path = f"{WorkingDir}/logs"
+                tar_archive_stream, tar_stat = container.get_archive(path)
+                archive = bytearray()
+                for chunk in tar_archive_stream:
+                    archive.extend(chunk)
+                s3loader(archive, f"{source}_{mode}_runlogs", date_string=date_string)
+                get_dagster_logger().info(f"uploaded {wait_count}th log : {source}_{mode}_runlogs to  {path}")
+            except docker.errors.APIError as ex:
+                get_dagster_logger().info(f"Container Wait docker API error :  {str(ex)}")
+                returnCode = 1
+                break
+            if container.status == 'exited' or container.status == 'removed':
+                get_dagster_logger().info(f"Container exited or removed. status:  {container.status}")
+                exit_status = container.wait()["StatusCode"]
+                returnCode = exit_status
+                s3loader(str(c).encode(), NAME)  # s3loader needs a bytes like object
+                # s3loader(str(c).encode('utf-8'), NAME)  # s3loader needs a bytes like object
+                # write to minio (would need the minio info here)
 
-# this method of watching the logs,
-        # do not let a possible issue with container logs  stop log upload.
-        ## I thinkthis happens when a container exits immediately.
-        try:
-            for line in container.logs(stdout=True, stderr=True, stream=True, follow=True):
-                get_dagster_logger().debug(line)  # noqa: T201
-        except docker.errors.APIError as ex:
+                get_dagster_logger().info(f"container Logs to s3: ")
+                # this needs to be address at some point. https://www.appsloveworld.com/docker/100/85/docker-py-getarchive-destination-folder
+                path = f"{WorkingDir}/logs"
+                tar_archive_stream, tar_stat = container.get_archive(path)
+                archive = bytearray()
+                for chunk in tar_archive_stream:
+                    archive.extend(chunk)
+                s3loader(archive, f"{source}_{mode}_runlogs", date_string=date_string)
+                get_dagster_logger().info(f"uploaded logs : {source}_{mode}_runlogs to  {path}")
+                break
 
-            get_dagster_logger().info(f"This is ok. watch container logs failed Docker API ISSUE: {repr(ex)}")
-        except Exception as ex:
-            get_dagster_logger().info(f"This is ok. watch container logs failed other issue:{repr(ex)} ")
-
-
-
-
-        # ## ------------  Wait expect 200
-        # we want to get the logs, no matter what, so do not exit, yet.
-        ## or should logs be moved into finally?
-        ### in which case they need to be methods that don't send back errors.
-        exit_status = container.wait()["StatusCode"]
-        get_dagster_logger().info(f"Container Wait Exit status:  {exit_status}")
-        # WE PULL THE LOGS, then will throw an error
-        returnCode = exit_status
-
-
-
-
-        ## ------------  Copy logs  expect 200
-
-
-        c = container.logs(stdout=True, stderr=True, stream=False, follow=False).decode('latin-1')
-
-        # write to s3
-
-        s3loader(str(c).encode(), NAME)  # s3loader needs a bytes like object
-        #s3loader(str(c).encode('utf-8'), NAME)  # s3loader needs a bytes like object
-        # write to minio (would need the minio info here)
-
-        get_dagster_logger().info(f"container Logs to s3: ")
-
-## get log files
-        url = URL + 'containers/' + cid + '/archive'
-        params = {
-            'path': f"{WorkingDir}/logs"
-        }
-        query_string = urllib.parse.urlencode(params)
-        url = url + "?" + query_string
-
-        # print(url)
-        req = request.Request(url, method="GET")
-        req.add_header('X-API-Key', APIKEY)
-        req.add_header('content-type', 'application/x-compressed')
-        req.add_header('accept', 'application/json')
-        r = request.urlopen(req)
-
-        log.info(f"{r.status} ")
-        get_dagster_logger().info(f"Container Archive Retrieved: {str(r.status)}")
-        # s3loader(r.read().decode('latin-1'), NAME)
-        s3loader(r.read(), f"{source}_{mode}_runlogs")
-    # Future, need to extraxct files, and upload
+    # ABOVE Future, need to extraxct files, and upload
     # pw_tar = tarfile.TarFile(fileobj=StringIO(d.decode('utf-8')))
     #    pw_tar.extractall("extract_to/")
 
-    # looks like get_archive also has issues. Returns nothing,
-       #  strm, stat =  container.get_archive(f"{WorkingDir}/logs/")
-       #  get_dagster_logger().info(f"container Logs to s3: {str(stat)}")
-       #
-       #  i =0
-       #  for d in strm:
-       #      r = d.decode('utf-8')
-       # # s3loader(r.read().decode('latin-1'), NAME)
-       #      s3loader(r.encode(), f"{source}_{i}_runlogs")
-       #      i+=1
-
-       # s3loader(r.read().decode('latin-1'), NAME)
 
         if exit_status != 0:
             raise Exception(f"Gleaner/Nabu container returned exit code {exit_status}")
     finally:
         if (not DEBUG) :
-            # if (cid):
-            #     url = URL + 'containers/' + cid
-            #     req = request.Request(url, method="DELETE")
-            #     req.add_header('X-API-Key', APIKEY)
-            #     # req.add_header('content-type', 'application/json')
-            #     req.add_header('accept', 'application/json')
-            #     r = request.urlopen(req)
-            #     print(r.status)
-            #     get_dagster_logger().info(f"Container Remove: {str(r.status)}")
-            # else:
-            #     get_dagster_logger().info(f"Container Not created, so not removed.")
             if (service):
                 service.remove()
                 get_dagster_logger().info(f"Service Remove: {service.name}")
@@ -572,14 +539,7 @@ def gleanerio(context, mode, source):
 
         else:
             get_dagster_logger().info(f"Service {service.name} NOT Removed : DEBUG ENABLED")
-        #     if (container):
-        #         container.remove(force=True)
-        #         get_dagster_logger().info(f"Container Remove: {container.name}")
-        #     else:
-        #         get_dagster_logger().info(f"Container Not created, so not removed.")
-        #
-        # else:
-        #     get_dagster_logger().info(f"Container {container.name} NOT Removed : DEBUG ENABLED")
+
 
     if (returnCode != 0):
         get_dagster_logger().info(f"Gleaner/Nabu container non-zero exit code. See logs in S3")
