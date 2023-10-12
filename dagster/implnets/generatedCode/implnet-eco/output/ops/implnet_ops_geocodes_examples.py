@@ -12,10 +12,12 @@ from docker.types import RestartPolicy, ServiceMode
 from ec.gleanerio.gleaner import getGleaner, getSitemapSourcesFromGleaner, endpointUpdateNamespace
 import json
 
+from ec.graph.release_graph import ReleaseGraph
 from minio import Minio
 from minio.error import S3Error
 from datetime import datetime
-from ec.reporting.report import missingReport, generateGraphReportsRepo, reportTypes, generateIdentifierRepo
+from ec.reporting.report import missingReport, generateGraphReportsRepo, reportTypes, generateIdentifierRepo, \
+    generateGraphReportsRelease
 from ec.datastore import s3
 from ec.summarize import summaryDF2ttl, get_summary4graph, get_summary4repoSubset
 from ec.graph.manageGraph import ManageBlazegraph as mg
@@ -81,6 +83,7 @@ GLEANERIO_GLEANER_DOCKER_CONFIG=str(os.environ.get('GLEANERIO_GLEANER_DOCKER_CON
 GLEANERIO_NABU_DOCKER_CONFIG=str(os.environ.get('GLEANERIO_NABU_DOCKER_CONFIG', 'nabu'))
 #GLEANERIO_SUMMARY_GRAPH_ENDPOINT = os.environ.get('GLEANERIO_SUMMARY_GRAPH_ENDPOINT')
 GLEANERIO_SUMMARY_GRAPH_NAMESPACE = os.environ.get('GLEANERIO_SUMMARY_GRAPH_NAMESPACE',f"{GLEANER_GRAPH_NAMESPACE}_summary" )
+GLEANERIO_SUMMARIZE_GRAPH=(os.getenv('GLEANERIO_SUMMARIZE_GRAPH', 'False').lower()  == 'true')
 
 SUMMARY_PATH = 'graphs/summary'
 RELEASE_PATH = 'graphs/latest'
@@ -174,17 +177,28 @@ def s3loader(data, name, date_string=datetime.now().strftime("%Y_%m_%d_%H_%M_%S"
                       content_type="text/plain"
                          )
     get_dagster_logger().info(f"Log uploaded: {str(objPrefix)}")
-def post_to_graph(source, path=RELEASE_PATH, extension="nq", graphendpoint=_graphEndpoint()):
-    # revision of EC utilities, will have a insertFromURL
-    #instance =  mg.ManageBlazegraph(os.environ.get('GLEANER_GRAPH_URL'),os.environ.get('GLEANER_GRAPH_NAMESPACE') )
-    proto = "http"
 
+def _releaseUrl( source, path=RELEASE_PATH, extension="nq"):
+    proto = "http"
     if GLEANER_MINIO_USE_SSL:
         proto = "https"
-    port = GLEANER_MINIO_PORT
     address = _pythonMinioAddress(GLEANER_MINIO_ADDRESS, GLEANER_MINIO_PORT)
     bucket = GLEANER_MINIO_BUCKET
     release_url = f"{proto}://{address}/{bucket}/{path}/{source}_release.{extension}"
+    return release_url
+
+def post_to_graph(source, path=RELEASE_PATH, extension="nq", graphendpoint=_graphEndpoint()):
+    # revision of EC utilities, will have a insertFromURL
+    #instance =  mg.ManageBlazegraph(os.environ.get('GLEANER_GRAPH_URL'),os.environ.get('GLEANER_GRAPH_NAMESPACE') )
+    # proto = "http"
+    #
+    # if GLEANER_MINIO_USE_SSL:
+    #     proto = "https"
+    # port = GLEANER_MINIO_PORT
+    # address = _pythonMinioAddress(GLEANER_MINIO_ADDRESS, GLEANER_MINIO_PORT)
+    # bucket = GLEANER_MINIO_BUCKET
+    # release_url = f"{proto}://{address}/{bucket}/{path}/{source}_release.{extension}"
+
     # BLAZEGRAPH SPECIFIC
     # url = f"{_graphEndpoint()}?uri={release_url}"  # f"{os.environ.get('GLEANER_GRAPH_URL')}/namespace/{os.environ.get('GLEANER_GRAPH_NAMESPACE')}/sparql?uri={release_url}"
     # get_dagster_logger().info(f'graph: insert "{source}" to {url} ')
@@ -201,6 +215,7 @@ def post_to_graph(source, path=RELEASE_PATH, extension="nq", graphendpoint=_grap
     #     get_dagster_logger().info(f'graph: error')
     #     raise Exception(f' graph: insert failed: status:{r.status_code}')
 
+    release_url = _releaseUrl(source, path, extension)
     ### GENERIC LOAD FROM
     url = f"{graphendpoint}" # f"{os.environ.get('GLEANER_GRAPH_URL')}/namespace/{os.environ.get('GLEANER_GRAPH_NAMESPACE')}/sparql?uri={release_url}"
     get_dagster_logger().info(f'graph: insert "{source}" to {url} ')
@@ -740,9 +755,10 @@ def geocodes_examples_graph_reports(context) :
 
     graphendpoint = _graphEndpoint() # f"{os.environ.get('GLEANER_GRAPH_URL')}/namespace/{os.environ.get('GLEANER_GRAPH_NAMESPACE')}/sparql"
 
-    milled = False
-    summon = True
-    returned_value = generateGraphReportsRepo(source_name,  graphendpoint, reportList=reportTypes["repo_detailed"])
+
+    #returned_value = generateGraphReportsRepo(source_name,  graphendpoint, reportList=reportTypes["repo_detailed"])
+    s3FileUrl = _releaseUrl(source_name )
+    returned_value = generateGraphReportsRelease(source_name,s3FileUrl)
     r = str('returned value:{}'.format(returned_value))
     #report = json.dumps(returned_value, indent=2) # value already json.dumps
     report = returned_value
@@ -793,7 +809,13 @@ def geocodes_examples_summarize(context) :
 
     try:
 
-        summarydf = get_summary4repoSubset(endpoint, source_name)
+       # summarydf = get_summary4repoSubset(endpoint, source_name)
+        rg = ReleaseGraph()
+        rg.read_release(_pythonMinioAddress(GLEANER_MINIO_ADDRESS, GLEANER_MINIO_PORT),
+                        bucket,
+                        source_name,
+                        options=MINIO_OPTIONS)
+        summarydf = rg.summarize()
         nt, g = summaryDF2ttl(summarydf, source_name)  # let's try the new generator
         summaryttl = g.serialize(format='longturtle')
         # Lets always write out file to s3, and insert as a separate process
@@ -846,10 +868,11 @@ def harvest_geocodes_examples():
 # defingin nothing dependencies
     # https://docs.dagster.io/concepts/ops-jobs-graphs/graphs#defining-nothing-dependencies
 
-    report_ms3 = geocodes_examples_missingreport_s3(start=harvest)
+    report_bucketurl = geocodes_examples_bucket_urls(start=harvest)
+    report_ms3 = geocodes_examples_missingreport_s3(start=report_bucketurl)
     report_idstat = geocodes_examples_identifier_stats(start=report_ms3)
     # for some reason, this causes a msg parameter missing
-    report_bucketurl = geocodes_examples_bucket_urls(start=report_idstat)
+
 
     #report1 = missingreport_s3(harvest, source="geocodes_examples")
     load_release = geocodes_examples_naburelease(start=harvest)
@@ -859,11 +882,14 @@ def harvest_geocodes_examples():
     load_prov = geocodes_examples_nabuprov(start=load_prune)
     load_org = geocodes_examples_nabuorg(start=load_prov)
 
-    summarize = geocodes_examples_summarize(start=load_uploadrelease)
-    upload_summarize = geocodes_examples_upload_summarize(start=summarize)
+    if(GLEANERIO_SUMMARIZE_GRAPH):
+        summarize = geocodes_examples_summarize(start=load_uploadrelease)
+        upload_summarize = geocodes_examples_upload_summarize(start=summarize)
+
+
 
 # run after load
-    report_msgraph = geocodes_examples_missingreport_graph(start=summarize)
+    report_msgraph = geocodes_examples_missingreport_graph(start=load_prov)
     report_graph = geocodes_examples_graph_reports(start=report_msgraph)
 
 
