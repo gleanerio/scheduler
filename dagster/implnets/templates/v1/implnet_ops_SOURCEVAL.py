@@ -1,7 +1,9 @@
+import csv
 import distutils
 import logging
 import time
 
+import pandas
 from dagster import job, op, graph,In, Nothing, get_dagster_logger
 import os, json, io
 import urllib
@@ -50,7 +52,7 @@ GLEANER_HEADLESS_NETWORK=os.environ.get('GLEANERIO_HEADLESS_NETWORK', "headless_
 # env items
 URL = os.environ.get('PORTAINER_URL')
 APIKEY = os.environ.get('PORTAINER_KEY')
-CONTAINER_WAIT_TIMEOUT= os.environ.get('GLEANERIO_CONTAINER_WAIT_SECONDS', 5)
+CONTAINER_WAIT_TIMEOUT= int( os.environ.get('GLEANERIO_CONTAINER_WAIT_SECONDS',300))
 
 GLEANER_MINIO_ADDRESS = str(os.environ.get('GLEANERIO_MINIO_ADDRESS'))
 GLEANER_MINIO_PORT = str(os.environ.get('GLEANERIO_MINIO_PORT'))
@@ -694,8 +696,8 @@ def SOURCEVAL_bucket_urls(context):
 
     res = s3Minio.listSummonedUrls(bucket, source_name)
     r = str('returned value:{}'.format(res))
-    bucketurls = json.dumps(res, indent=2)
-    s3Minio.putReportFile(GLEANER_MINIO_BUCKET, source_name, "bucketutil_urls.json", bucketurls)
+    bucketurls = pandas.DataFrame(res).to_csv(index=False, quoting=csv.QUOTE_NONNUMERIC)
+    s3Minio.putReportFile(GLEANER_MINIO_BUCKET, source_name, "bucketutil_urls.csv", bucketurls)
     get_dagster_logger().info(f"bucker urls report  returned  {r} ")
     return
 

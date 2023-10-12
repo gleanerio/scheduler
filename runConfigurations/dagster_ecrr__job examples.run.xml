@@ -1,14 +1,17 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="pygen eco v1" type="PythonConfigurationType" factoryName="Python" folderName="pygen">
+  <configuration default="false" name="dagster_ecrr__job examples" type="PythonConfigurationType" factoryName="Python" folderName="ecrr">
     <module name="scheduler" />
     <option name="INTERPRETER_OPTIONS" value="" />
     <option name="PARENT_ENVS" value="true" />
     <envs>
       <env name="PYTHONUNBUFFERED" value="1" />
+      <env name="DAGSTER_HOME" value="/tmp/dagster" />
+      <env name="ECRR_MINIO_BUCKET" value="ecrr" />
+      <env name="ECRR_GRAPH_NAMESPACE" value="ecrr" />
     </envs>
-    <option name="SDK_HOME" value="" />
+    <option name="SDK_HOME" value="$PROJECT_DIR$/venv/bin/python" />
     <option name="SDK_NAME" value="Python 3.11 (scheduler)" />
-    <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/dagster/implnets" />
+    <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/dagster/implnets/workflows/ecrr/ecrr/" />
     <option name="IS_MODULE_SDK" value="false" />
     <option name="ADD_CONTENT_ROOTS" value="true" />
     <option name="ADD_SOURCE_ROOTS" value="true" />
@@ -21,14 +24,14 @@
       <option name="IS_ENABLE_EXPERIMENTAL_INTEGRATIONS" value="false" />
       <ENTRIES>
         <ENTRY IS_ENABLED="true" PARSER="runconfig" IS_EXECUTABLE="false" />
-        <ENTRY IS_ENABLED="true" PARSER="env" IS_EXECUTABLE="false" PATH="dagster/implnets/deployment/envFile.env" />
+        <ENTRY IS_ENABLED="true" PARSER="env" IS_EXECUTABLE="false" PATH="dagster/implnets/deployment/.env" />
       </ENTRIES>
     </EXTENSION>
-    <option name="SCRIPT_NAME" value="$PROJECT_DIR$/dagster/implnets/pygen.py" />
-    <option name="PARAMETERS" value="-cf ./configs/eco/gleanerconfig.yaml -od ./generatedCode/implnet-eco/output -td ./templates/v1 -d 7" />
+    <option name="SCRIPT_NAME" value="dagster" />
+    <option name="PARAMETERS" value="job execute -f jobs/implnet_jobs_ecrr_examples.py  -j implnet_job_ecrr_examples" />
     <option name="SHOW_COMMAND_LINE" value="false" />
     <option name="EMULATE_TERMINAL" value="false" />
-    <option name="MODULE_MODE" value="false" />
+    <option name="MODULE_MODE" value="true" />
     <option name="REDIRECT_INPUT" value="false" />
     <option name="INPUT_FILE" value="" />
     <method v="2" />

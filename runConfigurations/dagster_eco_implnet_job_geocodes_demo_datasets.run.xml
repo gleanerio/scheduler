@@ -1,14 +1,14 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="pygen eco v1" type="PythonConfigurationType" factoryName="Python" folderName="pygen">
+  <configuration default="false" name="dagster_eco_implnet_job_geocodes_demo_datasets" type="PythonConfigurationType" factoryName="Python" folderName="dagster debug">
     <module name="scheduler" />
     <option name="INTERPRETER_OPTIONS" value="" />
     <option name="PARENT_ENVS" value="true" />
     <envs>
       <env name="PYTHONUNBUFFERED" value="1" />
     </envs>
-    <option name="SDK_HOME" value="" />
-    <option name="SDK_NAME" value="Python 3.11 (scheduler)" />
-    <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/dagster/implnets" />
+    <option name="SDK_HOME" value="$PROJECT_DIR$/venv3_9/bin/python" />
+    <option name="SDK_NAME" value="Python 3.9 (scheduler) (2)" />
+    <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/dagster/implnets/generatedCode/implnet-eco/output" />
     <option name="IS_MODULE_SDK" value="false" />
     <option name="ADD_CONTENT_ROOTS" value="true" />
     <option name="ADD_SOURCE_ROOTS" value="true" />
@@ -21,16 +21,18 @@
       <option name="IS_ENABLE_EXPERIMENTAL_INTEGRATIONS" value="false" />
       <ENTRIES>
         <ENTRY IS_ENABLED="true" PARSER="runconfig" IS_EXECUTABLE="false" />
-        <ENTRY IS_ENABLED="true" PARSER="env" IS_EXECUTABLE="false" PATH="dagster/implnets/deployment/envFile.env" />
+        <ENTRY IS_ENABLED="true" PARSER="env" IS_EXECUTABLE="false" PATH="dagster/implnets/deployment/.env" />
       </ENTRIES>
     </EXTENSION>
-    <option name="SCRIPT_NAME" value="$PROJECT_DIR$/dagster/implnets/pygen.py" />
-    <option name="PARAMETERS" value="-cf ./configs/eco/gleanerconfig.yaml -od ./generatedCode/implnet-eco/output -td ./templates/v1 -d 7" />
+    <option name="SCRIPT_NAME" value="dagster" />
+    <option name="PARAMETERS" value="job execute -f ./jobs/implnet_jobs_geocodes_demo_datasets.py" />
     <option name="SHOW_COMMAND_LINE" value="false" />
     <option name="EMULATE_TERMINAL" value="false" />
-    <option name="MODULE_MODE" value="false" />
+    <option name="MODULE_MODE" value="true" />
     <option name="REDIRECT_INPUT" value="false" />
     <option name="INPUT_FILE" value="" />
-    <method v="2" />
+    <method v="2">
+      <option name="RunConfigurationTask" enabled="true" run_configuration_name="pygen eco v1" run_configuration_type="PythonConfigurationType" />
+    </method>
   </configuration>
 </component>

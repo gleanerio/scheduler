@@ -4,6 +4,7 @@ import os
 import pandas as pd
 from dagster import asset, get_dagster_logger
 from ec.datastore import s3
+from pydash import pick
 
 GLEANER_MINIO_ADDRESS = os.environ.get('GLEANERIO_MINIO_ADDRESS')
 GLEANER_MINIO_PORT = os.environ.get('GLEANERIO_MINIO_PORT')
@@ -18,6 +19,7 @@ MINIO_OPTIONS={"secure":GLEANER_MINIO_USE_SSL
               ,"secret_key": GLEANER_MINIO_SECRET_KEY
                }
 REPORT_PATH = "reports/"
+TASKS_PATH="tasks/"
 ORG_PATH = "orgs/"
 STAT_FILE_NAME = "missing_report_graph.json"
 def _pythonMinioUrl(url):
@@ -53,10 +55,16 @@ def loadstats() -> None:
     stats = []
     for source in sourcelist:
         try:
-            stat = s3Minio.getReportFile(GLEANER_MINIO_BUCKET,source.get("name"), STAT_FILE_NAME )
-            stat = json.loads(stat)
-            stats.append(stat)
-        except:
-            logger.info(f"Failed to get { source.get('name')} ")
+           # stat = s3Minio.getReportFile(GLEANER_MINIO_BUCKET,source.get("name"), STAT_FILE_NAME )
+           repo = source.get("name")
+           path = f"{REPORT_PATH}{repo}/latest/{STAT_FILE_NAME}"
+           s3ObjectInfo = {"bucket_name": GLEANER_MINIO_BUCKET, "object_name": path}
+           resp = s3Minio.getFileFromStore(s3ObjectInfo)
+           stat = json.loads(resp)
+           stat = pick(stat, 'source','sitemap','date','sitemap_count','summoned_count','missing_sitemap_summon_count',
+                       'graph_urn_count','missing_summon_graph_count' )
+           stats.append(stat)
+        except Exception as ex:
+            logger.info(f"Failed to get { source.get('name')}  {ex}")
     df = pd.DataFrame(stats)
     df.to_csv("data/weekly_stats.csv")

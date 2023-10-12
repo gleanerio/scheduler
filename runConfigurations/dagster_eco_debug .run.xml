@@ -4,11 +4,11 @@
     <option name="INTERPRETER_OPTIONS" value="" />
     <option name="PARENT_ENVS" value="true" />
     <envs>
-      <env name="DAGSTER_HOME" value="/tmp/dagster" />
       <env name="PYTHONUNBUFFERED" value="1" />
+      <env name="DAGSTER_HOME" value="/tmp/dagster" />
     </envs>
     <option name="SDK_HOME" value="$PROJECT_DIR$/venv/bin/python" />
-    <option name="SDK_NAME" value="Python 3.9 (scheduler)" />
+    <option name="SDK_NAME" value="Python 3.11 (scheduler)" />
     <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/dagster/implnets/generatedCode/implnet-eco/output" />
     <option name="IS_MODULE_SDK" value="false" />
     <option name="ADD_CONTENT_ROOTS" value="true" />
