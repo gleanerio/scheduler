@@ -84,9 +84,9 @@ services:
         - "-p"
         - "4000"
         - "--python-file"
-        - "/usr/src/app/workflows/ecrr/repositories/repository.py"
+        - "/usr/src/app/workflows/ecrr/ecrr/repositories/repository.py"
         - "-d"
-        - "/usr/src/app/workflows/ecrr/"
+        - "/usr/src/app/workflows/ecrr/ecrr/"
 
         #volumes: *vol
         depends_on:
