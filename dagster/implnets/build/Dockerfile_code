@@ -12,7 +12,7 @@ RUN mkdir -p /usr/src/app/workflows
 
 RUN pip install --upgrade pip
 ## this is a base for the project. Build this 'layer' first
-COPY ./requirements_code.txt requirements.txt
+COPY ./requirements.txt requirements.txt
 RUN pip install -r requirements.txt
 
 # this add the code
