@@ -670,7 +670,7 @@ def SOURCEVAL_graph_reports(context) :
     #report = json.dumps(returned_value, indent=2) # value already json.dumps
     report = returned_value
     s3Minio.putReportFile(bucket, source_name, "graph_stats.json", report)
-    get_dagster_logger().info(f"graph report  returned  {r} ")
+    get_dagster_logger().info(f"graph stats  returned  {r} ")
     return
 
 @op(ins={"start": In(Nothing)})
