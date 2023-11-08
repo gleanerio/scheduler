@@ -102,12 +102,12 @@ GLEANERIO_WORKSPACE_CONFIG_PATH=/usr/src/app/workspace.yaml
 GLEANERIO_WORKSPACE_DOCKER_CONFIG=workspace-eco
 
 
-# NETWORK is needed for headless rendering
-# gleaner
-
-
 DEBUG=False
+GLEANERIO_CONTAINER_WAIT_SECONDS=300
+# debuggin set to 5 or 10 seconds
 PROJECT=eco
+CONTAINER_CODE_TAG=latest
+CONTAINER_DAGSTER_TAG=latest
 #PROJECT=iow
 #PROJECT=oih
 HOST=localhost
@@ -115,7 +115,13 @@ PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python
 # port is required: https://portainer.{HOST}:443/api/endpoints/2/docker/
 PORTAINER_URL=
 PORTAINER_KEY=
-
+# if running dagster-dev, then this needs to be set ,
+#       defaults to "/scheduler/gleanerconfig.yaml" which is path to config mounted in containers
+# when debugging generated code "../../../configs/eco/gleanerconfig.yaml"
+# when debugging code in workflows "../../configs/eco/gleanerconfig.yaml"
+# DAGSTER_GLEANER_CONFIG_PATH=../../../configs/eco/gleanerconfig.yaml
+GLEANERIO_CONTAINER_WAIT_SECONDS=3600
+#GLEANERIO_CONTAINER_WAIT_SECONDS=30
 # Network
 GLEANERIO_HEADLESS_NETWORK=headless_gleanerio
 
@@ -123,20 +129,14 @@ GLEANERIO_HEADLESS_NETWORK=headless_gleanerio
 GLEANERIO_GLEANER_IMAGE=nsfearthcube/gleaner:latest
 GLEANERIO_NABU_IMAGE=nsfearthcube/nabu:latest
 
-
-
 ##
 # path where configs are deployed/mounted
 ####
 GLEANERIO_GLEANER_CONFIG_PATH=/gleaner/gleanerconfig.yaml
 GLEANERIO_NABU_CONFIG_PATH=/nabu/nabuconfig.yaml
 ###
-
-
-
-
-
-#GLEANERIO_LOG_PREFIX=scheduler/logs/
+#path in s3 for docker log files
+GLEANERIO_LOG_PREFIX=scheduler/logs/
 
 GLEANERIO_MINIO_ADDRESS=
 GLEANERIO_MINIO_PORT=80
@@ -146,12 +146,14 @@ GLEANERIO_MINIO_ACCESS_KEY=
 GLEANERIO_MINIO_SECRET_KEY=
 GLEANERIO_HEADLESS_ENDPOINT=http://headless:9222
 
-
-
 # just the base address, no namespace https://graph.geocodes-aws-dev.earthcube.org/blazegraph
 GLEANERIO_GRAPH_URL=
 GLEANERIO_GRAPH_NAMESPACE=
 
+# example: https://graph.geocodes.ncsa.illinois.edu/blazegraph/namespace/yyearthcube2/sparql
+#graph endpoint will be GLEANERIO_GRAPH_URL
+GLEANERIO_SUMMARY_GRAPH_NAMESPACE=
+GLEANERIO_SUMMARIZE_GRAPH=True
 
 ```
 
