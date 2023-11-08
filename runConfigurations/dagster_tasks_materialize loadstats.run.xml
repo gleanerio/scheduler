@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="dagster_tasks_materialize" type="PythonConfigurationType" factoryName="Python" folderName="dagster debug">
+  <configuration default="false" name="dagster_tasks_materialize loadstats" type="PythonConfigurationType" factoryName="Python" folderName="dagster debug">
     <module name="scheduler" />
     <option name="INTERPRETER_OPTIONS" value="" />
     <option name="PARENT_ENVS" value="true" />

@@ -1,14 +1,15 @@
+import distutils
 import json
 import os
 
 import pandas as pd
-from dagster import asset, get_dagster_logger
+from dagster import asset, get_dagster_logger, define_asset_job
 from ec.datastore import s3
 from pydash import pick
 
 GLEANER_MINIO_ADDRESS = os.environ.get('GLEANERIO_MINIO_ADDRESS')
 GLEANER_MINIO_PORT = os.environ.get('GLEANERIO_MINIO_PORT')
-GLEANER_MINIO_USE_SSL = os.environ.get('GLEANERIO_MINIO_USE_SSL')
+GLEANER_MINIO_USE_SSL = bool(distutils.util.strtobool(os.environ.get('GLEANERIO_MINIO_USE_SSL', 'true')))
 GLEANER_MINIO_SECRET_KEY = os.environ.get('GLEANERIO_MINIO_SECRET_KEY')
 GLEANER_MINIO_ACCESS_KEY = os.environ.get('GLEANERIO_MINIO_ACCESS_KEY')
 GLEANER_MINIO_BUCKET = os.environ.get('GLEANERIO_MINIO_BUCKET')
@@ -32,7 +33,7 @@ def _pythonMinioUrl(url):
 
 def getName(name):
     return name.replace("orgs/","").replace(".nq","")
-@asset()
+@asset(group_name="load")
 def source_list() -> None:
     s3Minio = s3.MinioDatastore(_pythonMinioUrl(GLEANER_MINIO_ADDRESS), MINIO_OPTIONS)
     orglist = s3Minio.listPath(GLEANER_MINIO_BUCKET, ORG_PATH,recursive=False)
@@ -44,8 +45,13 @@ def source_list() -> None:
     with open("data/source_list.json", "w") as f:
         json.dump(list(sources), f)
 #@asset(deps=[source_list])
-@asset(deps=[source_list])
-def loadstats() -> None:
+
+# set a prefix so we can have some named stats file
+
+#@asset( group_name="load")
+@asset(deps=[source_list], group_name="load")
+def loadstatsHistory() -> None:
+    prefix="history"
     logger = get_dagster_logger()
     s3Minio = s3.MinioDatastore(_pythonMinioUrl(GLEANER_MINIO_ADDRESS),MINIO_OPTIONS)
  #   sourcelist = list(s3Minio.listPath(GLEANER_MINIO_BUCKET, ORG_PATH,recursive=False))
@@ -57,14 +63,27 @@ def loadstats() -> None:
         try:
            # stat = s3Minio.getReportFile(GLEANER_MINIO_BUCKET,source.get("name"), STAT_FILE_NAME )
            repo = source.get("name")
-           path = f"{REPORT_PATH}{repo}/latest/{STAT_FILE_NAME}"
-           s3ObjectInfo = {"bucket_name": GLEANER_MINIO_BUCKET, "object_name": path}
-           resp = s3Minio.getFileFromStore(s3ObjectInfo)
-           stat = json.loads(resp)
-           stat = pick(stat, 'source','sitemap','date','sitemap_count','summoned_count','missing_sitemap_summon_count',
-                       'graph_urn_count','missing_summon_graph_count' )
-           stats.append(stat)
+           dirs = s3Minio.listPath( GLEANER_MINIO_BUCKET,f"{REPORT_PATH}{repo}/",recursive=False )
+           for d in dirs:
+               latestpath = f"{REPORT_PATH}{repo}/latest/"
+               if (d.object_name.casefold() == latestpath.casefold()) or (d.is_dir == False):
+                   continue
+               path = f"/{d.object_name}{STAT_FILE_NAME}"
+               s3ObjectInfo = {"bucket_name": GLEANER_MINIO_BUCKET, "object_name": path}
+               try:
+                   resp = s3Minio.getFileFromStore(s3ObjectInfo)
+                   stat = json.loads(resp)
+                   stat = pick(stat, 'source', 'sitemap', 'date', 'sitemap_count', 'summoned_count',
+                               'missing_sitemap_summon_count',
+                               'graph_urn_count', 'missing_summon_graph_count')
+                   stats.append(stat)
+               except Exception as ex:
+                   logger.info(f"no missing graph report {source.get('name')}  {ex}")
         except Exception as ex:
             logger.info(f"Failed to get { source.get('name')}  {ex}")
     df = pd.DataFrame(stats)
-    df.to_csv("data/weekly_stats.csv")
+    df.to_csv(f"data/all_stats.csv")
+    s3Minio.putReportFile(GLEANER_MINIO_BUCKET, "all", f"all_stats.csv", df.to_csv())
+    get_dagster_logger().info(f"all_stats.csv uploaded ")
+
+

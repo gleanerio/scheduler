@@ -41,22 +41,22 @@ fi
 ## need to docker (network|volume) ls | grep (traefik_proxy|traefik_proxy) before these calll
 ## or an error will be thrown
 #echo "This message is OK **Error response from daemon: network with name traefik_proxy already exists.** "
-if [  "$(docker network ls  | grep -${GLEANER_HEADLESS_NETWORK})" ] ; then
-   echo ${GLEANER_HEADLESS_NETWORK} netowrk exists;
+if [  "$(docker network ls  | grep -${GLEANERIO_DOCKER_HEADLESS_NETWORK})" ] ; then
+   echo ${GLEANERIO_DOCKER_HEADLESS_NETWORK} netowrk exists;
 else
    echo creating network
    if [ "$(docker info | grep Swarm | sed 's/Swarm: //g')" == "inactive" ]; then
         echo Not Swarm
-        if `docker network create -d bridge --attachable ${GLEANER_HEADLESS_NETWORK}`; then
-           echo 'Created network ${GLEANER_HEADLESS_NETWORK}'
+        if `docker network create -d bridge --attachable ${GLEANERIO_DOCKER_HEADLESS_NETWORK}`; then
+           echo 'Created network ${GLEANERIO_DOCKER_HEADLESS_NETWORK}'
         else
            echo "ERROR: *** Failed to create local network. "
             exit 1
         fi
    else
         echo Is Swarm
-        if `docker network create -d overlay --attachable ${GLEANER_HEADLESS_NETWORK}`; then
-          echo 'Created network ${GLEANER_HEADLESS_NETWORK}'
+        if `docker network create -d overlay --attachable ${GLEANERIO_DOCKER_HEADLESS_NETWORK}`; then
+          echo 'Created network ${GLEANERIO_DOCKER_HEADLESS_NETWORK}'
         else
             echo "ERROR: *** Failed to create swarm network.  "
             exit 1
@@ -67,9 +67,9 @@ fi
 
 #echo NOTE: Verify that the traefik_proxy network  SCOPE is swarm
 
-docker volume create ${GLEANER_CONFIG_VOLUME:-dagster_gleaner_configs}
 
-echo added network  ${GLEANER_HEADLESS_NETWORK}  and volume ${GLEANER_CONFIG_VOLUME}
+
+echo added network  ${GLEANERIO_DOCKER_HEADLESS_NETWORK}
 
 if [  "$(docker config ls  | grep -${GLEANERIO_GLEANER_CONFIG_PATH})" ] ; then
    echo ${GLEANERIO_GLEANER_CONFIG_PATH} config exists;

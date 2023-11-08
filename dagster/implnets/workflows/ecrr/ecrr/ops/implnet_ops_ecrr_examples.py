@@ -784,7 +784,7 @@ def ecrr_examples_upload_summarize(context):
 #     r = str('returned value:{}'.format(returned_value))
 #     return msg + r
 @graph
-def harvest_ecrr_examples():
+def reload_ecrr_examples():
     containers = ecrr_examples_getImage()
     harvest = ecrr_examples_gleaner(start=containers)
     load_release = ecrr_examples_naburelease(start=harvest)

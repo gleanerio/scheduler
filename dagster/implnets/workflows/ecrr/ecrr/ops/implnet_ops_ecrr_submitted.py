@@ -36,18 +36,18 @@ from dagster_docker.docker_run_launcher import DockerRunLauncher
 from dagster_docker.utils import DOCKER_CONFIG_SCHEMA, validate_docker_image
 from docker.types.services import ContainerSpec, TaskTemplate, ConfigReference
 
-DEBUG=(os.getenv('DEBUG', 'False').lower()  == 'true')
+DEBUG=(os.getenv('DEBUG_CONTAINER', 'False').lower()  == 'true')
 # #
 # path to gleaner config in Dagster-daemon is "/scheduler/gleanerconfig.yaml" (config file mounted)
 #  WHEN RUNNING dagster-dev, this needs to be a path to a local file
 ##
-DAGSTER_GLEANER_CONFIG_PATH = os.environ.get('DAGSTER_GLEANER_CONFIG_PATH', "/scheduler/gleanerconfig.yaml")
+DAGSTER_GLEANER_CONFIG_PATH = os.environ.get('GLEANERIO_DAGSTER_CONFIG_PATH', "/scheduler/gleanerconfig.yaml")
 
 # Vars and Envs
-GLEANER_HEADLESS_NETWORK=os.environ.get('GLEANERIO_HEADLESS_NETWORK', "headless_gleanerio")
+GLEANER_HEADLESS_NETWORK=os.environ.get('GLEANERIO_DOCKER_HEADLESS_NETWORK', "headless_gleanerio")
 # env items
-URL = os.environ.get('PORTAINER_URL')
-APIKEY = os.environ.get('PORTAINER_KEY')
+URL = os.environ.get('GLEANERIO_DOCKER_URL')
+APIKEY = os.environ.get('GLEANERIO_PORTAINER_APIKEY')
 
 
 GLEANER_MINIO_ADDRESS = str(os.environ.get('GLEANERIO_MINIO_ADDRESS'))
@@ -77,10 +77,10 @@ GLEANERIO_GLEANER_ARCHIVE_OBJECT = str(os.environ.get('GLEANERIO_GLEANER_ARCHIVE
 GLEANERIO_GLEANER_ARCHIVE_PATH = str(os.environ.get('GLEANERIO_GLEANER_ARCHIVE_PATH', '/gleaner/'))
 GLEANERIO_NABU_ARCHIVE_OBJECT=str(os.environ.get('GLEANERIO_NABU_ARCHIVE_OBJECT', 'scheduler/configs/NabuCfg.tgz'))
 GLEANERIO_NABU_ARCHIVE_PATH=str(os.environ.get('GLEANERIO_NABU_ARCHIVE_PATH', '/nabu/'))
-GLEANERIO_GLEANER_DOCKER_CONFIG=str(os.environ.get('GLEANERIO_GLEANER_DOCKER_CONFIG', 'gleaner'))
-GLEANERIO_NABU_DOCKER_CONFIG=str(os.environ.get('GLEANERIO_NABU_DOCKER_CONFIG', 'nabu'))
+GLEANERIO_GLEANER_DOCKER_CONFIG=str(os.environ.get('GLEANERIO_DOCKER_GLEANER_CONFIG', 'gleaner'))
+GLEANERIO_NABU_DOCKER_CONFIG=str(os.environ.get('GLEANERIO_DOCKER_NABU_CONFIG', 'nabu'))
 #GLEANERIO_SUMMARY_GRAPH_ENDPOINT = os.environ.get('GLEANERIO_SUMMARY_GRAPH_ENDPOINT')
-GLEANERIO_SUMMARY_GRAPH_NAMESPACE = os.environ.get('GLEANERIO_SUMMARY_GRAPH_NAMESPACE',f"{GLEANER_GRAPH_NAMESPACE}_summary" )
+GLEANERIO_SUMMARY_GRAPH_NAMESPACE = os.environ.get('GLEANERIO_GRAPH_SUMMARY_ENDPOINT',f"{GLEANER_GRAPH_NAMESPACE}_summary" )
 
 SUMMARY_PATH = 'graphs/summary'
 RELEASE_PATH = 'graphs/latest'
@@ -784,7 +784,7 @@ def ecrr_submitted_upload_summarize(context):
 #     r = str('returned value:{}'.format(returned_value))
 #     return msg + r
 @graph
-def harvest_ecrr_submitted():
+def reload_ecrr_submitted():
     containers = ecrr_submitted_getImage()
     load_release = ecrr_submitted_naburelease(start=containers)
     load_uploadrelease = ecrr_submitted_uploadrelease(start=load_release)

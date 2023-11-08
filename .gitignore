@@ -11,3 +11,4 @@ venv/**
 
 /dagster/implnets/generatedCode/implnet-*/output/
 
+/dagster/implnets/deployment/prod.env
