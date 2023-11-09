@@ -117,7 +117,7 @@ services:
               - "traefik.enable=true"
               - "traefik.http.routers.sched-${PROJECT:-eco}.entrypoints=http"
               - "traefik.http.routers.sched-${PROJECT:-eco}.priority=13"
-              - "traefik.http.routers.sched-${PROJECT:-eco}.rule=Host(`sched.${HOST? HOST is required}`)"
+              - "traefik.http.routers.sched-${PROJECT:-eco}.rule=Host(`${SCHED_HOSTNAME:-sched}.${HOST? HOST is required}`)"
               - "traefik.http.middlewares.sched-https-redirect.redirectscheme.scheme=https"
               - "traefik.http.routers.sched-${PROJECT:-eco}.middlewares=sched-https-redirect"
               - "traefik.http.routers.sched-${PROJECT:-eco}-secure.entrypoints=https"

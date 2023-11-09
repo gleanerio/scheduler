@@ -18,7 +18,9 @@ do
       ? ) helpFunction ;; # Print helpFunction in case parameter is non-existent
    esac
 done
-
+RED='\033[0;31m'
+Yellow='\033[0;33m'
+NC='\033[0m'
 
 if [ ! $envfile ]
   then
@@ -32,7 +34,7 @@ if [ -f $envfile ]
     export $(sed  '/^[ \t]*#/d' $envfile |  sed '/^$/d' | xargs)
 
   else
-    echo "missing environment file. pass flag, or copy and edit file"
+    echo -e "${RED} missing environment file. pass flag, or copy and edit file${NC}"
     echo "cp envFile.env .env"
     echo "OR"
     echo "cp {yourenv}.env .env"
@@ -52,7 +54,7 @@ else
         if `docker network create -d bridge --attachable ${GLEANERIO_DOCKER_HEADLESS_NETWORK}`; then
            echo 'Created network ${GLEANERIO_DOCKER_HEADLESS_NETWORK}'
         else
-           echo "ERROR: *** Failed to create local network. "
+           echo -e "${RED}ERROR: *** Failed to create local network. ${NC}"
             exit 1
         fi
    else
@@ -60,7 +62,7 @@ else
         if `docker network create -d overlay --attachable ${GLEANERIO_DOCKER_HEADLESS_NETWORK}`; then
           echo 'Created network ${GLEANERIO_DOCKER_HEADLESS_NETWORK}'
         else
-            echo "ERROR: *** Failed to create swarm network.  "
+            echo -e "${RED}ERROR: *** Failed to create swarm network.   ${NC}"
             exit 1
         fi
    fi
@@ -70,8 +72,10 @@ fi
 
 #echo NOTE: Verify that the traefik_proxy network  SCOPE is swarm
 
-
-echo DO NOT FORGET TO USE pygen/makefile REGNERATE THE CODE.
+RED='\033[0;31m'
+Yellow='\033[0;33m'
+NC='\033[0m'
+echo -e ${Yellow}DO NOT FORGET TO USE pygen/makefile REGNERATE THE CODE.${NC}
 
 echo run as detached: $detached
 
@@ -88,5 +92,6 @@ if [ "$detached" = true  ]
   else
     docker compose -p dagster --env-file $envfile  -f compose_local.yaml  $override_file up
 fi
+echo -e ${Yellow}DO NOT FORGET TO USE pygen/makefile REGNERATE THE CODE.${NC}
+echo -e ${Yellow}If gleaner@project_grpc shows in UI as not working, most likely, REGNERATE THE CODE.${NC}
 
-echo DO NOT FORGET TO USE pygen/makefile REGNERATE THE CODE.
