@@ -23,7 +23,7 @@ data: Data Graph {
        style.fill: "#f4a261"
        width: 300
     ex: |python 
-    harvest = SOURCEVAL_gleaner(start=containers)
+    load_release = SOURCEVAL_naburelease(start=harvest)
     |
 
     }
@@ -31,7 +31,7 @@ data: Data Graph {
        style.fill: "#f4a261"
        width: 300
     ex: |python 
-    harvest = SOURCEVAL_gleaner(start=containers)
+    load_uploadrelease = SOURCEVAL_uploadrelease(start=load_release)
     |
      }
 
@@ -39,7 +39,7 @@ data: Data Graph {
         style.fill: "#f4a261"
         width: 300
     ex: |python 
-    harvest = SOURCEVAL_gleaner(start=containers)
+    load_prune = SOURCEVAL_nabu_prune(start=load_uploadrelease)
     |
     }
 }
@@ -50,7 +50,7 @@ org: Organization Graph {
         style.fill: "#f4a261"
         width: 300
     ex: |python 
-    harvest = SOURCEVAL_gleaner(start=containers)
+    org_release = SOURCEVAL_nabu_orgsrelease(start=harvest)
     |
     }
 
@@ -58,7 +58,7 @@ org: Organization Graph {
         style.fill: "#f4a261"
         width: 300
     ex: |python 
-    harvest = SOURCEVAL_gleaner(start=containers)
+    load_org = SOURCEVAL_nabuorgs(start=org_release)
     |
     }
 
@@ -71,7 +71,7 @@ prov: Provenance Graph {
         style.fill: "#f4a261"
         width: 300
     ex: |python 
-    harvest = SOURCEVAL_gleaner(start=containers)
+    prov_release = SOURCEVAL_nabu_provrelease(start=harvest)
     |
     }
 
@@ -79,7 +79,7 @@ prov: Provenance Graph {
         style.fill: "#f4a261"
         width: 300
     ex: |python 
-    harvest = SOURCEVAL_gleaner(start=containers)
+    prov_clear = SOURCEVAL_nabu_provclear(start=prov_release)
     |
     }
 
@@ -87,7 +87,7 @@ prov: Provenance Graph {
         style.fill: "#f4a261"
         width: 300
     ex: |python 
-    harvest = SOURCEVAL_gleaner(start=containers)
+    prov_object = SOURCEVAL_nabu_provobject(start=prov_clear)
     |
     }
 
@@ -95,7 +95,7 @@ prov: Provenance Graph {
         style.fill: "#f4a261"
         width: 300
     ex: |python 
-    harvest = SOURCEVAL_gleaner(start=containers)
+    prov_drain = SOURCEVAL_nabu_provdrain(start=prov_object)
     |
     }
 }
