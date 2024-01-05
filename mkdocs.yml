@@ -36,7 +36,12 @@ plugins:
 #        - "./docs/GeoCODES-Metadata/schemas/"
 nav:
   - Gleaner IO Scheduler:
-    - Dagster: README.md
+    - Scheduler: README.md
     - Quick: quick.md
-    - Add Containers:  add_containers.md
+
+    - Develeopment:
+      - Local Developement: README_LOCAL_DEVELOPMENT.md
+      - Developing Schedules: developement.md
+      - Troubleshooting Workflows:  monitoring_workflows.md
+
 

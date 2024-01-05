@@ -1,4 +1,4 @@
-# Dagster
+# Scheduler, AKA Dagster
 
 
 ## About
@@ -51,11 +51,11 @@ The production 'containers' are built with a github action, or using a makefile.
 This describes the local and container deployment
 We use portainer to manage our docker deployments.
 
-1) move to the the deployment directory
-2) copy the envFile.env to .env 
-3) edit the entries.
-4) for local, `./dagster_localrun.sh`
-5) go to http://localhost:3000/
+1. move to  the deployment directory
+2.  copy the envFile.env to .env 
+3. edit the entries.
+4. for local, `./dagster_localrun.sh`
+5. go to http://localhost:3000/
 
 To deploy in portainer, use the deployment/compose_project.yaml docker stack.
 
@@ -67,7 +67,9 @@ To deploy in portainer, use the deployment/compose_project.yaml docker stack.
 | workspace          | configs/PROJECT/worksapce.yaml      | env () | used by dagster          |
 | gleanerconfig.yaml | configs/PROJECT/gleanerconfigs.yaml | env () | needs to be in portainer |
 | nabuconfig.yaml    | configs/PROJECT/nabuconfigs.yaml    | env () | needs to be in portainer |
-2) 
+
+2) when the containers are running in a  stack, on portainer, there will need to
+   be updated by pulling from dockerhub. The ENV variables may need to be updated for the CONTAINER*_TAG
 
 ## Editing Template
 
@@ -80,7 +82,7 @@ then deploy with
 If you are running using dagster_localrun.sh 
 1) go to the deployment at http://localhost:3000/locations
 2) click 'reload on gleaner@project_grpc'
-3) then if code is correct, then you will be able run the changed [workflows](http://localhost:3000/overview/jobs)
+3) then if code is correct, then you will be able to run the changed [workflows](http://localhost:3000/overview/jobs)
 
 (TODO NEEDS MORE
 )
