@@ -50,6 +50,10 @@ objects:
     - summoned/r2r
     - summoned/ssdbiodp
     - summoned/unavco
+    - summoned/glim
+    - summoned/gpp
+    - summoned/nitrogen
+    - summoned/nitrogen2
     - prov/aquadocs
     - prov/bcodmo
     - prov/cchdo

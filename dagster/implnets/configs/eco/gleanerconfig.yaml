@@ -579,4 +579,79 @@ sources:
     fixcontextoption: 0
     acceptcontenttype: application/ld+json, text/html
     jsonprofile: application/ld+json
-
+  - sourcetype: sitemap
+    name: glim
+    logo: ""
+    url: https://raw.githubusercontent.com/earthcube/communityCollections/master/collection/pangaea/sitemaps/glim.xml
+    headless: false
+    pid: https://github.com/earthcube/GeoCODES-Metadata/
+    propername: GLiM
+    domain: https://doi.pangaea.de/10.1594/PANGAEA.788537
+    active: true
+    credentialsfile: ""
+    other: {}
+    headlesswait: 0
+    delay: 0
+    identifierpath: ""
+    apipagelimit: 0
+    identifiertype: identifiersha
+    fixcontextoption: 0
+    acceptcontenttype: application/ld+json, text/html
+    jsonprofile: application/ld+json
+  - sourcetype: sitemap
+    name: gpp
+    logo: ""
+    url: https://raw.githubusercontent.com/earthcube/communityCollections/master/collection/pangaea/sitemaps/gpp.xml
+    headless: false
+    pid: https://doi.pangaea.de/10.1594/PANGAEA.879560
+    propername: Global GPP
+    domain: https://doi.pangaea.de/10.1594/PANGAEA.879560
+    active: true
+    credentialsfile: ""
+    other: {}
+    headlesswait: 0
+    delay: 0
+    identifierpath: ""
+    apipagelimit: 0
+    identifiertype: identifiersha
+    fixcontextoption: 0
+    acceptcontenttype: application/ld+json, text/html
+    jsonprofile: application/ld+json
+  - sourcetype: sitemap
+    name: nitrogen
+    logo: ""
+    url: https://github.com/earthcube/communityCollections/blob/master/collection/pangaea/sitemaps/nitrogen.xml
+    headless: false
+    pid: https://doi.pangaea.de/10.1594/PANGAEA.861203
+    propername: Nitrogen Fertilizer
+    domain: https://doi.pangaea.de/10.1594/PANGAEA.861203
+    active: true
+    credentialsfile: ""
+    other: {}
+    headlesswait: 0
+    delay: 0
+    identifierpath: ""
+    apipagelimit: 0
+    identifiertype: identifiersha
+    fixcontextoption: 0
+    acceptcontenttype: application/ld+json, text/html
+    jsonprofile: application/ld+json
+  - sourcetype: sitemap
+    name: nitrogen2
+    logo: ""
+    url: https://raw.githubusercontent.com/earthcube/communityCollections/master/collection/pangaea/sitemaps/nitrogen2.xml
+    headless: false
+    pid: https://doi.pangaea.de/10.1594/PANGAEA.871980
+    propername: Manure Nitrogen
+    domain: https://doi.pangaea.de/10.1594/PANGAEA.871980
+    active: true
+    credentialsfile: ""
+    other: {}
+    headlesswait: 0
+    delay: 0
+    identifierpath: ""
+    apipagelimit: 0
+    identifiertype: identifiersha
+    fixcontextoption: 0
+    acceptcontenttype: application/ld+json, text/html
+    jsonprofile: application/ld+json
