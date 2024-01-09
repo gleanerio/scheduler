@@ -620,7 +620,7 @@ sources:
   - sourcetype: sitemap
     name: nitrogen
     logo: ""
-    url: https://github.com/earthcube/communityCollections/blob/master/collection/pangaea/sitemaps/nitrogen.xml
+    url: https://raw.githubusercontent.com/earthcube/communityCollections/master/collection/pangaea/sitemaps/nitrogen.xml
     headless: false
     pid: https://doi.pangaea.de/10.1594/PANGAEA.861203
     propername: Nitrogen Fertilizer
