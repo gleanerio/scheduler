@@ -34,16 +34,17 @@ def _pythonMinioUrl(url):
 def getName(name):
     return name.replace("orgs/","").replace(".nq","")
 @asset(group_name="load")
-def source_list() -> None:
+def source_list() -> str:
     s3Minio = s3.MinioDatastore(_pythonMinioUrl(GLEANER_MINIO_ADDRESS), MINIO_OPTIONS)
     orglist = s3Minio.listPath(GLEANER_MINIO_BUCKET, ORG_PATH,recursive=False)
     sources = map( lambda f: { "name": getName(f.object_name)}, orglist )
-
+    source_json = json.dumps(list(sources))
     os.makedirs("data", exist_ok=True)
 
-
+    s3Minio.putReportFile(GLEANER_MINIO_BUCKET, "all", f"source_list.json", source_json )
     with open("data/source_list.json", "w") as f:
         json.dump(list(sources), f)
+    return source_json
 #@asset(deps=[source_list])
 
 # set a prefix so we can have some named stats file
@@ -83,7 +84,9 @@ def loadstatsHistory() -> None:
             logger.info(f"Failed to get { source.get('name')}  {ex}")
     df = pd.DataFrame(stats)
     df.to_csv(f"data/all_stats.csv")
-    s3Minio.putReportFile(GLEANER_MINIO_BUCKET, "all", f"all_stats.csv", df.to_csv())
+    df_csv = df.to_csv()
+    s3Minio.putReportFile(GLEANER_MINIO_BUCKET, "all", f"all_stats.csv", df_csv)
     get_dagster_logger().info(f"all_stats.csv uploaded ")
+    return df_csv
 
 

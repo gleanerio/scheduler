@@ -7,7 +7,7 @@ minio:
   ssl: true
 context:
     cache: true
-    strict: true
+    strict: false
 contextmaps:
   - prefix: "https://schema.org/"
     file: "/assets/schemaorg-current-https.jsonld"  # wget http://schema.org/docs/jsonldcontext.jsonld

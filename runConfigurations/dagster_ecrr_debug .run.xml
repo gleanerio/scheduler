@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="dagster_ecrr_debug " type="PythonConfigurationType" factoryName="Python" folderName="dagster debug">
+  <configuration default="false" name="dagster_ecrr_debug " type="PythonConfigurationType" factoryName="Python" folderName="ecrr">
     <module name="scheduler" />
     <option name="INTERPRETER_OPTIONS" value="" />
     <option name="PARENT_ENVS" value="true" />

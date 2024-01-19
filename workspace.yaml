@@ -1,0 +1,7 @@
+load_from:
+      - python_file:
+          relative_path: "project/repositories/repository.py"
+          working_directory: .
+      - python_file:
+            relative_path: "gleanerio/repositories/repository.py"
+            working_directory: .
