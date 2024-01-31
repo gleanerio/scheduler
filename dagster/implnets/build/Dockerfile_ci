@@ -16,6 +16,7 @@ RUN pip install -r requirements.txt
 # this add the code
 COPY . scheduler
 COPY ./configs/${implnet}/gleanerconfig.yaml scheduler/gleanerconfig.yaml
+COPY ./configs/${implnet}/tennant.yaml scheduler/tennant.yaml
 
 COPY ./deployment/dagster.yaml /usr/src/app/
 

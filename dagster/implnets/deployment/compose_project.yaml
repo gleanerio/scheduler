@@ -33,6 +33,9 @@ configs:
   nabu:
     name: ${GLEANERIO_DOCKER_NABU_CONFIG:-nabu}
     external: true
+  tenant:
+    name: ${GLEANERIO_DOCKER_TENANT_CONFIG:-tenant}
+    external: true
   workspace:
     name: ${GLEANERIO_DOCKER_WORKSPACE_CONFIG:-workspace}
     external: true

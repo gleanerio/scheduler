@@ -1,7 +1,7 @@
 import distutils
-import json
 import os
 
+import yaml
 from dagster import asset, define_asset_job, get_dagster_logger
 from ec.graph.sparql_query import queryWithSparql
 from ec.reporting.report import generateGraphReportsRepo, reportTypes, generateReportStats
@@ -20,7 +20,6 @@ GLEANER_MINIO_BUCKET =str( os.environ.get('GLEANERIO_MINIO_BUCKET'))
 
 # set for the earhtcube utiltiies
 MINIO_OPTIONS={"secure":GLEANERIO_MINIO_USE_SSL
-
               ,"access_key": GLEANERIO_MINIO_ACCESS_KEY
               ,"secret_key": GLEANERIO_MINIO_SECRET_KEY
                }
@@ -41,6 +40,7 @@ GLEANERIO_NABU_ARCHIVE_PATH=str(os.environ.get('GLEANERIO_NABU_ARCHIVE_PATH', '/
 GLEANERIO_GLEANER_DOCKER_CONFIG=str(os.environ.get('GLEANERIO_GLEANER_DOCKER_CONFIG', 'gleaner'))
 GLEANER_GRAPH_URL = str(os.environ.get('GLEANERIO_GRAPH_URL'))
 GLEANERIO_NABU_DOCKER_CONFIG=str(os.environ.get('GLEANERIO_NABU_DOCKER_CONFIG', 'nabu'))
+GLEANERIO_DOCKER_TENANT_CONFIG=str(os.environ.get('GLEANERIO_DOCKER_TENANT_CONFIG', 'tenant'))
 #GLEANERIO_SUMMARY_GRAPH_ENDPOINT = os.environ.get('GLEANERIO_SUMMARY_GRAPH_ENDPOINT')
 GLEANERIO_SUMMARY_GRAPH_NAMESPACE = os.environ.get('GLEANERIO_GRAPH_NAMESPACE',f"{GLEANERIO_GRAPH_NAMESPACE}_summary" )
 GLEANERIO_SUMMARIZE_GRAPH=(os.getenv('GLEANERIO_GRAPH_SUMMARIZE', 'False').lower() == 'true')
@@ -49,6 +49,13 @@ GLEANERIO_CSV_CONFIG_URL = str(os.environ.get('GLEANERIO_CSV_CONFIG_URL'))
 SUMMARY_PATH = 'graphs/summary'
 RELEASE_PATH = 'graphs/latest'
 
+def read_docker_compose(file_path):
+    with open(file_path, 'r') as f:
+        try:
+            compose_data = yaml.safe_load(f)
+            return compose_data
+        except yaml.YAMLError as e:
+            print("Error reading YAML:", e)
 def _graphSummaryEndpoint(community):
     if community == "all":
         url = f"{GLEANER_GRAPH_URL}/namespace/{GLEANERIO_SUMMARY_GRAPH_NAMESPACE}/sparql"
@@ -74,8 +81,10 @@ def all_report_stats():
     bucket = GLEANER_MINIO_BUCKET
     source_url = GLEANERIO_CSV_CONFIG_URL
 
-    # TODO: remove the hardcoded community list
-    community_list = ["all", "deepoceans", "ecoforecast", "geochemistry"]
+    community_list = ["all"] # Initialize with all
+    tennants = read_docker_compose("data/tennant.yaml")
+    for community in tennants['tennant']:
+        community_list.append(community['community'])
 
     if (GLEANERIO_SUMMARIZE_GRAPH):
         for community in community_list:

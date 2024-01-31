@@ -20,6 +20,9 @@ configs:
   nabu:
     name: ${GLEANERIO_DOCKER_NABU_CONFIG:-nabu}
     file: ../configs/${PROJECT:-eco}/nabuconfig.yaml
+  tenant:
+    name: ${GLEANERIO_DOCKER_TENANT_CONFIG:-tenant}
+    file: ../configs/${PROJECT:-eco}/tennant.yaml
   workspace:
     name: ${GLEANERIO_WORKSPACE_DOCKER_CONFIG:-workspace}
     file: ../configs/${PROJECT:-eco}/workspace.yaml
@@ -55,7 +58,9 @@ services:
             # uid: "103"
             # gid: "103"
             mode:
-              044
+              0444
+          - source: tenant
+            target: /scheduler/tennant.yaml
         volumes: &vol
           - ../deployment/dagster.yaml:/usr/src/app/dagster.yaml
           - ../generatedCode/implnet-${PROJECT:-eco}/output/:/usr/src/app/project/${PROJECT:-eco}
@@ -87,6 +92,7 @@ services:
             - GLEANERIO_GLEANER_CONFIG_PATH=${GLEANERIO_GLEANER_CONFIG_PATH:-/configs/gleaner/gleanerconfig.yaml}
             - GLEANERIO_DOCKER_NABU_CONFIG=${GLEANERIO_DOCKER_NABU_CONFIG:-nabu}
             - GLEANERIO_DOCKER_GLEANER_CONFIG=${GLEANERIO_DOCKER_GLEANER_CONFIG:-gleaner}
+            - GLEANERIO_DOCKER_TENANT_CONFIG=${GLEANERIO_DOCKER_TENANT_CONFIG:-tenant}
             - GLEANERIO_GRAPH_SUMMARY_ENDPOINT=${GLEANERIO_GRAPH_SUMMARY_ENDPOINT:-${GLEANERIO_GRAPH_URL}}
             - GLEANERIO_GRAPH_SUMMARY_NAMESPACE=${GLEANERIO_GRAPH_SUMMARY_NAMESPACE}
             - GLEANERIO_GRAPH_SUMMARIZE=${GLEANERIO_GRAPH_SUMMARIZE:-false}

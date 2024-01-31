@@ -15,6 +15,7 @@ RUN pip install -r requirements.txt
 # might mount locally in docker_compose
 COPY . scheduler
 COPY ./configs/${implnet}/gleanerconfig.yaml scheduler/gleanerconfig.yaml
+COPY ./configs/${implnet}/tennant.yaml scheduler/tennant.yaml
 
 #COPY ./dagster.yaml /usr/src/app/output/dagster.yaml
 COPY ./deployment/dagster.yaml /usr/src/app/
