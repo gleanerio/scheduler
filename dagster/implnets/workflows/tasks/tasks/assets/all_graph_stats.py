@@ -1,5 +1,6 @@
 import distutils
 import os
+import requests
 
 import yaml
 from dagster import asset, define_asset_job, get_dagster_logger
@@ -62,6 +63,17 @@ def _graphSummaryEndpoint(community):
     else:
         url = f"{GLEANER_GRAPH_URL}/namespace/{community}_summary/sparql"
     return url
+
+def check_url_existence(url):
+    try:
+        response = requests.head(url)
+        if response.status_code == 200:
+            return True  # URL exists
+        else:
+            return False  # URL does not exist
+    except requests.ConnectionError:
+        return False  # Failed to connect to the URL
+
 @asset(group_name="graph")
 def sos_types( ):
     graphendpoint = f"{GLEANERIO_GRAPH_URL}/namespace/{GLEANERIO_GRAPH_NAMESPACE}/sparql"
@@ -81,10 +93,41 @@ def all_report_stats():
     bucket = GLEANER_MINIO_BUCKET
     source_url = GLEANERIO_CSV_CONFIG_URL
 
-    community_list = ["all"] # Initialize with all
+    community_list = ["all"]  # Initialize with all
     tennants = read_docker_compose("data/tennant.yaml")
-    for community in tennants['tennant']:
-        community_list.append(community['community'])
+    for community_object in tennants['tennant']:
+        community = community_object['community']
+        sources = community_object['sources']
+        community_list.append(community)
+        graphendpoint = f"{GLEANER_GRAPH_URL}/namespace/{community}/sparql"
+
+        # check if namespace exists in graph
+        if not check_url_existence(graphendpoint):
+            print("Community namespace does not exist or cannot be accessed: " + graphendpoint)
+            continue
+
+        # check if any source exists
+        if sources is None:
+            print("No sources for community " + community)
+            continue
+
+        for source in sources:
+            print("Source: " + source)
+            release_url = f"https://{GLEANERIO_MINIO_ADDRESS}/{bucket}/graphs/latest/{source}_release.nq"
+            loadfrom = {'update': f'LOAD <{release_url}>'}
+
+            # Set headers for the request
+            headers = {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            }
+            response = requests.post(graphendpoint, headers=headers, data=loadfrom)
+
+            # Check response status
+            if response.status_code == 200:
+                print("RDF data loaded successfully into Blazegraph: " + source)
+            else:
+                print("Error loading RDF data into Blazegraph:")
+                print(response.text)
 
     if (GLEANERIO_SUMMARIZE_GRAPH):
         for community in community_list:

@@ -57,7 +57,7 @@ tennant:
       - nitrogen
       - nitrogen2
 ######
-  - community: ecological
+  - community: ecoforecast
     hostname: oceans
     description: this is a test 1
     name: A community description
