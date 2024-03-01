@@ -41,6 +41,8 @@ services:
             - GLEANERIO_GRAPH_SUMMARIZE=${GLEANERIO_GRAPH_SUMMARIZE:-false}
             - ECRR_MINIO_BUCKET=${ECRR_MINIO_BUCKET}
             - ECRR_GRAPH_NAMESPACE=${ECRR_GRAPH_NAMESPACE}
+            - GLEANERIO_TENNANT_FILENAME="tennant.yaml"
+            - GLEANERIO_TENNANT_PATH="scheduler/configs/"
 
 
  #        command:
