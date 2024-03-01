@@ -13,7 +13,7 @@ dagster_slack>=0.21.6
 # minio==7.1.13
 # docker>=6.1.0
 #
-earthcube-utilities>=0.1.23
+earthcube-utilities>=0.1.24
 
 
 
