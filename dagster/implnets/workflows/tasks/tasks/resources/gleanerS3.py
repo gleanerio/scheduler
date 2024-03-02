@@ -23,8 +23,8 @@ class gleanerS3Resource(S3Resource):
     GLEANERIO_MINIO_PORT: str =  Field(
          description="GLEANERIO_MINIO_PORT.")
     GLEANERIO_MINIO_USE_SSL: bool = Field(description="GLEANERIO_MINIO_USE_SSL.", default=True)
-    GLEANERIO_MINIO_ACCESS_KEY: str = Field(description="GLEANERIO_MINIO_ACCESS_KEY.")
-    GLEANERIO_MINIO_SECRET_KEY: str = Field(description="GLEANERIO_MINIO_SECRET_KEY.")
+    # GLEANERIO_MINIO_ACCESS_KEY: str = Field(description="GLEANERIO_MINIO_ACCESS_KEY.")
+    # GLEANERIO_MINIO_SECRET_KEY: str = Field(description="GLEANERIO_MINIO_SECRET_KEY.")
     GLEANERIO_TENNANT_PATH : str =  Field(
          description="GLEANERIO_TENNANT_CONFIG.", default="scheduler/")
     GLEANERIO_TENNANT_FILENAME : str =  Field(
