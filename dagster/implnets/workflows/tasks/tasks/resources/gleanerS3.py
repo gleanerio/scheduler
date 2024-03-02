@@ -22,11 +22,13 @@ class gleanerS3Resource(S3Resource):
          description="GLEANERIO_MINIO_ADDRESS.")
     GLEANERIO_MINIO_PORT: str =  Field(
          description="GLEANERIO_MINIO_PORT.")
+    GLEANERIO_MINIO_USE_SSL: bool = Field(description="GLEANERIO_MINIO_USE_SSL.", default=True)
+    GLEANERIO_MINIO_ACCESS_KEY: str = Field(description="GLEANERIO_MINIO_ACCESS_KEY.")
+    GLEANERIO_MINIO_SECRET_KEY: str = Field(description="GLEANERIO_MINIO_SECRET_KEY.")
     GLEANERIO_TENNANT_PATH : str =  Field(
          description="GLEANERIO_TENNANT_CONFIG.", default="scheduler/")
     GLEANERIO_TENNANT_FILENAME : str =  Field(
          description="GLEANERIO_TENNANT_CONFIG.", default="tennant.yaml")
-    GLEANERIO_MINIO_USE_SSL: bool = Field(description="GLEANERIO_MINIO_USE_SSL.", default=True)
 
 ## https://docs.dagster.io/_apidocs/libraries/dagster-aws#s3
 #   fields from dagster_aws.s3.S3Resource
