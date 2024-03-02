@@ -10,7 +10,7 @@ on:
       - main
       - dev
       - dev_eco
-      - dev_dag156_env_updates
+      - dev_test
     tags:
       - "v*.*.*"
 
