@@ -10,7 +10,7 @@ on:
       - main
       - dev
       - dev_eco
-      - dev_test
+      - dev_test202403
     tags:
       - "v*.*.*"
 
