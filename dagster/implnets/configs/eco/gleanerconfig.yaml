@@ -570,44 +570,6 @@ sources:
     domain: https://doi.pangaea.de/10.1594/PANGAEA.788537
     active: true
     credentialsfile: ""
-    other: { }
-    headlesswait: 0
-    delay: 0
-    identifierpath: ""
-    apipagelimit: 0
-    identifiertype: identifiersha
-    fixcontextoption: 0
-    acceptcontenttype: application/ld+json, text/html
-    jsonprofile: application/ld+json
-  - sourcetype: sitemap
-    name: wifire
-    logo: https://wifire-data.sdsc.edu/uploads/admin/2021-04-22-203649.712143WIFIRECOMMONSSMRES12.png
-    url: https://wifire-data.sdsc.edu/sitemap.xml
-    headless: false
-    pid: https://wifire-data.sdsc.edu/
-    propername: WIFIRE Commons
-    domain: https://wifire-data.sdsc.edu/
-    active: true
-    credentialsfile: ""
-    other: { }
-    headlesswait: 0
-    delay: 0
-    identifierpath: ""
-    apipagelimit: 0
-    identifiertype: identifiersha
-    fixcontextoption: 0
-    acceptcontenttype: application/ld+json, text/html
-    jsonprofile: application/ld+json
-  - sourcetype: sitemap
-    name: glim
-    logo: ""
-    url: https://raw.githubusercontent.com/earthcube/communityCollections/master/collection/pangaea/sitemaps/glim.xml
-    headless: false
-    pid: https://github.com/earthcube/GeoCODES-Metadata/
-    propername: GLiM
-    domain: https://doi.pangaea.de/10.1594/PANGAEA.788537
-    active: true
-    credentialsfile: ""
     other: {}
     headlesswait: 0
     delay: 0

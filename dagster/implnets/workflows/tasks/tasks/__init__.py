@@ -1,5 +1,5 @@
 import os
-
+from distutils.util import strtobool
 from dagster import Definitions, load_assets_from_modules, EnvVar
 #from dagster_slack import SlackResource, make_slack_on_run_failure_sensor
 from . import assets
@@ -27,9 +27,12 @@ minio=gleanerS3Resource(
     GLEANERIO_MINIO_BUCKET=EnvVar('GLEANERIO_MINIO_BUCKET'),
     GLEANERIO_MINIO_ADDRESS=EnvVar('GLEANERIO_MINIO_ADDRESS'),
     GLEANERIO_MINIO_PORT=EnvVar('GLEANERIO_MINIO_PORT'),
-    GLEANERIO_MINIO_ACCESS_KEY=EnvVar('GLEANERIO_MINIO_ACCESS_KEY'),
-    GLEANERIO_MINIO_SECRET_KEY=EnvVar('GLEANERIO_MINIO_SECRET_KEY'),
+    GLEANERIO_MINIO_USE_SSL=strtobool(os.environ.get('GLEANERIO_MINIO_USE_SSL')),
     endpoint_url =_awsEndpointAddress(EnvVar('GLEANERIO_MINIO_ADDRESS').get_value(), port=EnvVar('GLEANERIO_MINIO_PORT').get_value()),
+
+    # do not add these. use the aws_access|aws_secret
+    # GLEANERIO_MINIO_ACCESS_KEY=EnvVar('GLEANERIO_MINIO_ACCESS_KEY'),
+    # GLEANERIO_MINIO_SECRET_KEY=EnvVar('GLEANERIO_MINIO_SECRET_KEY'),
     aws_access_key_id=EnvVar('GLEANERIO_MINIO_ACCESS_KEY'),
     aws_secret_access_key=EnvVar('GLEANERIO_MINIO_SECRET_KEY')
 )
