@@ -16,6 +16,7 @@ COPY ./requirements.txt requirements.txt
 RUN pip install -r requirements.txt
 
 # this add the code
+# this is only needed because we generate the code with pygen. otherwise added in compose-project.yaml docker compose
 COPY . scheduler
 COPY ./configs/${implnet}/gleanerconfig.yaml scheduler/gleanerconfig.yaml
 

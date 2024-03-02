@@ -36,6 +36,9 @@ configs:
   workspace:
     name: ${GLEANERIO_DOCKER_WORKSPACE_CONFIG:-workspace}
     external: true
+  tennant:
+    name: ${GLEANERIO_DOCKER_TENNANT_CONFIG:-tennant}
+    external: true
 
 secrets:
   MINIO_ROOT_ACCESS_KEY:
@@ -66,6 +69,12 @@ services:
                 044
           - source: nabu
             target: /scheduler/nabuconfig.yaml
+            # uid: "103"
+            # gid: "103"
+            mode:
+              044
+          - source: tennant
+            target: /scheduler/tennant.yaml
             # uid: "103"
             # gid: "103"
             mode:
@@ -103,8 +112,10 @@ services:
             - GLEANERIO_GRAPH_SUMMARY_ENDPOINT=${GLEANERIO_GRAPH_SUMMARY_ENDPOINT:-${GLEANERIO_GRAPH_URL}}
             - GLEANERIO_GRAPH_SUMMARY_NAMESPACE=${GLEANERIO_GRAPH_SUMMARY_NAMESPACE}
             - GLEANERIO_GRAPH_SUMMARIZE=${GLEANERIO_GRAPH_SUMMARIZE:-false}
-            - GLEANERIO_TENNANT_FILENAME="tennant.yaml"
-            - GLEANERIO_TENNANT_PATH="scheduler/configs/"
+            - GLEANERIO_TENNANT_FILENAME=${TASK_TENNANT_FILENAME:-tennant.yaml}
+            - GLEANERIO_TENNANT_PATH=${TASK_TENNANT_PATH:-scheduler/configs/}
+            - TASK_TENNANT_FILENAME=${TASK_TENNANT_FILENAME:-tennant.yaml}
+            - TASK_TENNANT_PATH=${TASK_TENNANT_PATH:-scheduler/configs/}
 #            - GLEANER_MINIO_SECRET=/run/secrets/MINIO_ROOT_SECRET_KEY
           #            - GLEANER_MINIO_"scheduler/configs/"KEY=/run/secrets/MINIO_ROOT_ACCESS_KEY
 
@@ -210,7 +221,7 @@ services:
         # you should be able to change the source locally, without a full rebuild.
        #image: dagster-${PROJECT:-eco}:latest
         image: docker.io/nsfearthcube/dagster-gleanerio-${PROJECT:-eco}:${CONTAINER_CODE_TAG:-latest}
-
+        configs: *configs
         environment: *env
         command:
         - "dagster"
@@ -244,9 +255,9 @@ services:
         - "-p"
         - "4000"
         - "--python-file"
-        - "/usr/src/app/project/eco/repositories/repository.py"
+        - "/usr/src/app/project/${PROJECT:-eco}/repositories/repository.py"
         - "-d"
-        - "/usr/src/app/project/eco/"
+        - "/usr/src/app/project/${PROJECT:-eco}/"
 
    #     volumes: *vol
         depends_on:
