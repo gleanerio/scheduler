@@ -37,7 +37,7 @@ configs:
     name: ${GLEANERIO_DOCKER_WORKSPACE_CONFIG:-workspace}
     external: true
   tennant:
-    name: ${GLEANERIO_DOCKER_TENNANT_CONFIG:-tennant}
+    name: ${GLEANERIO_DOCKER_TENANT_CONFIG:-tenant}
     external: true
 
 secrets:

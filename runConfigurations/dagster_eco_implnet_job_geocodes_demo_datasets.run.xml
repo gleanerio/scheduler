@@ -1,6 +1,7 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="dagster_eco_implnet_job_geocodes_demo_datasets" type="PythonConfigurationType" factoryName="Python" folderName="dagster debug">
     <module name="scheduler" />
+    <option name="ENV_FILES" value="" />
     <option name="INTERPRETER_OPTIONS" value="" />
     <option name="PARENT_ENVS" value="true" />
     <envs>
@@ -21,7 +22,7 @@
       <option name="IS_ENABLE_EXPERIMENTAL_INTEGRATIONS" value="false" />
       <ENTRIES>
         <ENTRY IS_ENABLED="true" PARSER="runconfig" IS_EXECUTABLE="false" />
-        <ENTRY IS_ENABLED="true" PARSER="env" IS_EXECUTABLE="false" PATH="dagster/implnets/deployment/.env" />
+        <ENTRY IS_ENABLED="false" PARSER="env" IS_EXECUTABLE="false" PATH="dagster/implnets/deployment/.env" />
       </ENTRIES>
     </EXTENSION>
     <option name="SCRIPT_NAME" value="dagster" />
