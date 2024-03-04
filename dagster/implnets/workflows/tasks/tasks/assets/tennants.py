@@ -108,7 +108,7 @@ def getName(name):
      #  deps=[tennant_sources],
        group_name="community",
        required_resource_keys={"triplestore"} )
-def loadstatsCommunity(context, tennant_sources) -> None:
+def loadstatsCommunity(context, tennant_sources) -> str:
     prefix="history"
     logger = get_dagster_logger()
     s3 = context.resources.triplestore.s3

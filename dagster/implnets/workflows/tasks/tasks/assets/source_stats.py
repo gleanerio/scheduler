@@ -51,7 +51,7 @@ def source_list() -> str:
 
 #@asset( group_name="load")
 @asset(deps=[source_list], group_name="load")
-def loadstatsHistory() -> None:
+def loadstatsHistory() -> str:
     prefix="history"
     logger = get_dagster_logger()
     s3Minio = s3.MinioDatastore(_pythonMinioUrl(GLEANER_MINIO_ADDRESS),MINIO_OPTIONS)
