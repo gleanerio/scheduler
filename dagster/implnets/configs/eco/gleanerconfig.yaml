@@ -636,3 +636,22 @@ sources:
     fixcontextoption: 0
     acceptcontenttype: application/ld+json, text/html
     jsonprofile: application/ld+json
+  - sourcetype: sitemap
+    name: hydrography90m
+    logo: ""
+    url: https://raw.githubusercontent.com/earthcube/communityCollections/master/collection/hydrography90m/sitemaps/hydrography90m.xml
+    headless: false
+    pid: https://hydrography.org/hydrography90m/hydrography90m_layers
+    propername: Hydrography90m
+    domain: https://hydrography.org/hydrography90m/hydrography90m_layers
+    active: true
+    credentialsfile: ""
+    other: {}
+    headlesswait: 0
+    delay: 0
+    identifierpath: ""
+    apipagelimit: 0
+    identifiertype: identifiersha
+    fixcontextoption: 0
+    acceptcontenttype: application/ld+json, text/html
+    jsonprofile: application/ld+json
