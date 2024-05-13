@@ -655,3 +655,22 @@ sources:
     fixcontextoption: 0
     acceptcontenttype: application/ld+json, text/html
     jsonprofile: application/ld+json
+  - sourcetype: sitemap
+    name: neon4cast
+    logo: ""
+    url: https://raw.githubusercontent.com/earthcube/stacIndexer/yl_dv/data/output/sitemap.xml
+    headless: false
+    pid: https://projects.ecoforecast.org/neon4cast-ci/
+    propername: NEON Ecological Forecast Challenge
+    domain: https://projects.ecoforecast.org/neon4cast-ci/
+    active: true
+    credentialsfile: ""
+    other: {}
+    headlesswait: 0
+    delay: 0
+    identifierpath: ""
+    apipagelimit: 0
+    identifiertype: identifiersha
+    fixcontextoption: 0
+    acceptcontenttype: application/ld+json, text/html
+    jsonprofile: application/ld+json
