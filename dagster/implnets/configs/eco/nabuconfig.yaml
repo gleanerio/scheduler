@@ -57,6 +57,7 @@ objects:
     - summoned/hydrography90m
     - summoned/neon4cast
     - summoned/usgsrc4cast
+    - summoned/vera4cast
     - prov/aquadocs
     - prov/bcodmo
     - prov/cchdo

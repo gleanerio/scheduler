@@ -693,3 +693,22 @@ sources:
     fixcontextoption: 0
     acceptcontenttype: application/ld+json, text/html
     jsonprofile: application/ld+json
+  - sourcetype: sitemap
+    name: vera4cast
+    logo: ""
+    url: https://raw.githubusercontent.com/earthcube/stacIndexer/yl_dv/data/output/sitemap/sitemap_vera4cast.xml
+    headless: false
+    pid: https://github.com/LTREB-reservoirs/vera4cast
+    propername: Virginia Ecoforecast Reservoir Analysis (VERA) Ecological Forecasting Challenge
+    domain: https://github.com/LTREB-reservoirs/vera4cast
+    active: true
+    credentialsfile: ""
+    other: {}
+    headlesswait: 0
+    delay: 0
+    identifierpath: ""
+    apipagelimit: 0
+    identifiertype: identifiersha
+    fixcontextoption: 0
+    acceptcontenttype: application/ld+json, text/html
+    jsonprofile: application/ld+json
