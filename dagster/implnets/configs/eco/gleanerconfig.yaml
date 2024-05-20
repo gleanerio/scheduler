@@ -658,11 +658,30 @@ sources:
   - sourcetype: sitemap
     name: neon4cast
     logo: ""
-    url: https://raw.githubusercontent.com/earthcube/stacIndexer/yl_dv/data/output/sitemap.xml
+    url: https://raw.githubusercontent.com/earthcube/stacIndexer/yl_dv/data/output/sitemap/sitemap_neon4cast.xml
     headless: false
     pid: https://projects.ecoforecast.org/neon4cast-ci/
     propername: NEON Ecological Forecast Challenge
     domain: https://projects.ecoforecast.org/neon4cast-ci/
+    active: true
+    credentialsfile: ""
+    other: {}
+    headlesswait: 0
+    delay: 0
+    identifierpath: ""
+    apipagelimit: 0
+    identifiertype: identifiersha
+    fixcontextoption: 0
+    acceptcontenttype: application/ld+json, text/html
+    jsonprofile: application/ld+json
+  - sourcetype: sitemap
+    name: usgsrc4cast
+    logo: ""
+    url: https://raw.githubusercontent.com/earthcube/stacIndexer/yl_dv/data/output/sitemap/sitemap_usgsrc4cast.xml
+    headless: false
+    pid: https://github.com/eco4cast/usgsrc4cast-ci
+    propername: Ecological Forecasting Initiative (EFI) and U.S. Geological Survey (USGS) River Chlorophyll Forecasting Challenge
+    domain: https://github.com/eco4cast/usgsrc4cast-ci
     active: true
     credentialsfile: ""
     other: {}
