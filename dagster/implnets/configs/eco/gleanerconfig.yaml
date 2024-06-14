@@ -712,3 +712,22 @@ sources:
     fixcontextoption: 0
     acceptcontenttype: application/ld+json, text/html
     jsonprofile: application/ld+json
+  - sourcetype: sitemap
+    name: osmc
+    logo: ""
+    url: https://osmc.noaa.gov/erddap/sitemap.xml
+    headless: false
+    pid: https://osmc.noaa.gov/erddap
+    propername: Easier access to scientific data
+    domain: https://osmc.noaa.gov/erddap
+    active: true
+    credentialsfile: ""
+    other: {}
+    headlesswait: 0
+    delay: 0
+    identifierpath: ""
+    apipagelimit: 0
+    identifiertype: identifiersha
+    fixcontextoption: 0
+    acceptcontenttype: application/ld+json, text/html
+    jsonprofile: application/ld+json

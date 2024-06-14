@@ -58,6 +58,7 @@ objects:
     - summoned/neon4cast
     - summoned/usgsrc4cast
     - summoned/vera4cast
+    - summoned/osmc
     - prov/aquadocs
     - prov/bcodmo
     - prov/cchdo
