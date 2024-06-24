@@ -731,3 +731,22 @@ sources:
     fixcontextoption: 0
     acceptcontenttype: application/ld+json, text/html
     jsonprofile: application/ld+json
+  - sourcetype: sitemap
+    name: obis
+    logo: https://obis.org/images/logo.png
+    url: https://obis-sitemaps.s3.amazonaws.com/sitemap_datasets.xml
+    headless: false
+    pid: https://catalogue.odis.org/view/343
+    propername: Ocean Biodiversity Information System (OBIS)
+    domain: https://obis.org
+    active: true
+    credentialsfile: ""
+    other: {}
+    headlesswait: -1
+    delay: 0
+    identifierpath: ""
+    apipagelimit: 0
+    identifiertype: identifiersha
+    fixcontextoption: 0
+    acceptcontenttype: application/ld+json, text/html
+    jsonprofile: application/ld+json
