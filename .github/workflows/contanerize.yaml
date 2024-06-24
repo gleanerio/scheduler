@@ -10,7 +10,7 @@ on:
       - main
       - dev
       - dev_eco
-      - dev_test202403
+      - v0_generated_code branch
     tags:
       - "v*.*.*"
 
