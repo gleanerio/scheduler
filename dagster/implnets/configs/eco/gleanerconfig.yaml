@@ -636,3 +636,117 @@ sources:
     fixcontextoption: 0
     acceptcontenttype: application/ld+json, text/html
     jsonprofile: application/ld+json
+  - sourcetype: sitemap
+    name: hydrography90m
+    logo: ""
+    url: https://raw.githubusercontent.com/earthcube/communityCollections/master/collection/hydrography90m/sitemaps/hydrography90m.xml
+    headless: false
+    pid: https://hydrography.org/hydrography90m/hydrography90m_layers
+    propername: Hydrography90m
+    domain: https://hydrography.org/hydrography90m/hydrography90m_layers
+    active: true
+    credentialsfile: ""
+    other: {}
+    headlesswait: 0
+    delay: 0
+    identifierpath: ""
+    apipagelimit: 0
+    identifiertype: identifiersha
+    fixcontextoption: 0
+    acceptcontenttype: application/ld+json, text/html
+    jsonprofile: application/ld+json
+  - sourcetype: sitemap
+    name: neon4cast
+    logo: ""
+    url: https://raw.githubusercontent.com/earthcube/stacIndexer/yl_dv/data/output/sitemap/sitemap_neon4cast.xml
+    headless: false
+    pid: https://projects.ecoforecast.org/neon4cast-ci/
+    propername: NEON Ecological Forecast Challenge
+    domain: https://projects.ecoforecast.org/neon4cast-ci/
+    active: true
+    credentialsfile: ""
+    other: {}
+    headlesswait: 0
+    delay: 0
+    identifierpath: ""
+    apipagelimit: 0
+    identifiertype: identifiersha
+    fixcontextoption: 0
+    acceptcontenttype: application/ld+json, text/html
+    jsonprofile: application/ld+json
+  - sourcetype: sitemap
+    name: usgsrc4cast
+    logo: ""
+    url: https://raw.githubusercontent.com/earthcube/stacIndexer/yl_dv/data/output/sitemap/sitemap_usgsrc4cast.xml
+    headless: false
+    pid: https://github.com/eco4cast/usgsrc4cast-ci
+    propername: Ecological Forecasting Initiative (EFI) and U.S. Geological Survey (USGS) River Chlorophyll Forecasting Challenge
+    domain: https://github.com/eco4cast/usgsrc4cast-ci
+    active: true
+    credentialsfile: ""
+    other: {}
+    headlesswait: 0
+    delay: 0
+    identifierpath: ""
+    apipagelimit: 0
+    identifiertype: identifiersha
+    fixcontextoption: 0
+    acceptcontenttype: application/ld+json, text/html
+    jsonprofile: application/ld+json
+  - sourcetype: sitemap
+    name: vera4cast
+    logo: ""
+    url: https://raw.githubusercontent.com/earthcube/stacIndexer/yl_dv/data/output/sitemap/sitemap_vera4cast.xml
+    headless: false
+    pid: https://github.com/LTREB-reservoirs/vera4cast
+    propername: Virginia Ecoforecast Reservoir Analysis (VERA) Ecological Forecasting Challenge
+    domain: https://github.com/LTREB-reservoirs/vera4cast
+    active: true
+    credentialsfile: ""
+    other: {}
+    headlesswait: 0
+    delay: 0
+    identifierpath: ""
+    apipagelimit: 0
+    identifiertype: identifiersha
+    fixcontextoption: 0
+    acceptcontenttype: application/ld+json, text/html
+    jsonprofile: application/ld+json
+  - sourcetype: sitemap
+    name: osmc
+    logo: ""
+    url: https://osmc.noaa.gov/erddap/sitemap.xml
+    headless: false
+    pid: https://osmc.noaa.gov/erddap
+    propername: Easier access to scientific data
+    domain: https://osmc.noaa.gov/erddap
+    active: true
+    credentialsfile: ""
+    other: {}
+    headlesswait: 0
+    delay: 0
+    identifierpath: ""
+    apipagelimit: 0
+    identifiertype: identifiersha
+    fixcontextoption: 0
+    acceptcontenttype: application/ld+json, text/html
+    jsonprofile: application/ld+json
+  - sourcetype: sitemap
+    name: obis
+    logo: https://obis.org/images/logo.png
+    url: https://obis-sitemaps.s3.amazonaws.com/sitemap_datasets.xml
+    headless: false
+    pid: https://catalogue.odis.org/view/343
+    propername: Ocean Biodiversity Information System (OBIS)
+    domain: https://obis.org
+    active: true
+    credentialsfile: ""
+    other: {}
+    headlesswait: -1
+    delay: 0
+    identifierpath: ""
+    apipagelimit: 0
+    identifiertype: identifiersha
+    fixcontextoption: 0
+    acceptcontenttype: application/ld+json, text/html
+    jsonprofile: application/ld+json
