@@ -1,6 +1,6 @@
 # prototype tennants file
 
-tennant:
+tenant:
   - community: production
     hostname: geocodes-aws
     description: GeoCodes is...

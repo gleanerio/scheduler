@@ -9,7 +9,7 @@ theme:
     - navigation.sections
 markdown_extensions:
   - toc:
-      permalink: 
+      permalink:
   - attr_list
   - def_list
   - tables
@@ -26,9 +26,9 @@ plugins:
   - multirepo:
       # (optional) tells multirepo to cleanup the temporary directory after site is built.
       cleanup: true
-  -  mermaid2
+  - mermaid2
   - literate-nav
-  -  mkdocs-jupyter
+  - mkdocs-jupyter
   - callouts
   # get a NoneType error, even when trying to generate in Geocodes-Metadata
 #  - schema_reader:
@@ -38,6 +38,8 @@ nav:
   - Gleaner IO Scheduler:
     - Scheduler: README.md
     - Quick: quick.md
+    - Add Containers:  add_containers.md
+    - Scheduler Deployment: eco_deploy.md
 
     - Develeopment:
       - Local Developement: README_LOCAL_DEVELOPMENT.md

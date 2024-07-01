@@ -16,11 +16,21 @@ class gleanerS3Resource(ConfigurableResource):
          description="GLEANERIO_MINIO_BUCKET.")
     GLEANERIO_MINIO_PORT: str =  Field(
          description="GLEANERIO_MINIO_BUCKET.")
-    GLEANERIO_TENNANT_PATH : str =  Field(
-         description="GLEANERIO_TENNANT_CONFIG.", default="scheduler/configs/")
-    GLEANERIO_TENNANT_FILENAME : str =  Field(
-         description="GLEANERIO_TENNANT_CONFIG.", default="tennant.yaml")
+    GLEANERIO_MINIO_USE_SSL: bool=  Field(
+         default=False)
+    GLEANERIO_CONFIG_PATH : str =  Field(
+         description="GLEANERIO_CONFIG_PATH.", default="scheduler/configs/")
+    GLEANERIO_TENANT_FILENAME : str =  Field(
+         description="GLEANERIO_TENANT_FILENAME.", default="tenant.yaml")
+    GLEANERIO_SOURCES_FILENAME: str =  Field(
+         description="GLEANERIO_SOURCES_FILENAME.", default="gleanerconfig.yaml")
+    # now using the boto s3 embedded in dagster_aws, but just in case we need them
+    GLEANERIO_MINIO_ACCESS_KEY: str = Field(
+        description="GLEANERIO_MINIO_ACCESS_KEY")
+    GLEANERIO_MINIO_SECRET_KEY: str = Field(
+        description="GLEANERIO_MINIO_SECRET_KEY")
 
+    ## https://docs.dagster.io/_apidocs/libraries/dagster-a
 # Courtesy method for the ec utilities
     def MinioOptions(self):
         return  {"secure": self.s3.use_ssl
@@ -48,14 +58,30 @@ class gleanerS3Resource(ConfigurableResource):
                 Bucket=self.GLEANERIO_MINIO_BUCKET,
                 Key=path,
             )
-            return result["Contents"]
+            get_dagster_logger().info(
+                f"file {result['Body']}" )
+            return result["Body"]
         except Exception as ex:
-            get_dagster_logger().info(f"file {path} not found  in {self.GLEANERIO_MINIO_BUCKET} at ")
-    def getTennatFile(self, path='orgs'):
-        path= f"{self.GLEANERIO_TENNANT_PATH}{self.GLEANERIO_TENNANT_FILENAME}"
+            get_dagster_logger().info(f"file {path} not found  in {self.GLEANERIO_MINIO_BUCKET} at {self.s3.endpoint_url} {ex}")
+    def getTennatFile(self, path=''):
+        if path == '':
+            path= f"{self.GLEANERIO_CONFIG_PATH}{self.GLEANERIO_TENANT_FILENAME}"
         try:
-            return self.s3.getFile(self, path=path)
+            get_dagster_logger().info(f"tenant_path {path} ")
+            return self.getFile( path=path)
 
         except Exception as ex:
-            get_dagster_logger().info(f"tennant not found ")
+            get_dagster_logger().info(f"tenant {path} not found ")
+     #endpoint_url =_pythonMinioAddress(GLEANER_MINIO_ADDRESS, port=GLEANER_MINIO_PORT)
+
+    # this will change to use just a sources.
+    def getSourcesFile(self, path=''):
+        if path == '':
+            path= f"{self.GLEANERIO_CONFIG_PATH}{self.GLEANERIO_SOURCES_FILENAME}"
+        try:
+            get_dagster_logger().info(f"sources_path {path} ")
+            return self.getFile( path=path)
+
+        except Exception as ex:
+            get_dagster_logger().info(f"sources_path {path} not found ")
      #endpoint_url =_pythonMinioAddress(GLEANER_MINIO_ADDRESS, port=GLEANER_MINIO_PORT)

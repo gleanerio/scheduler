@@ -67,9 +67,10 @@ fi
 
 #echo NOTE: Verify that the traefik_proxy network  SCOPE is swarm
 
-
-
 echo added network  ${GLEANERIO_DOCKER_HEADLESS_NETWORK}
+
+docker volume create dagster-postgres
+docker volume create dagster-storage
 
 if [  "$(docker config ls  | grep -${GLEANERIO_GLEANER_CONFIG_PATH})" ] ; then
    echo ${GLEANERIO_GLEANER_CONFIG_PATH} config exists;

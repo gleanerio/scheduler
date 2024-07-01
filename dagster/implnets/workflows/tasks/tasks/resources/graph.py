@@ -60,6 +60,12 @@ from .gleanerS3 import gleanerS3Resource
 class GraphResource(ConfigurableResource):
     GLEANERIO_GRAPH_URL: str =  Field(
          description="GLEANERIO_GRAPH_URL.")
+    GLEANERIO_GRAPH_NAMESPACE: str =  Field(
+         description="GLEANERIO_GRAPH_NAMESPACE.")
+    GLEANERIO_GRAPH_SUMMARY_NAMESPACE: str =  Field(
+         description="GLEANERIO_GRAPH_SUMMARY_NAMESPACE.")
+    GLEANERIO_GRAPH_SUMMARIZE: str =  Field(
+         description="GLEANERIO_GRAPH_SUMMARIZE.")
     s3: gleanerS3Resource
 
 # need multiple namespaces. let's do this.

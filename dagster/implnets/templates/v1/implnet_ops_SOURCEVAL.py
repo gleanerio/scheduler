@@ -143,7 +143,7 @@ def s3reader(object):
         get_dagster_logger().info(f"S3 read error : {str(err)}")
 
 
-def s3loader(data, name, date_string=datetime.now().strftime("%Y_%m_%d_%H_%M_%S")):
+def s3_log_uploader(data, name, date_string=datetime.now().strftime("%Y_%m_%d_%H_%M_%S")):
     secure= GLEANER_MINIO_USE_SSL
 
     server = _pythonMinioAddress(GLEANER_MINIO_ADDRESS, GLEANER_MINIO_PORT)
@@ -172,13 +172,16 @@ def s3loader(data, name, date_string=datetime.now().strftime("%Y_%m_%d_%H_%M_%S"
     #length = f.write(bytes(json_str, 'utf-8'))
     length = f.write(data)
     f.seek(0)
-    client.put_object(GLEANER_MINIO_BUCKET,
-                      objPrefix,
-                      f, #io.BytesIO(data),
-                      length, #len(data),
-                      content_type="text/plain"
-                         )
-    get_dagster_logger().info(f"Log uploaded: {str(objPrefix)}")
+    try:
+        client.put_object(GLEANER_MINIO_BUCKET,
+                          objPrefix,
+                          f, #io.BytesIO(data),
+                          length, #len(data),
+                          content_type="text/plain"
+                             )
+        get_dagster_logger().info(f"Log uploaded: {str(objPrefix)}")
+    except Exception as ex:
+        get_dagster_logger().error(f"Log uploaded failed: {str(objPrefix)}")
 
 def _releaseUrl( source, path=RELEASE_PATH, extension="nq"):
     proto = "http"
@@ -494,7 +497,7 @@ def gleanerio(context, mode, source):
 
                 # write to s3
 
-                s3loader(str(c).encode(), NAME, date_string=date_string)  # s3loader needs a bytes like object
+                s3_log_uploader(str(c).encode(), NAME, date_string=date_string)  # s3loader needs a bytes like object
                 # s3loader(str(c).encode('utf-8'), NAME)  # s3loader needs a bytes like object
                 # write to minio (would need the minio info here)
 
@@ -505,7 +508,7 @@ def gleanerio(context, mode, source):
                 archive = bytearray()
                 for chunk in tar_archive_stream:
                     archive.extend(chunk)
-                s3loader(archive, f"{source}_{mode}_runlogs", date_string=date_string)
+                s3_log_uploader(archive, f"{source}_{mode}_runlogs", date_string=date_string)
                 get_dagster_logger().info(f"uploaded logs : {source}_{mode}_runlogs to  {path}")
                 break
             except requests.exceptions.ReadTimeout as ex:
@@ -514,7 +517,7 @@ def gleanerio(context, mode, source):
                 archive = bytearray()
                 for chunk in tar_archive_stream:
                     archive.extend(chunk)
-                s3loader(archive, f"{source}_{mode}_runlogs", date_string=date_string)
+                s3_log_uploader(archive, f"{source}_{mode}_runlogs", date_string=date_string)
                 get_dagster_logger().info(f"uploaded {wait_count}th log : {source}_{mode}_runlogs to  {path}")
             except docker.errors.APIError as ex:
                 get_dagster_logger().info(f"Container Wait docker API error :  {str(ex)}")
@@ -524,7 +527,7 @@ def gleanerio(context, mode, source):
                 get_dagster_logger().info(f"Container exited or removed. status:  {container.status}")
                 exit_status = container.wait()["StatusCode"]
                 returnCode = exit_status
-                s3loader(str(c).encode(), NAME)  # s3loader needs a bytes like object
+                s3_log_uploader(str(c).encode(), NAME)  # s3loader needs a bytes like object
                 # s3loader(str(c).encode('utf-8'), NAME)  # s3loader needs a bytes like object
                 # write to minio (would need the minio info here)
 
@@ -535,7 +538,7 @@ def gleanerio(context, mode, source):
                 archive = bytearray()
                 for chunk in tar_archive_stream:
                     archive.extend(chunk)
-                s3loader(archive, f"{source}_{mode}_runlogs", date_string=date_string)
+                s3_log_uploader(archive, f"{source}_{mode}_runlogs", date_string=date_string)
                 get_dagster_logger().info(f"uploaded logs : {source}_{mode}_runlogs to  {path}")
                 break
 

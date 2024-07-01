@@ -1,15 +1,16 @@
 import distutils
 import json
 import os
-
+from typing import List, Any
 import pandas as pd
 from dagster import asset, get_dagster_logger, define_asset_job
 from ec.datastore import s3
 from pydash import pick
+from distutils import util
 
 GLEANER_MINIO_ADDRESS = os.environ.get('GLEANERIO_MINIO_ADDRESS')
 GLEANER_MINIO_PORT = os.environ.get('GLEANERIO_MINIO_PORT')
-GLEANER_MINIO_USE_SSL = bool(distutils.util.strtobool(os.environ.get('GLEANERIO_MINIO_USE_SSL', 'true')))
+GLEANER_MINIO_USE_SSL = bool(util.strtobool(os.environ.get('GLEANERIO_MINIO_USE_SSL', 'true')))
 GLEANER_MINIO_SECRET_KEY = os.environ.get('GLEANERIO_MINIO_SECRET_KEY')
 GLEANER_MINIO_ACCESS_KEY = os.environ.get('GLEANERIO_MINIO_ACCESS_KEY')
 GLEANER_MINIO_BUCKET = os.environ.get('GLEANERIO_MINIO_BUCKET')
@@ -33,32 +34,34 @@ def _pythonMinioUrl(url):
 
 def getName(name):
     return name.replace("orgs/","").replace(".nq","")
-@asset(group_name="load")
-def source_list() -> str:
+@asset(group_name="load",key_prefix="task",)
+def source_list() -> List[Any]:
     s3Minio = s3.MinioDatastore(_pythonMinioUrl(GLEANER_MINIO_ADDRESS), MINIO_OPTIONS)
     orglist = s3Minio.listPath(GLEANER_MINIO_BUCKET, ORG_PATH,recursive=False)
     sources = map( lambda f: { "name": getName(f.object_name)}, orglist )
-    source_json = json.dumps(list(sources))
+    sources=list(sources)
+    source_json = json.dumps(sources)
     os.makedirs("data", exist_ok=True)
 
     s3Minio.putReportFile(GLEANER_MINIO_BUCKET, "all", f"source_list.json", source_json )
-    with open("data/source_list.json", "w") as f:
-        json.dump(list(sources), f)
-    return source_json
+    # with open("data/source_list.json", "w") as f:
+    #     json.dump(list(sources), f)
+    return sources
 #@asset(deps=[source_list])
 
 # set a prefix so we can have some named stats file
 
-#@asset( group_name="load")
-@asset(deps=[source_list], group_name="load")
-def loadstatsHistory() -> str:
+#@asset( group_name="load",key_prefix="task",)
+@asset(group_name="load",key_prefix="task",)
+def loadstatsHistory(context,source_list) -> str:
     prefix="history"
     logger = get_dagster_logger()
     s3Minio = s3.MinioDatastore(_pythonMinioUrl(GLEANER_MINIO_ADDRESS),MINIO_OPTIONS)
  #   sourcelist = list(s3Minio.listPath(GLEANER_MINIO_BUCKET, ORG_PATH,recursive=False))
 
-    with open("data/source_list.json","r" ) as f:
-        sourcelist = json.load(f)
+    # with open("data/source_list.json","r" ) as f:
+    #     sourcelist = json.load(f)
+    sourcelist=source_list
     stats = []
     for source in sourcelist:
         try:
@@ -87,6 +90,7 @@ def loadstatsHistory() -> str:
     df_csv = df.to_csv()
     s3Minio.putReportFile(GLEANER_MINIO_BUCKET, "all", f"all_stats.csv", df_csv)
     get_dagster_logger().info(f"all_stats.csv uploaded ")
+    #return df_csv
     return df_csv
 
 

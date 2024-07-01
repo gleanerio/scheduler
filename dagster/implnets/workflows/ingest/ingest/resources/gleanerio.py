@@ -7,7 +7,7 @@ from pydantic import Field
 
 import pydash
 from dagster import ConfigurableResource, Config, EnvVar, get_dagster_logger
-from pyairtable import Api, Table
+
 
 
 import time
@@ -118,11 +118,18 @@ class GleanerioResource(ConfigurableResource):
     GLEANERIO_DAGSTER_CONFIG_PATH: str = Field(
         description="DAGSTER_GLEANERIO_CONFIG_PATH for Project.")
     gs3: gleanerS3Resource   # this will be a botocore.client.S3.
-    triplestore: BlazegraphResource
+    triplestore: GraphResource  # should be a blazegraph... but let's try generic
     GLEANERIO_GRAPH_NAMESPACE:str = Field(
         description="GLEANERIO_GRAPH_NAMESPACE for Project.")
     GLEANERIO_GRAPH_SUMMARY_NAMESPACE:str = Field(
         description="GLEANERIO_GRAPH_SUMMARY_NAMESPACE for Project.")
+
+    # at present, these are hard coded as os.getenv in sensors.gleaner_summon.sources_schedule
+    GLEANERIO_SCHEDULE_DEFAULT :str = Field(
+        description="GLEANERIO_SCHEDULE_DEFAULT for Project.", default="@weekly")
+    GLEANERIO_SCHEDULE_DEFAULT_TIMEZONE :str = Field(
+        description="GLEANERIO_SCHEDULE_DEFAULT_TIMEZONE for Project.", default="America/Los_Angeles")
+
     def _get_client(self, docker_container_context: DockerContainerContext):
         headers = {'X-API-Key': self.GLEANERIO_PORTAINER_APIKEY}
         client = docker.DockerClient(base_url=self.GLEANERIO_DOCKER_URL, version="1.43")

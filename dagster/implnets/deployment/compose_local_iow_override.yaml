@@ -12,7 +12,7 @@ services:
         volumes: &vol
           - ../configs/${PROJECT:-iow}/workspace.yaml:/usr/src/app/workspace.yaml
           - ../deployment/dagster.yaml:/usr/src/app/dagster.yaml
-          - ../generatedCode/implnet-${PROJECT:-iow}/output/:/usr/src/app/project/${PROJECT:-iow}
+#          - ../generatedCode/implnet-${PROJECT:-iow}/output/:/usr/src/app/project/${PROJECT:-iow}
           - ../workflows/:/usr/src/app/workflows
             # GLEANEERIO_  the environment variables for this stack, passed into containers
             # the variables passed into the containers varies due to inconsistent standards.
@@ -21,29 +21,39 @@ services:
             #     unless you sure what you are doing
         environment: &env
             - DEBUG_CONTAINER=${DEBUG_CONTAINER:-false}
-            - PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python
-            - GLEANERIO_DOCKER_URL=${GLEANERIO_DOCKER_URL}
-            - GLEANERIO_PORTAINER_APIKEY=${GLEANERIO_PORTAINER_APIKEY}
-            - GLEANERIO_GLEANER_IMAGE=${GLEANERIO_GLEANER_IMAGE}
-            - GLEANERIO_NABU_IMAGE=${GLEANERIO_NABU_IMAGE}
-            - GLEANERIO_LOG_PREFIX=${GLEANERIO_LOG_PREFIX}
-            - GLEANERIO_MINIO_ADDRESS=${GLEANERIO_MINIO_ADDRESS}
-            - GLEANERIO_MINIO_PORT=${GLEANERIO_MINIO_PORT}
-            - GLEANERIO_MINIO_USE_SSL=${GLEANERIO_MINIO_USE_SSL}
-            - GLEANERIO_MINIO_BUCKET=${GLEANERIO_MINIO_BUCKET}
-            - GLEANERIO_MINIO_ACCESS_KEY=${GLEANERIO_MINIO_ACCESS_KEY}
-            - GLEANERIO_MINIO_SECRET_KEY=${GLEANERIO_MINIO_SECRET_KEY}
-            - GLEANERIO_HEADLESS_ENDPOINT=${GLEANERIO_HEADLESS_ENDPOINT}
-            - GLEANERIO_DOCKER_HEADLESS_NETWORK=${GLEANERIO_DOCKER_HEADLESS_NETWORK}
-            - GLEANERIO_GRAPH_URL=${GLEANERIO_GRAPH_URL}
-            - GLEANERIO_GRAPH_NAMESPACE=${GLEANERIO_GRAPH_NAMESPACE}
-            - GLEANERIO_NABU_CONFIG_PATH=${GLEANERIO_NABU_CONFIG_PATH:-/configs/gleaner/nabuconfig.yaml}
-            - GLEANERIO_GLEANER_CONFIG_PATH=${GLEANERIO_GLEANER_CONFIG_PATH:-/configs/gleaner/gleanerconfig.yaml}
-            - GLEANERIO_DOCKER_NABU_CONFIG=${GLEANERIO_DOCKER_NABU_CONFIG:-nabu}
+            - GLEANERIO_CONFIG_PATH=${GLEANERIO_CONFIG_PATH:-scheduler/configs/test/}
+            - GLEANERIO_DAGSTER_CONFIG_PATH=${GLEANERIO_DAGSTER_CONFIG_PATH:-scheduler/logs/}
+            - GLEANERIO_DOCKER_CONTAINER_WAIT_TIMEOUT=${GLEANERIO_DOCKER_CONTAINER_WAIT_TIMEOUT:-300}
             - GLEANERIO_DOCKER_GLEANER_CONFIG=${GLEANERIO_DOCKER_GLEANER_CONFIG:-gleaner}
+            - GLEANERIO_DOCKER_HEADLESS_NETWORK=${GLEANERIO_DOCKER_HEADLESS_NETWORK}
+            - GLEANERIO_DOCKER_NABU_CONFIG=${GLEANERIO_DOCKER_NABU_CONFIG:-nabu}
+            - GLEANERIO_DOCKER_URL=${GLEANERIO_DOCKER_URL}
+            - GLEANERIO_DOCKER_WORKSPACE_CONFIG=${GLEANERIO_DOCKER_WORKSPACE_CONFIG}
+            - GLEANERIO_GLEANER_CONFIG_PATH=${GLEANERIO_GLEANER_CONFIG_PATH:-/configs/gleaner/gleanerconfig.yaml}
+            - GLEANERIO_GLEANER_IMAGE=${GLEANERIO_GLEANER_IMAGE}
+            - GLEANERIO_GRAPH_NAMESPACE=${GLEANERIO_GRAPH_NAMESPACE}
+            - GLEANERIO_GRAPH_SUMMARIZE=${GLEANERIO_GRAPH_SUMMARIZE:-false}
             - GLEANERIO_GRAPH_SUMMARY_ENDPOINT=${GLEANERIO_GRAPH_SUMMARY_ENDPOINT:-${GLEANERIO_GRAPH_URL}}
             - GLEANERIO_GRAPH_SUMMARY_NAMESPACE=${GLEANERIO_GRAPH_SUMMARY_NAMESPACE}
-            - GLEANERIO_GRAPH_SUMMARIZE=${GLEANERIO_GRAPH_SUMMARIZE:-false}
+            - GLEANERIO_GRAPH_URL=${GLEANERIO_GRAPH_URL}
+            - GLEANERIO_HEADLESS_ENDPOINT=${GLEANERIO_HEADLESS_ENDPOINT}
+            - GLEANERIO_LOG_PREFIX=${GLEANERIO_LOG_PREFIX:-scheduler/logs/}
+            - GLEANERIO_LOG_PREFIX=${GLEANERIO_LOG_PREFIX}
+            - GLEANERIO_MINIO_ACCESS_KEY=${GLEANERIO_MINIO_ACCESS_KEY}
+            - GLEANERIO_MINIO_ADDRESS=${GLEANERIO_MINIO_ADDRESS}
+            - GLEANERIO_MINIO_BUCKET=${GLEANERIO_MINIO_BUCKET}
+            - GLEANERIO_MINIO_PORT=${GLEANERIO_MINIO_PORT}
+            - GLEANERIO_MINIO_SECRET_KEY=${GLEANERIO_MINIO_SECRET_KEY}
+            - GLEANERIO_MINIO_USE_SSL=${GLEANERIO_MINIO_USE_SSL}
+            - GLEANERIO_NABU_CONFIG_PATH=${GLEANERIO_NABU_CONFIG_PATH:-/configs/gleaner/nabuconfig.yaml}
+            - GLEANERIO_NABU_IMAGE=${GLEANERIO_NABU_IMAGE}
+            - GLEANERIO_PORTAINER_APIKEY=${GLEANERIO_PORTAINER_APIKEY}
+            - GLEANERIO_SOURCES_FILENAME=${GLEANERIO_SOURCES_FILENAME:-gleanerconfig.yaml}
+            - GLEANERIO_TENANT_FILENAME=${GLEANERIO_TENANT_FILENAME:-tenant.yaml}
+            - GLEANERIO_WORKSPACE_CONFIG_PATH=${GLEANERIO_WORKSPACE_CONFIG_PATH}
+            - PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python
+            - SLACK_CHANNEL=${SLACK_CHANNEL:-"#twitterfeed"}
+            - SLACK_TOKEN=${SLACK_TOKEN}
 #            - ECRR_MINIO_BUCKET="ECRR"
 #            - ECRR_GRAPH_NAMESPACE="ECRR"
 # caution for a portainer additional file deply
@@ -51,7 +61,7 @@ services:
         command: 'dagster-webserver  -w workspace.yaml  -h "0.0.0.0" -p 3000'
         depends_on: &deps
             - dagster-postgres
-            - dagster-code-project
+            -   dagster-code-ingest
             - dagster-code-tasks
 #            - dagster-code-iow-ecrr
 

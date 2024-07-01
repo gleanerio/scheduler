@@ -3,7 +3,6 @@ from typing import Any, Dict
 
 import pydash
 from dagster import ConfigurableResource, Config, EnvVar, get_dagster_logger
-from pyairtable import Api, Table
 
 #from dagster import Field
 from pydantic import Field
@@ -63,6 +62,8 @@ from ..utils import PythonMinioAddress
 class GraphResource(ConfigurableResource):
     GLEANERIO_GRAPH_URL: str =  Field(
          description="GLEANERIO_GRAPH_URL.")
+    GLEANERIO_GRAPH_NAMESPACE: str =  Field(
+         description="GLEANERIO_GRAPH_NAMESPACE.")
     gs3: gleanerS3Resource
 
 # need multiple namespaces. let's do this.
@@ -79,11 +80,11 @@ class GraphResource(ConfigurableResource):
         proto = "http"
 # this need to get file from s3.
 
-        if self.s3.GLEANERIO_MINIO_USE_SSL:
+        if self.gs3.GLEANERIO_MINIO_USE_SSL:
             proto = "https"
-        port = self.s3.GLEANERIO_MINIO_PORT
-        address = PythonMinioAddress(self.s3.GLEANERIO_MINIO_ADDRESS, self.s3.GLEANERIO_MINIO_PORT)
-        bucket = self.s3.GLEANERIO_MINIO_BUCKET
+        port = self.gs3.GLEANERIO_MINIO_PORT
+        address = PythonMinioAddress(self.gs3.GLEANERIO_MINIO_ADDRESS, self.gs3.GLEANERIO_MINIO_PORT)
+        bucket = self.gs3.GLEANERIO_MINIO_BUCKET
         release_url = f"{proto}://{address}/{bucket}/{path}/{source}_release.{extension}"
         # BLAZEGRAPH SPECIFIC
         # url = f"{_graphEndpoint()}?uri={release_url}"  # f"{os.environ.get('GLEANER_GRAPH_URL')}/namespace/{os.environ.get('GLEANER_GRAPH_NAMESPACE')}/sparql?uri={release_url}"

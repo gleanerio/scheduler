@@ -1,17 +1,17 @@
 
-dagit>=1.5.6
-dagster-postgres>=0.21.6
-dagster>=1.5.6
-dagster-graphql>=1.5.6
-dagster-webserver>=1.5.6
-dagster-docker>=0.21.6
-dagster-aws>=0.21.6
-dagster_slack>=0.21.6
+dagit>=1.7.10
+dagster-postgres>=0.23.10
+dagster>=1.7.10
+dagster-graphql>=1.7.10
+dagster-webserver>=1.7.10
+dagster-docker>=0.23.10
+dagster-aws>=0.23.10
+dagster_slack>=0.23.10
 ipython-genutils==0.2.0
 advertools==0.13.2
 minio==7.1.13
 docker>=6.1.0
-dagstermill>=0.21.6
+dagstermill>=0.23.10
 notebook
 pydash
 pyyaml
@@ -19,6 +19,7 @@ orjson
 
 earthcube-utilities>=0.1.26
 #earthcube-utilities @ git+https://github.com/earthcube/earthcube_utilities@5d2158f#subdirectory=earthcube_utilities
+
 # if we want to use an non-released branch 2c1dcab is the commit
 # earthcube-utilities @ git+https://github.com/earthcube/earthcube_utilities@2c1dcab#subdirectory=earthcube_utilities
 

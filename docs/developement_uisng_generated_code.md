@@ -1,5 +1,9 @@
 # Scheduler Developement in Dagster
 
+ **NOTE: originally, a set of workflows was generated for each source. These were compiled into separate 'project' containers by a github workflo
+This is no longer needed. But these were the original instructions.**
+
+
 !!! Note 
     add [envfile](https://plugins.jetbrains.com/plugin/7861-envfile) plug in to PyCharm to allow for easy debugging to code
 

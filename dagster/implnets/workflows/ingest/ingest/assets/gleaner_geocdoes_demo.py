@@ -4,7 +4,7 @@
 from dagster import get_dagster_logger, asset, In, Nothing, Config
 
 from ..resources.gleanerio import GleanerioResource
-@asset(required_resource_keys={"gleanerio"})
+@asset(key_prefix="ingest",required_resource_keys={"gleanerio"})
 def gleanerio_demo(context ):
     gleaner_resource = foo = context.resources.gleanerio
     source="geocodes_demo_datasets"

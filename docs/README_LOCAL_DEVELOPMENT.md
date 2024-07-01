@@ -52,17 +52,7 @@ You need to set the environment based on dagster/implnets/deployment/envFile.env
 
 will run just the task, and in editable form, i think.
 
-### testing generated code
 
-`cd generatedCode/PROJECT/output/`
-
-`export $(sed  '/^[ \t]*#/d' ../../../deployment/.env |  sed '/^$/d' | xargs)`
-
-`dagster dev`
-
-??? note
-    YOU CANNOT SET BREAKPOINTS IN TEMPLATES
-    YOU NEED TO cd generatedCode/PROJECT/output/jobs and set them in the job you are testing.
 
 ## TESTING CONTAINERS
 
