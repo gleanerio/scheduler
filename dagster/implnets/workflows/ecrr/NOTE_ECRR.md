@@ -1,3 +1,7 @@
+TESTING UPLOADING WITH LOAD:
+LOAD <https://oss.geocodes-aws-dev.earthcube.org/ecrr/graphs/latest/ecrr_examples_release.nq>
+LOAD <https://oss.geocodes-aws-dev.earthcube.org/ecrr/graphs/latest/ecrr_submitted_release.nq>
+
 
 ECRR from google drive will require a manual harvest, and manual configuration.
 

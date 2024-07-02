@@ -206,7 +206,7 @@ def post_to_graph(source, path=RELEASE_PATH, extension="nq", graphendpoint=_grap
     get_dagster_logger().info(f'graph: insert "{source}" to {url} ')
     loadfrom = {'update': f'LOAD <{release_url}>'}
     headers = {
-        'Content-Type': 'application/x-www-form-urlencoded'
+        'Content-Type': 'application/x-www-form-urlencoded;  charset=UTF-8'
     }
     r = requests.post(url, headers=headers, data=loadfrom )
     log.debug(f' status:{r.status_code}')  # status:404

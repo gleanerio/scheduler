@@ -32,6 +32,7 @@ release_asset_job = define_asset_job(
     name="tenant_release_job",
     selection=AssetSelection.assets(upload_release,upload_summary),
     partitions_def=sources_partitions_def,
+    tags={"dagster/concurrency_key": 'graph'},
 )
 
 tenant_namespaces_job = define_asset_job(
