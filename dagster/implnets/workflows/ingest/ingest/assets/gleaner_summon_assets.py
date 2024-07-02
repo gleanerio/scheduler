@@ -144,7 +144,7 @@ def load_report_graph(context):
     graphendpoint = gleaner_triplestore.GraphEndpoint(gleaner_resource.GLEANERIO_GRAPH_NAMESPACE)
     milled = False
     summon = True
-    returned_value = missingReport(source_url, bucket, source_name, s3Minio, graphendpoint, milled=milled, summon=summon)
+    returned_value = missingReport(source_url, bucket, source_name, s3Minio, graphendpoint, milled=milled, summon=False) # summon false. we want the graph
     r = str('load repoort graph returned value:{}'.format(returned_value))
     report = json.dumps(returned_value, indent=2)
     s3Minio.putReportFile(bucket, source_name, "load_report_graph.json", report)
