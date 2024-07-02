@@ -46,8 +46,8 @@ DAGSTER_GLEANER_CONFIG_PATH = os.environ.get('DAGSTER_GLEANER_CONFIG_PATH', "/sc
 # Vars and Envs
 GLEANER_HEADLESS_NETWORK=os.environ.get('GLEANERIO_HEADLESS_NETWORK', "headless_gleanerio")
 # env items
-URL = os.environ.get('PORTAINER_URL')
-APIKEY = os.environ.get('PORTAINER_KEY')
+URL = os.environ.get('GLEANERIO_DOCKER_URL')
+APIKEY = os.environ.get('GLEANERIO_PORTAINER_APIKEY')
 
 
 GLEANER_MINIO_ADDRESS = str(os.environ.get('GLEANERIO_MINIO_ADDRESS'))
