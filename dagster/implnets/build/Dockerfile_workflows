@@ -31,8 +31,6 @@ COPY ./deployment/dagster.yaml /usr/src/app/
 WORKDIR scheduler
 
 
-RUN pip install -r requirements.txt
-
 COPY ./workflows/ /usr/src/app/workflows
 
 
