@@ -32,8 +32,10 @@ release_asset_job = define_asset_job(
     name="tenant_release_job",
     selection=AssetSelection.assets(upload_release,upload_summary),
     partitions_def=sources_partitions_def,
-    tags={"dagster/concurrency_key": 'graph'},
+ #    tags={"dagster/concurrency_key": 'graph'},
 )
+#Attempted to set tag with reserved system prefix: dagster/concurrency_key
+#File "/usr/local/lib/python3.11/site-packages/dagster/_daemon/sensor.py", line 471, in _process_tick_generator
 
 tenant_namespaces_job = define_asset_job(
     name="tenant_namespaces_job",

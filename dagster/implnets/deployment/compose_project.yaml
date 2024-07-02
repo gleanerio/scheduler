@@ -38,7 +38,9 @@ configs:
   workspace:
     name: ${GLEANERIO_DOCKER_WORKSPACE_CONFIG:-workspace}
     external: true
-
+  dagster:
+    name: ${GLEANERIO_DOCKER_DAGSTER_CONFIG:-dagster}
+    external: true
 secrets:
   MINIO_ROOT_ACCESS_KEY:
     external: true
@@ -58,6 +60,12 @@ services:
         configs: &configs
           - source: workspace
             target: /usr/src/app/workspace.yaml
+            # uid: "103"
+            # gid: "103"
+            mode:
+              0444
+          - source: dagster
+            target: /usr/src/app/dagster.yaml
             # uid: "103"
             # gid: "103"
             mode:
