@@ -51,7 +51,7 @@ def find_tenants_with_source(context, source_name, tenats_all):
         if 'all' in tenant["sources"]:
             get_dagster_logger().info(f" found source  all in {tenant['community']}")
             tenants.append(tenant)
-    context.info(f" source {source_name}  in {tenants}")
+    context.log.info(f" source {source_name}  in {tenants}")
     return tenants
 @asset(
     group_name="tenant_load",key_prefix="ingest",
