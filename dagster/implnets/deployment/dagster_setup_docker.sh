@@ -51,7 +51,7 @@ else
            echo 'Created network ${GLEANERIO_DOCKER_HEADLESS_NETWORK}'
         else
            echo "ERROR: *** Failed to create local network. "
-            exit 1
+           # exit 1
         fi
    else
         echo Is Swarm
@@ -59,7 +59,7 @@ else
           echo 'Created network ${GLEANERIO_DOCKER_HEADLESS_NETWORK}'
         else
             echo "ERROR: *** Failed to create swarm network.  "
-            exit 1
+            #exit 1
         fi
    fi
 
@@ -80,8 +80,9 @@ else
       if `docker config create gleaner-${PROJECT} ../configs/${PROJECT}/gleanerconfig.yaml`; then
          echo 'Created gleaner config gleaner-${PROJECT} ${GLEANERIO_GLEANER_CONFIG_PATH}'
       else
-         echo "ERROR: *** Failed to create config. "
-          exit 1
+         echo "ERROR: *** Failed to create docker/potainer config. gleaner-${PROJECT} ${GLEANERIO_GLEANER_CONFIG_PATH}"
+         echo "see if config exists "
+         # exit 1
       fi
 fi
 
@@ -93,8 +94,9 @@ else
       if `docker config create nabu-${PROJECT} ../configs/${PROJECT}/nabuconfig.yaml`; then
          echo 'Created gleaner config  nabu-${PROJECT} ${GLEANERIO_NABU_CONFIG_PATH}'
       else
-         echo "ERROR: *** Failed to create config. "
-          exit 1
+         echo "ERROR: *** Failed to create  create docker/potainer config. nabu-${PROJECT} ${GLEANERIO_NABU_CONFIG_PATH} "
+         echo "see if config exists "
+         # exit 1
       fi
 fi
 
@@ -106,7 +108,22 @@ else
       if `docker config create workspace-${PROJECT} ../configs/${PROJECT}/workspace.yaml`; then
          echo 'Created gleaner config  workspace-${PROJECT} ${GLEANERIO_WORKSPACE_CONFIG_PATH}'
       else
-         echo "ERROR: *** Failed to create config. "
-          exit 1
+         echo "ERROR: *** Failed to create create docker/potainer config. workspace-${PROJECT} ${GLEANERIO_WORKSPACE_CONFIG_PATH}"
+        echo "see if config exists "
+        #  exit 1
+      fi
+fi
+
+if [  "$(docker config ls  | grep -${GLEANERIO_WORKSPACE_CONFIG_PATH})" ] ; then
+   echo ${GLEANERIO_WORKSPACE_CONFIG_PATH} config exists;
+else
+   echo creating config
+
+      if `docker config create workspace-${PROJECT} ../configs/${PROJECT}/workspace.yaml`; then
+         echo 'Created gleaner config  workspace-${PROJECT} ${GLEANERIO_WORKSPACE_CONFIG_PATH}'
+      else
+         echo "ERROR: *** Failed to create create docker/potainer config. workspace-${PROJECT} ${GLEANERIO_WORKSPACE_CONFIG_PATH}"
+        echo "see if config exists "
+        #  exit 1
       fi
 fi

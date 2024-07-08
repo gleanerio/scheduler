@@ -223,42 +223,51 @@ The production 'containers' dagster, gleaner, and nabu are built with a github a
 
 This describes the local and container deployment
 We use portainer to manage our docker deployments.
+## Server Deployment. 
+ [Production example for Earthcube](eco_deploy.md) 
 
-## Pycharm -- Run local with remote services
+## DEVELOPER Pycharm --  Run local with remote services
 You can test components in pycharm. Run configurations for pycgharm  are in runConfigurations (TODO: Instructions)
 use the [ENVFIle plugin.](https://plugins.jetbrains.com/plugin/7861-envfile) 
 ![pycharm runconfig](images/pycharm_runconfig.png)
 1) move to the  implnets/deployment directory
 2) copy the envFile.env to .env [see](#environment-files)  use the [ENVFIle plugin.](https://plugins.jetbrains.com/plugin/7861-envfile)
 3) edit the entries to point at a portainer/traefik with running services
-4) edit configuration files in implnets/configs/PROJECT to s3: gleanerconfig.yaml, tenant.yaml
-5) upload configuration implnets/configs/PROJECT to s3: gleanerconfig.yaml, tenant.yaml
-4) run a component, 
-5) eg dagster_ingest_debug
+4) edit configuration files in implnets/configs/PROJECT: gleanerconfig.yaml, tenant.yaml
+5) upload configuration implnets/configs/PROJECT to s3 scheduler/configs: gleanerconfig.yaml, tenant.yaml
+4) run a Pycharm runconfig 
+   5) eg dagster_ingest_debug
 4) go to http://localhost:3000/
-6) you cah [test the schedules](#test-schedules) 
+6) you can [test the schedules](#test-schedules) 
 
 ## full stack test Run local with remote services
 1) move to the implnets/deployment directory
 2) copy the envFile.env to .env [see](#environment-files)use the [ENVFIle plugin.](https://plugins.jetbrains.com/plugin/7861-envfile) [see](#environment-files)  use the [ENVFIle plugin.](https://plugins.jetbrains.com/plugin/7861-envfile) 
 3) edit the entries.
 4) edit configuration files in implnets/configs/PROJECT to s3: gleanerconfig.yaml, tenant.yaml
-5) upload configuration implnets/configs/PROJECT to s3: gleanerconfig.yaml, tenant.yaml
+5) upload configuration implnets/configs/PROJECT to scheduler/configs s3: gleanerconfig.yaml, tenant.yaml
 4) for local, `./dagster_localrun.sh`
 5) go to http://localhost:3000/
 
 To deploy in portainer, use the deployment/compose_project.yaml docker stack.
 
 ### docker compose Configuration:
-1) there are three files that need to be installed into docker configs. 
+there are configuration  files that are needed.
+They are installed in two places:
+* as docker configs
+* as scheduler configs in S3
 
  (NOTE: I think the configs are still needed in the containers) 
 
-| file               | local                                             |  | note                                  |
-|--------------------|---------------------------------------------------| ------ |---------------------------------------|
-| workspace          | configs/PROJECT/worksapce.yaml                    | | used by dagster                       |
-| gleanerconfig.yaml | s3:{bucket}/scheduler/configs/gleanerconfigs.yaml | | ingest workflow needs to be in minio/s3  
-| tenant.yaml        | s3:{bucket}/scheduler/configs/enant.yaml          |  | ingest workflow needs to be in minio/s3  
+| file               | local                                    |                                                   | note                                    |
+|--------------------|------------------------------------------|---------------------------------------------------|-----------------------------------------|
+| workspace          | configs/PROJECT/worksapce.yaml           | dockerconfig: workspace                           | docker compose: used by dagster         |
+| gleanerconfig.yaml | configs/PROJECT/gleanerconfig.yaml       | s3:{bucket}/scheduler/configs/gleanerconfigs.yaml | ingest workflow needs to be in minio/s3 
+| tenant.yaml        | configs/PROJECT/tenant.yaml              | s3:{bucket}/scheduler/configs/tenant.yaml         | ingest workflow needs to be in minio/s3 
+| dagster.yaml       | dagster/implnets/deployment/dagster.yaml | dockerconfig: dagster                             | docker compose: used by dagster  
+| gleanerconfig.yaml | configs/PROJECT/gleanerconfig.yaml       | dockerconfig: gleaner                             | mounted in gleaner docker container     
+| nabuconfig.yaml | configs/PROJECT/nabuconfig.yaml          | dockerconfig: nabu                                | mounted in gleaner docker container     
+
 
 [Docker Configs for gleanerio containers ](https://github.com/earthcube/scheduler/issues/106) are still needed:
 
@@ -266,7 +275,7 @@ To deploy in portainer, use the deployment/compose_project.yaml docker stack.
 |---------------------|-----------------------------------------------------------| ------ |---------------------------------------|
 | gleanerconfig.yaml  | configs/PROJECT/gleanerconfigs.yaml                       | env () | generated code needs to be in ~~portainer~~          |
 | nabuconfig.yaml | configs/PROJECT/nabuconfigs.yaml                          | env () | generated codeneeds to be in ~~portainer~~ |
-2) 
+
 3) when the containers are running in a  stack, on portainer, there will need to
    be updated by pulling from dockerhub. The ENV variables may need to be updated for the CONTAINER*_TAG
 
