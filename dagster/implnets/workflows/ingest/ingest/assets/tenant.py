@@ -56,7 +56,9 @@ def find_tenants_with_source(context, source_name, tenats_all):
 @asset(
     group_name="tenant_load",key_prefix="ingest",
     deps=[AssetKey(["ingest","tenant_names"]), AssetKey(["ingest","tenant_all"])],
-    required_resource_keys={"gleanerio",},partitions_def=sources_partitions_def)
+    required_resource_keys={"gleanerio",}
+    ,partitions_def=sources_partitions_def
+)
 #def upload_release(context, config:TennantOpConfig  ):
 def upload_release(context ):
     #context.log.info(config.source_name)
@@ -86,7 +88,9 @@ def upload_release(context ):
 #@asset(required_resource_keys={"gleanerio",},ins={"start": In(Nothing)})
 @asset(group_name="tenant_load",key_prefix="ingest",
        deps=[AssetKey(["ingest","tenant_names"]), AssetKey(["ingest","tenant_all"])],
-       required_resource_keys={"gleanerio",},partitions_def=sources_partitions_def)
+       required_resource_keys={"gleanerio",}
+    ,partitions_def=sources_partitions_def
+       )
 #def upload_summary(context, config:TennantOpConfig):
 def upload_summary(context):
     #context.log.info(config.source_name)
