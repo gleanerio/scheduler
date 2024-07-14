@@ -225,12 +225,12 @@ services:
         # in code, use names defined in network above
     dagster-code-ingest:
 
-        build:
-          #context: .
-          context: ..
-          dockerfile: build/Dockerfile_code
-          args:
-            implnet: ${PROJECT:-eco}
+#        build:
+#          #context: .
+#          context: ..
+#          dockerfile: build/Dockerfile_code
+#          args:
+#            implnet: ${PROJECT:-eco}
         # you should be able to change the source locally, without a full rebuild.
        #image: dagster-${PROJECT:-eco}:latest
         image: docker.io/nsfearthcube/dagster-gleanerio-workflows:${CONTAINER_CODE_TAG:-latest}
