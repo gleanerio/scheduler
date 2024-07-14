@@ -97,7 +97,7 @@ REPORT_PATH = "reports/"
 COMMUNITY_PATH = "reports/community/"
 TASKS_PATH="tasks/"
 ORG_PATH = "orgs/"
-STAT_FILE_NAME = "missing_report_graph.json"
+STAT_FILE_NAME = "load_report_graph.json"
 
 def _pythonMinioUrl(url):
 
