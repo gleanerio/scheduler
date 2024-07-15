@@ -146,28 +146,25 @@ def loadstatsCommunity(context, task_tenant_sources) -> str:
         s = t[0]["sources"]
         for source in s:
 
-            dirs = s3Minio.listPath(path=f"{REPORT_PATH}{source}/",recursive=False )
+            dirs = s3Minio.listPath(GLEANER_MINIO_BUCKET,path=f"{REPORT_PATH}{source}/",recursive=False )
 
 
             for d in dirs:
                 latestpath = f"{REPORT_PATH}{source}/latest/"
-                # minio reference
-                # if (d.object_name.casefold() == latestpath.casefold()) or (d.is_dir == False):
-                #     continue
-                # path = f"/{d.object_name}{STAT_FILE_NAME}"
-                if (d['Key'].casefold() == latestpath.casefold()) or (d.is_dir == False) :
+                if (d.object_name.casefold() == latestpath.casefold()) or (d.is_dir == False):
                     continue
-                path = f"/{d['Key']}{STAT_FILE_NAME}"
-
+                path = f"{d.object_name}{STAT_FILE_NAME}"
+                s3ObjectInfo = {"bucket_name": GLEANER_MINIO_BUCKET, "object_name": path}
                 try:
-                    resp = s3Client.getFile(path=path)
+                   # resp = s3Client.getFile(path=path)
+                    resp = s3Minio.getFileFromStore(s3ObjectInfo)
                     stat = json.loads(resp)
                     stat = pick(stat, 'source', 'sitemap', 'date', 'sitemap_count', 'summoned_count',
                                 'missing_sitemap_summon_count',
                                 'graph_urn_count', 'missing_summon_graph_count')
                     stats.append(stat)
                 except Exception as ex:
-                    get_dagster_logger().info(f"Failed to get source {source} for tennant {community_code}  {ex}")
+                    context.log.info(f"Failed to get source {source} for tennant {community_code}  {ex}")
     except Exception as ex:
         context.log.info(f"Failed to get tenant {community_code}  {ex}")
     # for source in task_tenant_sources["tennant"]:
@@ -211,6 +208,6 @@ def loadstatsCommunity(context, task_tenant_sources) -> str:
     s3Minio.putReportFile(s3_config.GLEANERIO_MINIO_BUCKET, f"tenant/{community_code}", f"all_stats.csv", df_csv)
     # with open(stringio, "rb") as f:
     #     s3.upload_fileobj(f, s3.GLEANERIO_MINIO_BUCKET, f"data/all/all_stats.csv")
-    context.log.info(f"all_stats.csv uploaded ")
+    context.log.info(f"all_stats.csv uploaded using ec.datastore.putReportFile {s3_config.GLEANERIO_MINIO_BUCKET}tenant/{community_code} ")
     #return df_csv # now checking return types
     return df_csv

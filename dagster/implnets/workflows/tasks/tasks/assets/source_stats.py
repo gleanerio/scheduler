@@ -23,7 +23,7 @@ MINIO_OPTIONS={"secure":GLEANER_MINIO_USE_SSL
 REPORT_PATH = "reports/"
 TASKS_PATH="tasks/"
 ORG_PATH = "orgs/"
-STAT_FILE_NAME = "missing_report_graph.json"
+STAT_FILE_NAME = "load_report_graph.json"
 def _pythonMinioUrl(url):
 
     if (url.endswith(".amazonaws.com")):
@@ -72,7 +72,7 @@ def loadstatsHistory(context,source_list) -> str:
                latestpath = f"{REPORT_PATH}{repo}/latest/"
                if (d.object_name.casefold() == latestpath.casefold()) or (d.is_dir == False):
                    continue
-               path = f"/{d.object_name}{STAT_FILE_NAME}"
+               path = f"{d.object_name}{STAT_FILE_NAME}"
                s3ObjectInfo = {"bucket_name": GLEANER_MINIO_BUCKET, "object_name": path}
                try:
                    resp = s3Minio.getFileFromStore(s3ObjectInfo)
@@ -89,7 +89,7 @@ def loadstatsHistory(context,source_list) -> str:
     df.to_csv(f"data/all_stats.csv")
     df_csv = df.to_csv()
     s3Minio.putReportFile(GLEANER_MINIO_BUCKET, "all", f"all_stats.csv", df_csv)
-    get_dagster_logger().info(f"all_stats.csv uploaded ")
+    context.log.info(f"all_stats.csv uploaded using putReportFile s3://{GLEANER_MINIO_BUCKET} all ")
     #return df_csv
     return df_csv
 
