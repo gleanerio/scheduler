@@ -26,6 +26,7 @@ tenant_asset_job = define_asset_job(
     name="tenant_config_updated_job",
     selection=AssetSelection.assets(AssetKey(["ingest","tenant_names"])).required_multi_asset_neighbors(),
     partitions_def=sources_partitions_def,
+    tags={"dagster/priority": "10"}
 )
 
 release_asset_job = define_asset_job(
@@ -42,6 +43,7 @@ tenant_namespaces_job = define_asset_job(
     name="tenant_namespaces_job",
     selection=AssetSelection.assets(create_tenant_containers, create_graph_namespaces),
     partitions_def=tenant_partitions_def,
+     tags={"dagster/priority": "20"}
 )
 
 # @job(partitions_def=tenant_partitions_def)

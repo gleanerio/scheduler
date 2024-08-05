@@ -24,4 +24,5 @@ sources_asset_job = define_asset_job(
     name="sources_config_updated_job",
     selection=AssetSelection.assets(AssetKey(["ingest","sources_names_active"])).required_multi_asset_neighbors(),
     partitions_def=sources_partitions_def,
+    tags={"dagster/priority": "11"}
 )
