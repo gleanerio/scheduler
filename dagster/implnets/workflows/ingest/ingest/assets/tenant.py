@@ -55,6 +55,7 @@ def find_tenants_with_source(context, source_name, tenats_all):
     return tenants
 @asset(
     group_name="tenant_load",key_prefix="ingest",
+op_tags={"ingest": "graph"},
     deps=[AssetKey(["ingest","tenant_names"]), AssetKey(["ingest","tenant_all"])],
     required_resource_keys={"gleanerio",}
     ,partitions_def=sources_partitions_def
@@ -87,6 +88,7 @@ def upload_release(context ):
 
 #@asset(required_resource_keys={"gleanerio",},ins={"start": In(Nothing)})
 @asset(group_name="tenant_load",key_prefix="ingest",
+op_tags={"ingest": "graph"},
        deps=[AssetKey(["ingest","tenant_names"]), AssetKey(["ingest","tenant_all"])],
        required_resource_keys={"gleanerio",}
     ,partitions_def=sources_partitions_def
@@ -128,6 +130,7 @@ def upload_summary(context):
 #     pass
 @asset(group_name="tenant_create",key_prefix="ingest",
        deps=[AssetKey(["ingest","tenant_all"])],
+op_tags={"ingest": "graph"},
        required_resource_keys={"gleanerio",},partitions_def=tenant_partitions_def)
 def create_graph_namespaces(context):
     #context.log.info(config.source_name)

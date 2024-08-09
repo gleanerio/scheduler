@@ -5,6 +5,7 @@ import orjson
 import dagster
 from dagster import get_dagster_logger, asset,multi_asset, AssetOut, In, Nothing, Config,DynamicPartitionsDefinition, sensor
 import yaml
+from ec.sitemap import Sitemap
 
 sources_partitions_def = DynamicPartitionsDefinition(name="sources_names_active")
 #from ..resources.gleanerio import GleanerioResource
@@ -79,6 +80,24 @@ def gleanerio_tenants(context):
     #return orjson.dumps(orgs,  option=orjson.OPT_INDENT_2)
     # this is used for partitioning, so let it pickle (aka be a python list)
     return tenant_obj, tenants
+
+"""
+check a soruce list, return invalid and valid sources lists
+"""
+def check_for_valid_sitemap( sources_active):
+    validated_sources=[]
+    for source in sources_active:
+        try:
+            sm = Sitemap(source['url'], no_progress_bar=True)
+
+            source['sm_url_is_valid'] = sm.validUrl()
+            validated_sources.append(source)
+            get_dagster_logger().info(f" sitemap url valid {source['sm_url_is_valid']} for {source['name']} {source['url']}")
+        except Exception as e:
+            get_dagster_logger().error(f" sitemap url ERROR for {source['name']} {source['url']} exception {e}")
+            source['sm_url_is_valid'] = False
+            validated_sources.append(source)
+    return validated_sources
 @multi_asset(
 
              outs=
@@ -86,6 +105,8 @@ def gleanerio_tenants(context):
                  "sources_all": AssetOut(key_prefix="ingest",
    group_name="configs",),
                  "sources_names_active": AssetOut(key_prefix="ingest",
+   group_name="configs",),
+"sources_names_invalid_sitemap": AssetOut(key_prefix="ingest",
    group_name="configs",),
              }
     ,required_resource_keys={"gs3"})
@@ -101,17 +122,21 @@ def gleanerio_sources(context ):
     sources_obj = yaml.safe_load(source)
     sources_all_value = list(filter(lambda t: t["name"], sources_obj["sources"]))
     sources_active_value = filter(lambda t: t["active"], sources_all_value )
-    sources_active_value = list(map(lambda t: t["name"], sources_active_value))
+    source_sm_validated = list(check_for_valid_sitemap( sources_active_value))
+    context.log.info(f"validated sitemaps {source_sm_validated} ")
+    sources_active_names = list(map(lambda t: t["name"],  filter(lambda t: t["sm_url_is_valid"], source_sm_validated )))
+    sources_invalid_sm = list(map(lambda t: t["name"], filter(lambda t: not t["sm_url_is_valid"], source_sm_validated)))
+
     context.add_output_metadata(
             metadata={
-                "source": sources_active_value,  # Metadata can be any key-value pair
+                "source": sources_active_names,  # Metadata can be any key-value pair
                 "run": "gleaner",
                 # The `MetadataValue` class has useful static methods to build Metadata
             }, output_name="sources_names_active"
         )
     #return orjson.dumps(orgs,  option=orjson.OPT_INDENT_2)
     # this is used for partitioning, so let it pickle (aka be a python list)
-    return sources_all_value, sources_active_value
+    return sources_all_value, sources_active_names,sources_invalid_sm
 # @asset(required_resource_keys={"gs3"})
 # def gleanerio_orgs(context ):
 #     s3_resource = context.resources.gs3

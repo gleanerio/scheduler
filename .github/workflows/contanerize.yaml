@@ -12,6 +12,7 @@ on:
       - dv_dev
       - dev_eco
       - v0_generated_code
+      - 133_dev_sitemaps
     tags:
       - "v*.*.*"
 

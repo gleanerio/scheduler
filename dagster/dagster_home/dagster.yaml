@@ -11,8 +11,13 @@ run_coordinator:
     # getting tags by copying from UI
     tag_concurrency_limits:
       - key: "ingest"
+        value: "docker"
+        limit: 3
+      - key: "ingest"
+        value: "report"
         limit: 2
-      - key: "graph"
+      - key: "tenant_load"
+        value: "graph"
         limit: 1
 telemetry:
   enabled: false

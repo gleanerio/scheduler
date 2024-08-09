@@ -4,14 +4,15 @@ from typing import Any
 import json
 import pandas as pd
 import csv
+from urllib.error import HTTPError
 
 from dagster import (
-    asset, Config, Output,AssetKey,
+    asset,op, Config, Output,AssetKey,
     define_asset_job, AssetSelection,
 get_dagster_logger,BackfillPolicy
 )
 from ec.datastore import s3 as utils_s3
-
+from ec.sitemap import Sitemap
 from .gleaner_sources import sources_partitions_def
 from ..utils import PythonMinioAddress
 
@@ -34,9 +35,31 @@ def getSource(context, source_name):
     source = list(filter(lambda t: t["name"]==source_name, sources))
     return source[0]
 
+@asset(
+    group_name="load",
+    key_prefix="ingest",
+      deps=[AssetKey(["ingest","sources_names_active"]) ],
+       partitions_def=sources_partitions_def, required_resource_keys={"gleanerio"}
+ #   , backfill_policy=BackfillPolicy.single_run()
+       )
+def validate_sitemap_url(context):
+    source_name = context.asset_partition_key_for_output()
+    source = getSource(context, source_name)
+    sm = Sitemap(source['url'], no_progress_bar=True)
+    if sm.validUrl():
+        return source['url']
+    else:
+        context.log.error(f"source: {source['name']} bad url: {source['url']}")
+        raise HTTPError(url=source['url'],
+                        code=404,
+                        hdrs=None,
+                        fp=None,
+                        msg=f"Bad URL ource: {source['name']} bad url: {source['url']}" )
+
 @asset(group_name="load",
 key_prefix="ingest",
-      deps=[AssetKey(["ingest","sources_names_active"]) ],
+op_tags={"ingest": "docker"},
+      deps=[ validate_sitemap_url  ],
        partitions_def=sources_partitions_def, required_resource_keys={"gleanerio"}
  #   , backfill_policy=BackfillPolicy.single_run()
        )
@@ -55,6 +78,7 @@ def gleanerio_run(context ) -> Output[Any]:
     return Output(gleaner, metadata=metadata)
 @asset(group_name="load",
 key_prefix="ingest",
+op_tags={"ingest": "docker"},
        deps=[gleanerio_run],
        partitions_def=sources_partitions_def, required_resource_keys={"gleanerio"}
   #     ,backfill_policy=BackfillPolicy.single_run()
@@ -83,6 +107,7 @@ And how many made it into milled (this is how good the conversion at a single js
 @asset(
 key_prefix="ingest",
     group_name="load",
+op_tags={"ingest": "report"},
        deps=[gleanerio_run], partitions_def=sources_partitions_def, required_resource_keys={"gleanerio"}
   #  , backfill_policy=BackfillPolicy.single_run()
 )
@@ -122,6 +147,7 @@ It then compares what identifiers are in the S3 store (summon path), and the Nam
 @asset(
 key_prefix="ingest",
     group_name="load",
+op_tags={"ingest": "report"},
        deps=[release_nabu_run], partitions_def=sources_partitions_def, required_resource_keys={"gleanerio"}
   #  , backfill_policy=BackfillPolicy.single_run()
 )
@@ -219,6 +245,7 @@ def release_summarize(context) :
 
 @asset(group_name="load",key_prefix="ingest",
        deps=[gleanerio_run],
+op_tags={"ingest": "report"},
        partitions_def=sources_partitions_def, required_resource_keys={"gleanerio"}
    # , backfill_policy=BackfillPolicy.single_run()
        )
@@ -248,6 +275,7 @@ def identifier_stats(context):
 
 @asset(group_name="load",key_prefix="ingest",
        deps=[gleanerio_run],
+op_tags={"ingest": "report"},
        partitions_def=sources_partitions_def, required_resource_keys={"gleanerio"}
    # , backfill_policy=BackfillPolicy.single_run()
        )
@@ -285,6 +313,7 @@ def bucket_urls(context):
 #     return release_url
 @asset(group_name="load",key_prefix="ingest",
        deps=[release_nabu_run],
+op_tags={"ingest": "report"},
        partitions_def=sources_partitions_def, required_resource_keys={"gleanerio"}
    # , backfill_policy=BackfillPolicy.single_run()
        )

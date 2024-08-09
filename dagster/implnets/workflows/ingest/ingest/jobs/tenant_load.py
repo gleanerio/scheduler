@@ -33,7 +33,7 @@ release_asset_job = define_asset_job(
     name="tenant_release_job",
     selection=AssetSelection.assets(upload_release,upload_summary),
     partitions_def=sources_partitions_def,
-    tags={"dagster/priority": "3"}
+    tags={"dagster/priority": "3", "ingest": "graph"}
  #    tags={"dagster/concurrency_key": 'graph'},
 )
 #Attempted to set tag with reserved system prefix: dagster/concurrency_key
