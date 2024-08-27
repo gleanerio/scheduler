@@ -27,7 +27,7 @@ jobs:
   build:
     name: Dockerize  Scheduler
     runs-on: ubuntu-latest
-    strategy:
+#    strategy:
 #      matrix:
 #       # project: [ "eco" ]
 #        project: [ "eco", "iow", "oih" ]
