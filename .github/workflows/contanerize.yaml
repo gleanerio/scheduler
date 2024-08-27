@@ -28,11 +28,11 @@ jobs:
     name: Dockerize  Scheduler
     runs-on: ubuntu-latest
     strategy:
-      matrix:
-       # project: [ "eco" ]
-        project: [ "eco", "iow", "oih" ]
-        #platform: ["linux/amd64","linux/arm64"]
-        #platform: ["linux/amd64"] #linux/arm64 issues with building
+#      matrix:
+#       # project: [ "eco" ]
+#        project: [ "eco", "iow", "oih" ]
+#        #platform: ["linux/amd64","linux/arm64"]
+#        #platform: ["linux/amd64"] #linux/arm64 issues with building
     steps:
       - name: Set variables
         run: |
