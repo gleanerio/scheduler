@@ -1,4 +1,5 @@
 import json
+import os
 import yaml
 from urllib.parse import urlparse
 from bs4 import BeautifulSoup
@@ -72,10 +73,14 @@ for line in Lines:
 # json_data = json.dumps(sources)
 # print(json_data)
 
+
 # read the PREFIX file# Reading data from file1
 with open('gleanerconfigPREFIX.yaml') as fp:
     data = fp.read()
 
-with open('gleanerconfig.yaml', 'w') as outfile:
+root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
+build_dir = os.path.join(root, 'build')
+built_config = os.path.join(build_dir, 'gleanerconfig.yaml')
+with open(built_config, 'w') as outfile:
     outfile.write(data)
     yaml.dump(sources, outfile, default_flow_style=False)
