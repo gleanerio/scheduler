@@ -1349,3 +1349,22 @@ sources:
     fixcontextoption: 0
     acceptcontenttype: application/ld+json, text/html
     jsonprofile: application/ld+json
+  - sourcetype: sitemap
+    name: geochemistry_custom
+    logo:
+    url: https://oss.geocodes.ncsa.illinois.edu/decoder/sitemaps/geochemistry_sitemap.xml
+    headless: false
+    pid: https://catalogue.odis.org/view/343
+    propername: Geochemistry Custom Datasets
+    domain: https://obis.org
+    active: true
+    credentialsfile: ""
+    other: {}
+    headlesswait: -1
+    delay: 0
+    identifierpath: ""
+    apipagelimit: 0
+    identifiertype: identifiersha
+    fixcontextoption: 0
+    acceptcontenttype: application/ld+json, text/html
+    jsonprofile: application/ld+json

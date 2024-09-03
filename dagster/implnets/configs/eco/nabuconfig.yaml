@@ -60,6 +60,7 @@ objects:
     - summoned/vera4cast
     - summoned/osmc
     - summoned/obis
+    - summoned/geochemistry_custom
     - prov/aquadocs
     - prov/bcodmo
     - prov/cchdo
