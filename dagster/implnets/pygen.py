@@ -11,6 +11,7 @@ import shutil
 #  python pygen.py -cf ../../configs/oih/gleanerconfig.yaml -od ./output -td ./templates
 
 def gencode(cf, od, td, days) -> str:
+    """Generate code"""
     # read config
     c = yaml.safe_load(open(cf, 'r'))
 
