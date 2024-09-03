@@ -279,26 +279,26 @@ services:
             - dagster-postgres
         networks:
             - dagster_host
-#    dagster-code-project:
-#        # you should be able to change the source locally, without a full rebuild.
-#       #image: dagster-${PROJECT:-eco}:latest
-#        image: docker.io/nsfearthcube/dagster-gleanerio-${PROJECT:-eco}:${CONTAINER_CODE_TAG:-latest}
-#        environment: *env
-#        command:
-#        - "dagster"
-#        - "api"
-#        - "grpc"
-#        - "-h"
-#        - "0.0.0.0"
-#        - "-p"
-#        - "4000"
-#        - "--python-file"
-#        - "/usr/src/app/project/eco/repositories/repository.py"
-#        - "-d"
-#        - "/usr/src/app/project/eco/"
-#
-#   #     volumes: *vol
-#        depends_on:
-#            - dagster-postgres
-#        networks:
-#            - dagster_host
+    dagster-code-project:
+        # you should be able to change the source locally, without a full rebuild.
+       #image: dagster-${PROJECT:-eco}:latest
+        image: docker.io/nsfearthcube/dagster-gleanerio-${PROJECT:-eco}:${CONTAINER_CODE_TAG:-latest}
+        environment: *env
+        command:
+        - "dagster"
+        - "api"
+        - "grpc"
+        - "-h"
+        - "0.0.0.0"
+        - "-p"
+        - "4000"
+        - "--python-file"
+        - "/usr/src/app/project/eco/repositories/repository.py"
+        - "-d"
+        - "/usr/src/app/project/eco/"
+
+   #     volumes: *vol
+        depends_on:
+            - dagster-postgres
+        networks:
+            - dagster_host
