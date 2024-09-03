@@ -11,7 +11,7 @@ import re
 
 
 def remove_non_alphanumeric(string):
-    return re.sub(r'[^a-zA-Z0-9]+', '', string)
+    return re.sub(r'[^a-zA-Z0-9_]+', '', string)
 
 # Initialize args  parser
 parser = argparse.ArgumentParser()
@@ -50,8 +50,10 @@ for line in Lines:
     # print("Line{}: {}".format(count, line.strip()))
     # keystr = str("Line{}".format(count))
 
-    target = line.rsplit('/', 1)[-1]
-    name =  remove_non_alphanumeric(target.lower().replace(".xml", ""))
+    base_url = "https://geoconnex.us/sitemap/"
+    path = line.lower().replace(base_url, "").replace(".xml", "").replace("/", "_")
+    name = remove_non_alphanumeric(path)
+
 
     data["sourcetype"] = "sitemap"
 

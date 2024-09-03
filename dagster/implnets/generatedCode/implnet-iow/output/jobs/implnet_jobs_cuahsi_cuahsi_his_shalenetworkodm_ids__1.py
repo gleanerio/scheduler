@@ -1,0 +1,7 @@
+from dagster import job
+
+from ops.implnet_ops_cuahsi_cuahsi_his_shalenetworkodm_ids__1 import harvest_cuahsi_cuahsi_his_shalenetworkodm_ids__1
+
+@job
+def implnet_job_cuahsi_cuahsi_his_shalenetworkodm_ids__1():
+    harvest_cuahsi_cuahsi_his_shalenetworkodm_ids__1()

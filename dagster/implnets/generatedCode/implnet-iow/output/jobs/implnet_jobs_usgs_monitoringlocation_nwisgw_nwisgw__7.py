@@ -1,0 +1,7 @@
+from dagster import job
+
+from ops.implnet_ops_usgs_monitoringlocation_nwisgw_nwisgw__7 import harvest_usgs_monitoringlocation_nwisgw_nwisgw__7
+
+@job
+def implnet_job_usgs_monitoringlocation_nwisgw_nwisgw__7():
+    harvest_usgs_monitoringlocation_nwisgw_nwisgw__7()

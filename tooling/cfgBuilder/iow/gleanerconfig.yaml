@@ -29,1728 +29,1728 @@ sources:
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: cuahsicuahsihisczomercedids0
+  name: cuahsi_cuahsi_his_czo_merced_ids__0
   pid: https://gleaner.io/genid/geoconnex
-  propername: cuahsicuahsihisczomercedids0
+  propername: cuahsi_cuahsi_his_czo_merced_ids__0
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/CUAHSI/CUAHSI_HIS_czo_merced_ids__0.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: cuahsicuahsihisgonggaids0
+  name: cuahsi_cuahsi_his_gongga_ids__0
   pid: https://gleaner.io/genid/geoconnex
-  propername: cuahsicuahsihisgonggaids0
+  propername: cuahsi_cuahsi_his_gongga_ids__0
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/CUAHSI/CUAHSI_HIS_Gongga_ids__0.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: cuahsicuahsihisshalenetworkodmids0
+  name: cuahsi_cuahsi_his_shalenetworkodm_ids__0
   pid: https://gleaner.io/genid/geoconnex
-  propername: cuahsicuahsihisshalenetworkodmids0
+  propername: cuahsi_cuahsi_his_shalenetworkodm_ids__0
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/CUAHSI/CUAHSI_HIS_ShaleNetworkODM_ids__0.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: cuahsicuahsihisczoudelids0
+  name: cuahsi_cuahsi_his_czo_udel_ids__0
   pid: https://gleaner.io/genid/geoconnex
-  propername: cuahsicuahsihisczoudelids0
+  propername: cuahsi_cuahsi_his_czo_udel_ids__0
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/CUAHSI/CUAHSI_HIS_czo_udel_ids__0.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: cuahsicuahsihissnotelids0
+  name: cuahsi_cuahsi_his_snotel_ids__0
   pid: https://gleaner.io/genid/geoconnex
-  propername: cuahsicuahsihissnotelids0
+  propername: cuahsi_cuahsi_his_snotel_ids__0
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/CUAHSI/CUAHSI_HIS_SNOTEL_ids__0.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: cuahsicuahsihisgleonsunapeeids0
+  name: cuahsi_cuahsi_his_gleon_sunapee_ids__0
   pid: https://gleaner.io/genid/geoconnex
-  propername: cuahsicuahsihisgleonsunapeeids0
+  propername: cuahsi_cuahsi_his_gleon_sunapee_ids__0
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/CUAHSI/CUAHSI_HIS_GLEON_Sunapee_ids__0.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: cuahsicuahsihisshalenetworkodmids1
+  name: cuahsi_cuahsi_his_shalenetworkodm_ids__1
   pid: https://gleaner.io/genid/geoconnex
-  propername: cuahsicuahsihisshalenetworkodmids1
+  propername: cuahsi_cuahsi_his_shalenetworkodm_ids__1
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/CUAHSI/CUAHSI_HIS_ShaleNetworkODM_ids__1.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: cuahsicuahsihistarlandwaterqualityids0
+  name: cuahsi_cuahsi_his_tarlandwaterquality_ids__0
   pid: https://gleaner.io/genid/geoconnex
-  propername: cuahsicuahsihistarlandwaterqualityids0
+  propername: cuahsi_cuahsi_his_tarlandwaterquality_ids__0
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/CUAHSI/CUAHSI_HIS_TarlandWaterQuality_ids__0.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: cuahsicuahsihistncwaterdataids0
+  name: cuahsi_cuahsi_his_tncwaterdata_ids__0
   pid: https://gleaner.io/genid/geoconnex
-  propername: cuahsicuahsihistncwaterdataids0
+  propername: cuahsi_cuahsi_his_tncwaterdata_ids__0
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/CUAHSI/CUAHSI_HIS_TNCWaterData_ids__0.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: cuahsicuahsihisyosemitehydroclimatenetworkids0
+  name: cuahsi_cuahsi_his_yosemitehydroclimatenetwork_ids__0
   pid: https://gleaner.io/genid/geoconnex
-  propername: cuahsicuahsihisyosemitehydroclimatenetworkids0
+  propername: cuahsi_cuahsi_his_yosemitehydroclimatenetwork_ids__0
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/CUAHSI/CUAHSI_HIS_YosemiteHydroclimateNetwork_ids__0.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: cuahsicuahsihisnceiww2ids0
+  name: cuahsi_cuahsi_his_nceiww2_ids__0
   pid: https://gleaner.io/genid/geoconnex
-  propername: cuahsicuahsihisnceiww2ids0
+  propername: cuahsi_cuahsi_his_nceiww2_ids__0
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/CUAHSI/CUAHSI_HIS_NCEIWW2_ids__0.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: cuahsicuahsihisccbepdapids0
+  name: cuahsi_cuahsi_his_ccbepdap_ids__0
   pid: https://gleaner.io/genid/geoconnex
-  propername: cuahsicuahsihisccbepdapids0
+  propername: cuahsi_cuahsi_his_ccbepdap_ids__0
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/CUAHSI/CUAHSI_HIS_CCBEPDAP_ids__0.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: cuahsicuahsihisnevadosids0
+  name: cuahsi_cuahsi_his_nevados_ids__0
   pid: https://gleaner.io/genid/geoconnex
-  propername: cuahsicuahsihisnevadosids0
+  propername: cuahsi_cuahsi_his_nevados_ids__0
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/CUAHSI/CUAHSI_HIS_Nevados_ids__0.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: cuahsicuahsihisnhgswofids0
+  name: cuahsi_cuahsi_his_nhgs_wof_ids__0
   pid: https://gleaner.io/genid/geoconnex
-  propername: cuahsicuahsihisnhgswofids0
+  propername: cuahsi_cuahsi_his_nhgs_wof_ids__0
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/CUAHSI/CUAHSI_HIS_NHGS_WOF_ids__0.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: cuahsicuahsihisorsancohabids0
+  name: cuahsi_cuahsi_his_orsanco_hab_ids__0
   pid: https://gleaner.io/genid/geoconnex
-  propername: cuahsicuahsihisorsancohabids0
+  propername: cuahsi_cuahsi_his_orsanco_hab_ids__0
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/CUAHSI/CUAHSI_HIS_ORSANCO_HAB_ids__0.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: cuahsicuahsihisskcmilltownids0
+  name: cuahsi_cuahsi_his_skc_milltown_ids__0
   pid: https://gleaner.io/genid/geoconnex
-  propername: cuahsicuahsihisskcmilltownids0
+  propername: cuahsi_cuahsi_his_skc_milltown_ids__0
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/CUAHSI/CUAHSI_HIS_SKC_Milltown_ids__0.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: cuahsicuahsihismopexids0
+  name: cuahsi_cuahsi_his_mopex_ids__0
   pid: https://gleaner.io/genid/geoconnex
-  propername: cuahsicuahsihismopexids0
+  propername: cuahsi_cuahsi_his_mopex_ids__0
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/CUAHSI/CUAHSI_HIS_MOPEX_ids__0.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: cuahsicuahsihismwraids0
+  name: cuahsi_cuahsi_his_mwra_ids__0
   pid: https://gleaner.io/genid/geoconnex
-  propername: cuahsicuahsihismwraids0
+  propername: cuahsi_cuahsi_his_mwra_ids__0
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/CUAHSI/CUAHSI_HIS_MWRA_ids__0.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: cuahsicuahsihisieeratwilkesuniversityids0
+  name: cuahsi_cuahsi_his_ieer_at_wilkes_university_ids__0
   pid: https://gleaner.io/genid/geoconnex
-  propername: cuahsicuahsihisieeratwilkesuniversityids0
+  propername: cuahsi_cuahsi_his_ieer_at_wilkes_university_ids__0
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/CUAHSI/CUAHSI_HIS_IEER_at_Wilkes_University_ids__0.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: cuahsicuahsihiscalvinhhsids0
+  name: cuahsi_cuahsi_his_calvin_hhs_ids__0
   pid: https://gleaner.io/genid/geoconnex
-  propername: cuahsicuahsihiscalvinhhsids0
+  propername: cuahsi_cuahsi_his_calvin_hhs_ids__0
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/CUAHSI/CUAHSI_HIS_CALVIN_HHS_ids__0.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: cuahsicuahsihisglacialridgeids0
+  name: cuahsi_cuahsi_his_glacialridge_ids__0
   pid: https://gleaner.io/genid/geoconnex
-  propername: cuahsicuahsihisglacialridgeids0
+  propername: cuahsi_cuahsi_his_glacialridge_ids__0
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/CUAHSI/CUAHSI_HIS_GlacialRidge_ids__0.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: cuahsicuahsihistuolumnemdwids0
+  name: cuahsi_cuahsi_his_tuolumnemdw_ids__0
   pid: https://gleaner.io/genid/geoconnex
-  propername: cuahsicuahsihistuolumnemdwids0
+  propername: cuahsi_cuahsi_his_tuolumnemdw_ids__0
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/CUAHSI/CUAHSI_HIS_TuolumneMdw_ids__0.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: cuahsicuahsihislczoodm2ids0
+  name: cuahsi_cuahsi_his_lczoodm2_ids__0
   pid: https://gleaner.io/genid/geoconnex
-  propername: cuahsicuahsihislczoodm2ids0
+  propername: cuahsi_cuahsi_his_lczoodm2_ids__0
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/CUAHSI/CUAHSI_HIS_LCZOODM2_ids__0.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: cuahsicuahsihisandrewsforestlterids0
+  name: cuahsi_cuahsi_his_andrewsforestlter_ids__0
   pid: https://gleaner.io/genid/geoconnex
-  propername: cuahsicuahsihisandrewsforestlterids0
+  propername: cuahsi_cuahsi_his_andrewsforestlter_ids__0
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/CUAHSI/CUAHSI_HIS_AndrewsforestLTER_ids__0.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: cuahsicuahsihismazarriverprojectids0
+  name: cuahsi_cuahsi_his_mazar_river_project_ids__0
   pid: https://gleaner.io/genid/geoconnex
-  propername: cuahsicuahsihismazarriverprojectids0
+  propername: cuahsi_cuahsi_his_mazar_river_project_ids__0
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/CUAHSI/CUAHSI_HIS_Mazar_River_Project_ids__0.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: cuahsicuahsihismuddyriverids0
+  name: cuahsi_cuahsi_his_muddyriver_ids__0
   pid: https://gleaner.io/genid/geoconnex
-  propername: cuahsicuahsihismuddyriverids0
+  propername: cuahsi_cuahsi_his_muddyriver_ids__0
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/CUAHSI/CUAHSI_HIS_MuddyRiver_ids__0.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: cuahsicuahsihismudlakeids0
+  name: cuahsi_cuahsi_his_mudlake_ids__0
   pid: https://gleaner.io/genid/geoconnex
-  propername: cuahsicuahsihismudlakeids0
+  propername: cuahsi_cuahsi_his_mudlake_ids__0
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/CUAHSI/CUAHSI_HIS_MudLake_ids__0.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: cuahsicuahsihismmaatacamaids0
+  name: cuahsi_cuahsi_his_mma_atacama_ids__0
   pid: https://gleaner.io/genid/geoconnex
-  propername: cuahsicuahsihismmaatacamaids0
+  propername: cuahsi_cuahsi_his_mma_atacama_ids__0
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/CUAHSI/CUAHSI_HIS_MMA_Atacama_ids__0.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: cuahsicuahsihisprovorivergamutids0
+  name: cuahsi_cuahsi_his_provo_river_gamut_ids__0
   pid: https://gleaner.io/genid/geoconnex
-  propername: cuahsicuahsihisprovorivergamutids0
+  propername: cuahsi_cuahsi_his_provo_river_gamut_ids__0
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/CUAHSI/CUAHSI_HIS_Provo_River_GAMUT_ids__0.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: cuahsicuahsihisodmkentstateids0
+  name: cuahsi_cuahsi_his_odm_kentstate_ids__0
   pid: https://gleaner.io/genid/geoconnex
-  propername: cuahsicuahsihisodmkentstateids0
+  propername: cuahsi_cuahsi_his_odm_kentstate_ids__0
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/CUAHSI/CUAHSI_HIS_ODM_KentState_ids__0.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: cuahsicuahsihishassbergeids0
+  name: cuahsi_cuahsi_his_hassberge_ids__0
   pid: https://gleaner.io/genid/geoconnex
-  propername: cuahsicuahsihishassbergeids0
+  propername: cuahsi_cuahsi_his_hassberge_ids__0
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/CUAHSI/CUAHSI_HIS_Hassberge_ids__0.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: cuahsicuahsihisubwpadids0
+  name: cuahsi_cuahsi_his_ubwpad_ids__0
   pid: https://gleaner.io/genid/geoconnex
-  propername: cuahsicuahsihisubwpadids0
+  propername: cuahsi_cuahsi_his_ubwpad_ids__0
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/CUAHSI/CUAHSI_HIS_UBWPAD_ids__0.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: cuahsicuahsihisczopsuids0
+  name: cuahsi_cuahsi_his_czo_psu_ids__0
   pid: https://gleaner.io/genid/geoconnex
-  propername: cuahsicuahsihisczopsuids0
+  propername: cuahsi_cuahsi_his_czo_psu_ids__0
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/CUAHSI/CUAHSI_HIS_czo_psu_ids__0.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: cuahsicuahsihiscedarriverids0
+  name: cuahsi_cuahsi_his_cedarriver_ids__0
   pid: https://gleaner.io/genid/geoconnex
-  propername: cuahsicuahsihiscedarriverids0
+  propername: cuahsi_cuahsi_his_cedarriver_ids__0
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/CUAHSI/CUAHSI_HIS_CedarRiver_ids__0.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: cuahsicuahsihisparalanaturalezaids0
+  name: cuahsi_cuahsi_his_para_la_naturaleza_ids__0
   pid: https://gleaner.io/genid/geoconnex
-  propername: cuahsicuahsihisparalanaturalezaids0
+  propername: cuahsi_cuahsi_his_para_la_naturaleza_ids__0
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/CUAHSI/CUAHSI_HIS_Para_La_Naturaleza_ids__0.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: cuahsicuahsihisnashrwaids0
+  name: cuahsi_cuahsi_his_nashrwa_ids__0
   pid: https://gleaner.io/genid/geoconnex
-  propername: cuahsicuahsihisnashrwaids0
+  propername: cuahsi_cuahsi_his_nashrwa_ids__0
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/CUAHSI/CUAHSI_HIS_NashRWA_ids__0.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: cuahsicuahsihisswedishmonitoringdataids0
+  name: cuahsi_cuahsi_his_swedish_monitoring_data_ids__0
   pid: https://gleaner.io/genid/geoconnex
-  propername: cuahsicuahsihisswedishmonitoringdataids0
+  propername: cuahsi_cuahsi_his_swedish_monitoring_data_ids__0
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/CUAHSI/CUAHSI_HIS_Swedish_Monitoring_Data_ids__0.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: cuahsicuahsihishydrodataczhrids0
+  name: cuahsi_cuahsi_his_hydrodataczhr_ids__0
   pid: https://gleaner.io/genid/geoconnex
-  propername: cuahsicuahsihishydrodataczhrids0
+  propername: cuahsi_cuahsi_his_hydrodataczhr_ids__0
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/CUAHSI/CUAHSI_HIS_HYDRODATACZ-HR_ids__0.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: cuahsicuahsihisisbenaids0
+  name: cuahsi_cuahsi_his_isbena_ids__0
   pid: https://gleaner.io/genid/geoconnex
-  propername: cuahsicuahsihisisbenaids0
+  propername: cuahsi_cuahsi_his_isbena_ids__0
   sourcetype: sitemap
   url: "https://geoconnex.us/sitemap/CUAHSI/CUAHSI_HIS_Is\xE1bena_ids__0.xml"
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: cuahsicuahsihiscocorahsids0
+  name: cuahsi_cuahsi_his_cocorahs_ids__0
   pid: https://gleaner.io/genid/geoconnex
-  propername: cuahsicuahsihiscocorahsids0
+  propername: cuahsi_cuahsi_his_cocorahs_ids__0
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/CUAHSI/CUAHSI_HIS_CocoRaHs_ids__0.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: cuahsicuahsihislterntlwoodruffids0
+  name: cuahsi_cuahsi_his_lterntlwoodruff_ids__0
   pid: https://gleaner.io/genid/geoconnex
-  propername: cuahsicuahsihislterntlwoodruffids0
+  propername: cuahsi_cuahsi_his_lterntlwoodruff_ids__0
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/CUAHSI/CUAHSI_HIS_LTERNTLWoodruff_ids__0.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: cuahsicuahsihissagehencreekids0
+  name: cuahsi_cuahsi_his_sagehencreek_ids__0
   pid: https://gleaner.io/genid/geoconnex
-  propername: cuahsicuahsihissagehencreekids0
+  propername: cuahsi_cuahsi_his_sagehencreek_ids__0
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/CUAHSI/CUAHSI_HIS_SagehenCreek_ids__0.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: cuahsicuahsihisscotlandnwisids0
+  name: cuahsi_cuahsi_his_scotland_nwis_ids__0
   pid: https://gleaner.io/genid/geoconnex
-  propername: cuahsicuahsihisscotlandnwisids0
+  propername: cuahsi_cuahsi_his_scotland_nwis_ids__0
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/CUAHSI/CUAHSI_HIS_Scotland_NWIS_ids__0.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: cuahsicuahsihisloganrivergamutids0
+  name: cuahsi_cuahsi_his_logan_river_gamut_ids__0
   pid: https://gleaner.io/genid/geoconnex
-  propername: cuahsicuahsihisloganrivergamutids0
+  propername: cuahsi_cuahsi_his_logan_river_gamut_ids__0
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/CUAHSI/CUAHSI_HIS_Logan_River_GAMUT_ids__0.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: cuahsicuahsihisweiherbachids0
+  name: cuahsi_cuahsi_his_weiherbach_ids__0
   pid: https://gleaner.io/genid/geoconnex
-  propername: cuahsicuahsihisweiherbachids0
+  propername: cuahsi_cuahsi_his_weiherbach_ids__0
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/CUAHSI/CUAHSI_HIS_Weiherbach_ids__0.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: cuahsicuahsihisloganriverids0
+  name: cuahsi_cuahsi_his_loganriver_ids__0
   pid: https://gleaner.io/genid/geoconnex
-  propername: cuahsicuahsihisloganriverids0
+  propername: cuahsi_cuahsi_his_loganriver_ids__0
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/CUAHSI/CUAHSI_HIS_LoganRiver_ids__0.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: cuahsicuahsihisrmblids0
+  name: cuahsi_cuahsi_his_rmbl_ids__0
   pid: https://gleaner.io/genid/geoconnex
-  propername: cuahsicuahsihisrmblids0
+  propername: cuahsi_cuahsi_his_rmbl_ids__0
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/CUAHSI/CUAHSI_HIS_RMBL_ids__0.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: cuahsicuahsihisnewnids0
+  name: cuahsi_cuahsi_his_ne_wn_ids__0
   pid: https://gleaner.io/genid/geoconnex
-  propername: cuahsicuahsihisnewnids0
+  propername: cuahsi_cuahsi_his_ne_wn_ids__0
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/CUAHSI/CUAHSI_HIS_NE_WN_ids__0.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: cuahsicuahsihisumbcgwids0
+  name: cuahsi_cuahsi_his_umbcgw_ids__0
   pid: https://gleaner.io/genid/geoconnex
-  propername: cuahsicuahsihisumbcgwids0
+  propername: cuahsi_cuahsi_his_umbcgw_ids__0
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/CUAHSI/CUAHSI_HIS_UMBCGW_ids__0.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: cuahsicuahsihisnooksackmicroclimatenetworkids0
+  name: cuahsi_cuahsi_his_nooksack_microclimate_network_ids__0
   pid: https://gleaner.io/genid/geoconnex
-  propername: cuahsicuahsihisnooksackmicroclimatenetworkids0
+  propername: cuahsi_cuahsi_his_nooksack_microclimate_network_ids__0
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/CUAHSI/CUAHSI_HIS_Nooksack_Microclimate_Network_ids__0.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: cuahsicuahsihisclarksburgspids0
+  name: cuahsi_cuahsi_his_clarksburg_sp_ids__0
   pid: https://gleaner.io/genid/geoconnex
-  propername: cuahsicuahsihisclarksburgspids0
+  propername: cuahsi_cuahsi_his_clarksburg_sp_ids__0
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/CUAHSI/CUAHSI_HIS_Clarksburg_SP_ids__0.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: cuahsicuahsihisgleondorsetids0
+  name: cuahsi_cuahsi_his_gleon_dorset_ids__0
   pid: https://gleaner.io/genid/geoconnex
-  propername: cuahsicuahsihisgleondorsetids0
+  propername: cuahsi_cuahsi_his_gleon_dorset_ids__0
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/CUAHSI/CUAHSI_HIS_GLEON_Dorset_ids__0.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: cuahsicuahsihismobilecrowdhydrologyids0
+  name: cuahsi_cuahsi_his_mobilecrowdhydrology_ids__0
   pid: https://gleaner.io/genid/geoconnex
-  propername: cuahsicuahsihismobilecrowdhydrologyids0
+  propername: cuahsi_cuahsi_his_mobilecrowdhydrology_ids__0
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/CUAHSI/CUAHSI_HIS_MobileCrowdHydrology_ids__0.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: cuahsicuahsihisczoboulderids0
+  name: cuahsi_cuahsi_his_czo_boulder_ids__0
   pid: https://gleaner.io/genid/geoconnex
-  propername: cuahsicuahsihisczoboulderids0
+  propername: cuahsi_cuahsi_his_czo_boulder_ids__0
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/CUAHSI/CUAHSI_HIS_czo_boulder_ids__0.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: cuahsicuahsihislaselvastreamdischargeids0
+  name: cuahsi_cuahsi_his_laselvastreamdischarge_ids__0
   pid: https://gleaner.io/genid/geoconnex
-  propername: cuahsicuahsihislaselvastreamdischargeids0
+  propername: cuahsi_cuahsi_his_laselvastreamdischarge_ids__0
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/CUAHSI/CUAHSI_HIS_LaSelvastreamdischarge_ids__0.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: cuahsicuahsihishydrodataczdids0
+  name: cuahsi_cuahsi_his_hydrodataczd_ids__0
   pid: https://gleaner.io/genid/geoconnex
-  propername: cuahsicuahsihishydrodataczdids0
+  propername: cuahsi_cuahsi_his_hydrodataczd_ids__0
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/CUAHSI/CUAHSI_HIS_HYDRODATACZ-D_ids__0.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: cuahsicuahsihisczoarizids0
+  name: cuahsi_cuahsi_his_czo_ariz_ids__0
   pid: https://gleaner.io/genid/geoconnex
-  propername: cuahsicuahsihisczoarizids0
+  propername: cuahsi_cuahsi_his_czo_ariz_ids__0
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/CUAHSI/CUAHSI_HIS_czo_ariz_ids__0.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: cuahsicuahsihisczoluquilloids0
+  name: cuahsi_cuahsi_his_czo_luquillo_ids__0
   pid: https://gleaner.io/genid/geoconnex
-  propername: cuahsicuahsihisczoluquilloids0
+  propername: cuahsi_cuahsi_his_czo_luquillo_ids__0
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/CUAHSI/CUAHSI_HIS_czo_luquillo_ids__0.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: cuahsicuahsihisgleonauburnids0
+  name: cuahsi_cuahsi_his_gleon_auburn_ids__0
   pid: https://gleaner.io/genid/geoconnex
-  propername: cuahsicuahsihisgleonauburnids0
+  propername: cuahsi_cuahsi_his_gleon_auburn_ids__0
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/CUAHSI/CUAHSI_HIS_GLEON_Auburn_ids__0.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: cuahsicuahsihisumbcwqids0
+  name: cuahsi_cuahsi_his_umbcwq_ids__0
   pid: https://gleaner.io/genid/geoconnex
-  propername: cuahsicuahsihisumbcwqids0
+  propername: cuahsi_cuahsi_his_umbcwq_ids__0
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/CUAHSI/CUAHSI_HIS_UMBCWQ_ids__0.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: cuahsicuahsihisglobalriversobservatoryids0
+  name: cuahsi_cuahsi_his_globalriversobservatory_ids__0
   pid: https://gleaner.io/genid/geoconnex
-  propername: cuahsicuahsihisglobalriversobservatoryids0
+  propername: cuahsi_cuahsi_his_globalriversobservatory_ids__0
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/CUAHSI/CUAHSI_HIS_GlobalRiversObservatory_ids__0.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: cuahsicuahsihisgleonlakeannieids0
+  name: cuahsi_cuahsi_his_gleon_lakeannie_ids__0
   pid: https://gleaner.io/genid/geoconnex
-  propername: cuahsicuahsihisgleonlakeannieids0
+  propername: cuahsi_cuahsi_his_gleon_lakeannie_ids__0
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/CUAHSI/CUAHSI_HIS_GLEON_LakeAnnie_ids__0.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: cuahsicuahsihiscrwaids0
+  name: cuahsi_cuahsi_his_crwa_ids__0
   pid: https://gleaner.io/genid/geoconnex
-  propername: cuahsicuahsihiscrwaids0
+  propername: cuahsi_cuahsi_his_crwa_ids__0
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/CUAHSI/CUAHSI_HIS_CRWA_ids__0.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: cuahsicuahsihisscanids0
+  name: cuahsi_cuahsi_his_scan_ids__0
   pid: https://gleaner.io/genid/geoconnex
-  propername: cuahsicuahsihisscanids0
+  propername: cuahsi_cuahsi_his_scan_ids__0
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/CUAHSI/CUAHSI_HIS_SCAN_ids__0.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: cuahsicuahsihisghcnids0
+  name: cuahsi_cuahsi_his_ghcn_ids__0
   pid: https://gleaner.io/genid/geoconnex
-  propername: cuahsicuahsihisghcnids0
+  propername: cuahsi_cuahsi_his_ghcn_ids__0
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/CUAHSI/CUAHSI_HIS_GHCN_ids__0.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: cuahsicuahsihispanolaodmids0
+  name: cuahsi_cuahsi_his_panola_odm_ids__0
   pid: https://gleaner.io/genid/geoconnex
-  propername: cuahsicuahsihispanolaodmids0
+  propername: cuahsi_cuahsi_his_panola_odm_ids__0
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/CUAHSI/CUAHSI_HIS_Panola_ODM_ids__0.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: cuahsicuahsihisneonids0
+  name: cuahsi_cuahsi_his_neon_ids__0
   pid: https://gleaner.io/genid/geoconnex
-  propername: cuahsicuahsihisneonids0
+  propername: cuahsi_cuahsi_his_neon_ids__0
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/CUAHSI/CUAHSI_HIS_NEON_ids__0.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: cuahsicuahsihisredbuttecreekgamutids0
+  name: cuahsi_cuahsi_his_red_butte_creek_gamut_ids__0
   pid: https://gleaner.io/genid/geoconnex
-  propername: cuahsicuahsihisredbuttecreekgamutids0
+  propername: cuahsi_cuahsi_his_red_butte_creek_gamut_ids__0
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/CUAHSI/CUAHSI_HIS_Red_Butte_Creek_GAMUT_ids__0.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: cuahsicuahsihismwdisids0
+  name: cuahsi_cuahsi_his_mwdis_ids__0
   pid: https://gleaner.io/genid/geoconnex
-  propername: cuahsicuahsihismwdisids0
+  propername: cuahsi_cuahsi_his_mwdis_ids__0
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/CUAHSI/CUAHSI_HIS_MWDIS_ids__0.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: cuahsicuahsihislittlebearriverids0
+  name: cuahsi_cuahsi_his_littlebearriver_ids__0
   pid: https://gleaner.io/genid/geoconnex
-  propername: cuahsicuahsihislittlebearriverids0
+  propername: cuahsi_cuahsi_his_littlebearriver_ids__0
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/CUAHSI/CUAHSI_HIS_LittleBearRiver_ids__0.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: cuahsicuahsihisfrcwqmids0
+  name: cuahsi_cuahsi_his_frc_wqm_ids__0
   pid: https://gleaner.io/genid/geoconnex
-  propername: cuahsicuahsihisfrcwqmids0
+  propername: cuahsi_cuahsi_his_frc_wqm_ids__0
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/CUAHSI/CUAHSI_HIS_FRC_WQM_ids__0.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: cuahsicuahsihisfcelterids0
+  name: cuahsi_cuahsi_his_fcelter_ids__0
   pid: https://gleaner.io/genid/geoconnex
-  propername: cuahsicuahsihisfcelterids0
+  propername: cuahsi_cuahsi_his_fcelter_ids__0
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/CUAHSI/CUAHSI_HIS_FCELTER_ids__0.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: cuahsicuahsihisczocatalinaids0
+  name: cuahsi_cuahsi_his_czo_catalina_ids__0
   pid: https://gleaner.io/genid/geoconnex
-  propername: cuahsicuahsihisczocatalinaids0
+  propername: cuahsi_cuahsi_his_czo_catalina_ids__0
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/CUAHSI/CUAHSI_HIS_czo_catalina_ids__0.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: cuahsicuahsihiskansasweatherdataids0
+  name: cuahsi_cuahsi_his_kansas_weather_data_ids__0
   pid: https://gleaner.io/genid/geoconnex
-  propername: cuahsicuahsihiskansasweatherdataids0
+  propername: cuahsi_cuahsi_his_kansas_weather_data_ids__0
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/CUAHSI/CUAHSI_HIS_Kansas_Weather_Data_ids__0.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: cuahsicuahsihisfarmrwaids0
+  name: cuahsi_cuahsi_his_farmrwa_ids__0
   pid: https://gleaner.io/genid/geoconnex
-  propername: cuahsicuahsihisfarmrwaids0
+  propername: cuahsi_cuahsi_his_farmrwa_ids__0
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/CUAHSI/CUAHSI_HIS_FarmRWA_ids__0.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: cuahsicuahsihisirwaids0
+  name: cuahsi_cuahsi_his_irwa_ids__0
   pid: https://gleaner.io/genid/geoconnex
-  propername: cuahsicuahsihisirwaids0
+  propername: cuahsi_cuahsi_his_irwa_ids__0
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/CUAHSI/CUAHSI_HIS_IRWA_ids__0.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: cuahsicuahsihiscuisoids0
+  name: cuahsi_cuahsi_his_cuiso_ids__0
   pid: https://gleaner.io/genid/geoconnex
-  propername: cuahsicuahsihiscuisoids0
+  propername: cuahsi_cuahsi_his_cuiso_ids__0
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/CUAHSI/CUAHSI_HIS_CUISO_ids__0.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: cuahsicuahsihisdrwiids0
+  name: cuahsi_cuahsi_his_drwi_ids__0
   pid: https://gleaner.io/genid/geoconnex
-  propername: cuahsicuahsihisdrwiids0
+  propername: cuahsi_cuahsi_his_drwi_ids__0
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/CUAHSI/CUAHSI_HIS_DRWI_ids__0.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: cuahsicuahsihisluwlids0
+  name: cuahsi_cuahsi_his_luwl_ids__0
   pid: https://gleaner.io/genid/geoconnex
-  propername: cuahsicuahsihisluwlids0
+  propername: cuahsi_cuahsi_his_luwl_ids__0
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/CUAHSI/CUAHSI_HIS_LUWL_ids__0.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: cuahsicuahsihisunhsnowids0
+  name: cuahsi_cuahsi_his_unh_snow_ids__0
   pid: https://gleaner.io/genid/geoconnex
-  propername: cuahsicuahsihisunhsnowids0
+  propername: cuahsi_cuahsi_his_unh_snow_ids__0
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/CUAHSI/CUAHSI_HIS_UNH_Snow_ids__0.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: cuahsicuahsihistrwaids0
+  name: cuahsi_cuahsi_his_trwa_ids__0
   pid: https://gleaner.io/genid/geoconnex
-  propername: cuahsicuahsihistrwaids0
+  propername: cuahsi_cuahsi_his_trwa_ids__0
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/CUAHSI/CUAHSI_HIS_TRWA_ids__0.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: cuahsicuahsihisnevcanids0
+  name: cuahsi_cuahsi_his_nevcan_ids__0
   pid: https://gleaner.io/genid/geoconnex
-  propername: cuahsicuahsihisnevcanids0
+  propername: cuahsi_cuahsi_his_nevcan_ids__0
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/CUAHSI/CUAHSI_HIS_NevCAN_ids__0.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: cuahsicuahsihismaaeriids0
+  name: cuahsi_cuahsi_his_maaeri_ids__0
   pid: https://gleaner.io/genid/geoconnex
-  propername: cuahsicuahsihismaaeriids0
+  propername: cuahsi_cuahsi_his_maaeri_ids__0
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/CUAHSI/CUAHSI_HIS_MAAERI_ids__0.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: cuahsicuahsihisbrazilucbids0
+  name: cuahsi_cuahsi_his_brazil_ucb_ids__0
   pid: https://gleaner.io/genid/geoconnex
-  propername: cuahsicuahsihisbrazilucbids0
+  propername: cuahsi_cuahsi_his_brazil_ucb_ids__0
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/CUAHSI/CUAHSI_HIS_Brazil_UCB_ids__0.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: chyldchyldpilotids0
+  name: chyld_chyldpilot_ids__0
   pid: https://gleaner.io/genid/geoconnex
-  propername: chyldchyldpilotids0
+  propername: chyld_chyldpilot_ids__0
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/CHyLD/chyld-pilot_ids__0.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: nmwdistnmwdist0
+  name: nmwdi_st_nmwdist__0
   pid: https://gleaner.io/genid/geoconnex
-  propername: nmwdistnmwdist0
+  propername: nmwdi_st_nmwdist__0
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/nmwdi/st/nmwdi-st__0.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: nmwdiosenmwdiose0
+  name: nmwdi_ose_nmwdiose__0
   pid: https://gleaner.io/genid/geoconnex
-  propername: nmwdiosenmwdiose0
+  propername: nmwdi_ose_nmwdiose__0
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/nmwdi/ose/nmwdi-ose__0.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: nmwdiosenmwdiose3
+  name: nmwdi_ose_nmwdiose__3
   pid: https://gleaner.io/genid/geoconnex
-  propername: nmwdiosenmwdiose3
+  propername: nmwdi_ose_nmwdiose__3
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/nmwdi/ose/nmwdi-ose__3.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: nmwdiosenmwdiose2
+  name: nmwdi_ose_nmwdiose__2
   pid: https://gleaner.io/genid/geoconnex
-  propername: nmwdiosenmwdiose2
+  propername: nmwdi_ose_nmwdiose__2
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/nmwdi/ose/nmwdi-ose__2.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: nmwdiosenmwdiose4
+  name: nmwdi_ose_nmwdiose__4
   pid: https://gleaner.io/genid/geoconnex
-  propername: nmwdiosenmwdiose4
+  propername: nmwdi_ose_nmwdiose__4
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/nmwdi/ose/nmwdi-ose__4.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: nmwdiosenmwdiose1
+  name: nmwdi_ose_nmwdiose__1
   pid: https://gleaner.io/genid/geoconnex
-  propername: nmwdiosenmwdiose1
+  propername: nmwdi_ose_nmwdiose__1
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/nmwdi/ose/nmwdi-ose__1.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: nhdplusv2huc12pphuc12pp1
+  name: nhdplusv2_huc12pp_huc12pp__1
   pid: https://gleaner.io/genid/geoconnex
-  propername: nhdplusv2huc12pphuc12pp1
+  propername: nhdplusv2_huc12pp_huc12pp__1
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/nhdplusv2/huc12pp/huc12pp__1.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: nhdplusv2huc12pphuc12pp0
+  name: nhdplusv2_huc12pp_huc12pp__0
   pid: https://gleaner.io/genid/geoconnex
-  propername: nhdplusv2huc12pphuc12pp0
+  propername: nhdplusv2_huc12pp_huc12pp__0
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/nhdplusv2/huc12pp/huc12pp__0.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: wadewade41
+  name: wade_wade__41
   pid: https://gleaner.io/genid/geoconnex
-  propername: wadewade41
+  propername: wade_wade__41
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/wade/wade__41.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: wadewade0
+  name: wade_wade__0
   pid: https://gleaner.io/genid/geoconnex
-  propername: wadewade0
+  propername: wade_wade__0
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/wade/wade__0.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: wadewade13
+  name: wade_wade__13
   pid: https://gleaner.io/genid/geoconnex
-  propername: wadewade13
+  propername: wade_wade__13
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/wade/wade__13.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: wadewade7
+  name: wade_wade__7
   pid: https://gleaner.io/genid/geoconnex
-  propername: wadewade7
+  propername: wade_wade__7
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/wade/wade__7.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: wadewade17
+  name: wade_wade__17
   pid: https://gleaner.io/genid/geoconnex
-  propername: wadewade17
+  propername: wade_wade__17
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/wade/wade__17.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: wadewade32
+  name: wade_wade__32
   pid: https://gleaner.io/genid/geoconnex
-  propername: wadewade32
+  propername: wade_wade__32
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/wade/wade__32.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: wadewade15
+  name: wade_wade__15
   pid: https://gleaner.io/genid/geoconnex
-  propername: wadewade15
+  propername: wade_wade__15
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/wade/wade__15.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: wadewade16
+  name: wade_wade__16
   pid: https://gleaner.io/genid/geoconnex
-  propername: wadewade16
+  propername: wade_wade__16
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/wade/wade__16.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: wadewade43
+  name: wade_wade__43
   pid: https://gleaner.io/genid/geoconnex
-  propername: wadewade43
+  propername: wade_wade__43
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/wade/wade__43.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: wadewade44
+  name: wade_wade__44
   pid: https://gleaner.io/genid/geoconnex
-  propername: wadewade44
+  propername: wade_wade__44
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/wade/wade__44.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: wadewade48
+  name: wade_wade__48
   pid: https://gleaner.io/genid/geoconnex
-  propername: wadewade48
+  propername: wade_wade__48
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/wade/wade__48.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: wadewade25
+  name: wade_wade__25
   pid: https://gleaner.io/genid/geoconnex
-  propername: wadewade25
+  propername: wade_wade__25
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/wade/wade__25.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: wadewade8
+  name: wade_wade__8
   pid: https://gleaner.io/genid/geoconnex
-  propername: wadewade8
+  propername: wade_wade__8
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/wade/wade__8.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: wadewade42
+  name: wade_wade__42
   pid: https://gleaner.io/genid/geoconnex
-  propername: wadewade42
+  propername: wade_wade__42
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/wade/wade__42.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: wadewade33
+  name: wade_wade__33
   pid: https://gleaner.io/genid/geoconnex
-  propername: wadewade33
+  propername: wade_wade__33
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/wade/wade__33.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: wadewade21
+  name: wade_wade__21
   pid: https://gleaner.io/genid/geoconnex
-  propername: wadewade21
+  propername: wade_wade__21
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/wade/wade__21.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: wadewade35
+  name: wade_wade__35
   pid: https://gleaner.io/genid/geoconnex
-  propername: wadewade35
+  propername: wade_wade__35
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/wade/wade__35.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: wadewade40
+  name: wade_wade__40
   pid: https://gleaner.io/genid/geoconnex
-  propername: wadewade40
+  propername: wade_wade__40
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/wade/wade__40.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: wadewade19
+  name: wade_wade__19
   pid: https://gleaner.io/genid/geoconnex
-  propername: wadewade19
+  propername: wade_wade__19
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/wade/wade__19.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: wadewade47
+  name: wade_wade__47
   pid: https://gleaner.io/genid/geoconnex
-  propername: wadewade47
+  propername: wade_wade__47
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/wade/wade__47.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: wadewade24
+  name: wade_wade__24
   pid: https://gleaner.io/genid/geoconnex
-  propername: wadewade24
+  propername: wade_wade__24
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/wade/wade__24.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: wadewade22
+  name: wade_wade__22
   pid: https://gleaner.io/genid/geoconnex
-  propername: wadewade22
+  propername: wade_wade__22
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/wade/wade__22.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: wadewade26
+  name: wade_wade__26
   pid: https://gleaner.io/genid/geoconnex
-  propername: wadewade26
+  propername: wade_wade__26
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/wade/wade__26.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: wadewade20
+  name: wade_wade__20
   pid: https://gleaner.io/genid/geoconnex
-  propername: wadewade20
+  propername: wade_wade__20
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/wade/wade__20.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: wadewade30
+  name: wade_wade__30
   pid: https://gleaner.io/genid/geoconnex
-  propername: wadewade30
+  propername: wade_wade__30
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/wade/wade__30.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: wadewade23
+  name: wade_wade__23
   pid: https://gleaner.io/genid/geoconnex
-  propername: wadewade23
+  propername: wade_wade__23
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/wade/wade__23.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: wadewade46
+  name: wade_wade__46
   pid: https://gleaner.io/genid/geoconnex
-  propername: wadewade46
+  propername: wade_wade__46
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/wade/wade__46.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: wadewade36
+  name: wade_wade__36
   pid: https://gleaner.io/genid/geoconnex
-  propername: wadewade36
+  propername: wade_wade__36
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/wade/wade__36.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: wadewade1
+  name: wade_wade__1
   pid: https://gleaner.io/genid/geoconnex
-  propername: wadewade1
+  propername: wade_wade__1
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/wade/wade__1.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: wadewade31
+  name: wade_wade__31
   pid: https://gleaner.io/genid/geoconnex
-  propername: wadewade31
+  propername: wade_wade__31
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/wade/wade__31.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: wadewade12
+  name: wade_wade__12
   pid: https://gleaner.io/genid/geoconnex
-  propername: wadewade12
+  propername: wade_wade__12
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/wade/wade__12.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: wadewade39
+  name: wade_wade__39
   pid: https://gleaner.io/genid/geoconnex
-  propername: wadewade39
+  propername: wade_wade__39
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/wade/wade__39.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: wadewade37
+  name: wade_wade__37
   pid: https://gleaner.io/genid/geoconnex
-  propername: wadewade37
+  propername: wade_wade__37
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/wade/wade__37.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: wadewade10
+  name: wade_wade__10
   pid: https://gleaner.io/genid/geoconnex
-  propername: wadewade10
+  propername: wade_wade__10
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/wade/wade__10.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: wadewade27
+  name: wade_wade__27
   pid: https://gleaner.io/genid/geoconnex
-  propername: wadewade27
+  propername: wade_wade__27
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/wade/wade__27.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: wadewade11
+  name: wade_wade__11
   pid: https://gleaner.io/genid/geoconnex
-  propername: wadewade11
+  propername: wade_wade__11
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/wade/wade__11.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: wadewade29
+  name: wade_wade__29
   pid: https://gleaner.io/genid/geoconnex
-  propername: wadewade29
+  propername: wade_wade__29
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/wade/wade__29.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: wadewade5
+  name: wade_wade__5
   pid: https://gleaner.io/genid/geoconnex
-  propername: wadewade5
+  propername: wade_wade__5
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/wade/wade__5.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: wadewade14
+  name: wade_wade__14
   pid: https://gleaner.io/genid/geoconnex
-  propername: wadewade14
+  propername: wade_wade__14
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/wade/wade__14.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: wadewade9
+  name: wade_wade__9
   pid: https://gleaner.io/genid/geoconnex
-  propername: wadewade9
+  propername: wade_wade__9
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/wade/wade__9.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: wadewade4
+  name: wade_wade__4
   pid: https://gleaner.io/genid/geoconnex
-  propername: wadewade4
+  propername: wade_wade__4
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/wade/wade__4.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: wadewade49
+  name: wade_wade__49
   pid: https://gleaner.io/genid/geoconnex
-  propername: wadewade49
+  propername: wade_wade__49
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/wade/wade__49.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: wadewade18
+  name: wade_wade__18
   pid: https://gleaner.io/genid/geoconnex
-  propername: wadewade18
+  propername: wade_wade__18
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/wade/wade__18.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: wadewade28
+  name: wade_wade__28
   pid: https://gleaner.io/genid/geoconnex
-  propername: wadewade28
+  propername: wade_wade__28
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/wade/wade__28.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: wadewade6
+  name: wade_wade__6
   pid: https://gleaner.io/genid/geoconnex
-  propername: wadewade6
+  propername: wade_wade__6
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/wade/wade__6.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: wadewade45
+  name: wade_wade__45
   pid: https://gleaner.io/genid/geoconnex
-  propername: wadewade45
+  propername: wade_wade__45
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/wade/wade__45.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: wadewade34
+  name: wade_wade__34
   pid: https://gleaner.io/genid/geoconnex
-  propername: wadewade34
+  propername: wade_wade__34
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/wade/wade__34.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: wadewade38
+  name: wade_wade__38
   pid: https://gleaner.io/genid/geoconnex
-  propername: wadewade38
+  propername: wade_wade__38
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/wade/wade__38.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: wadewade3
+  name: wade_wade__3
   pid: https://gleaner.io/genid/geoconnex
-  propername: wadewade3
+  propername: wade_wade__3
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/wade/wade__3.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: wadewade2
+  name: wade_wade__2
   pid: https://gleaner.io/genid/geoconnex
-  propername: wadewade2
+  propername: wade_wade__2
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/wade/wade__2.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: epahmwhmw0
+  name: epa_hmw_hmw__0
   pid: https://gleaner.io/genid/geoconnex
-  propername: epahmwhmw0
+  propername: epa_hmw_hmw__0
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/epa/hmw/hmw__0.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: epahmwhmw1
+  name: epa_hmw_hmw__1
   pid: https://gleaner.io/genid/geoconnex
-  propername: epahmwhmw1
+  propername: epa_hmw_hmw__1
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/epa/hmw/hmw__1.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: selfieselfieids0
+  name: selfie_selfie_ids__0
   pid: https://gleaner.io/genid/geoconnex
-  propername: selfieselfieids0
+  propername: selfie_selfie_ids__0
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/SELFIE/SELFIE_ids__0.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: usgshydrologicunit0
+  name: usgs_hydrologicunit__0
   pid: https://gleaner.io/genid/geoconnex
-  propername: usgshydrologicunit0
+  propername: usgs_hydrologicunit__0
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/usgs/hydrologic-unit__0.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: usgsgfv11poisgfv11pois1
+  name: usgs_gfv11_pois_gfv11_pois__1
   pid: https://gleaner.io/genid/geoconnex
-  propername: usgsgfv11poisgfv11pois1
+  propername: usgs_gfv11_pois_gfv11_pois__1
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/usgs/gfv11_pois/gfv11_pois__1.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: usgsgfv11poisgfv11pois0
+  name: usgs_gfv11_pois_gfv11_pois__0
   pid: https://gleaner.io/genid/geoconnex
-  propername: usgsgfv11poisgfv11pois0
+  propername: usgs_gfv11_pois_gfv11_pois__0
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/usgs/gfv11_pois/gfv11_pois__0.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: usgsmonitoringlocationnwissitenwissite2
+  name: usgs_monitoringlocation_nwissite_nwissite__2
   pid: https://gleaner.io/genid/geoconnex
-  propername: usgsmonitoringlocationnwissitenwissite2
+  propername: usgs_monitoringlocation_nwissite_nwissite__2
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/usgs/monitoring-location/nwissite/nwissite__2.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: usgsmonitoringlocationnwissitenwissite3
+  name: usgs_monitoringlocation_nwissite_nwissite__3
   pid: https://gleaner.io/genid/geoconnex
-  propername: usgsmonitoringlocationnwissitenwissite3
+  propername: usgs_monitoringlocation_nwissite_nwissite__3
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/usgs/monitoring-location/nwissite/nwissite__3.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: usgsmonitoringlocationnwissitenwissite1
+  name: usgs_monitoringlocation_nwissite_nwissite__1
   pid: https://gleaner.io/genid/geoconnex
-  propername: usgsmonitoringlocationnwissitenwissite1
+  propername: usgs_monitoringlocation_nwissite_nwissite__1
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/usgs/monitoring-location/nwissite/nwissite__1.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: usgsmonitoringlocationnwissitenwissite0
+  name: usgs_monitoringlocation_nwissite_nwissite__0
   pid: https://gleaner.io/genid/geoconnex
-  propername: usgsmonitoringlocationnwissitenwissite0
+  propername: usgs_monitoringlocation_nwissite_nwissite__0
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/usgs/monitoring-location/nwissite/nwissite__0.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: usgsmonitoringlocationnwisgwnwisgw10
+  name: usgs_monitoringlocation_nwisgw_nwisgw__10
   pid: https://gleaner.io/genid/geoconnex
-  propername: usgsmonitoringlocationnwisgwnwisgw10
+  propername: usgs_monitoringlocation_nwisgw_nwisgw__10
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/usgs/monitoring-location/nwisgw/nwisgw__10.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: usgsmonitoringlocationnwisgwnwisgw23
+  name: usgs_monitoringlocation_nwisgw_nwisgw__23
   pid: https://gleaner.io/genid/geoconnex
-  propername: usgsmonitoringlocationnwisgwnwisgw23
+  propername: usgs_monitoringlocation_nwisgw_nwisgw__23
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/usgs/monitoring-location/nwisgw/nwisgw__23.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: usgsmonitoringlocationnwisgwnwisgw21
+  name: usgs_monitoringlocation_nwisgw_nwisgw__21
   pid: https://gleaner.io/genid/geoconnex
-  propername: usgsmonitoringlocationnwisgwnwisgw21
+  propername: usgs_monitoringlocation_nwisgw_nwisgw__21
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/usgs/monitoring-location/nwisgw/nwisgw__21.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: usgsmonitoringlocationnwisgwnwisgw9
+  name: usgs_monitoringlocation_nwisgw_nwisgw__9
   pid: https://gleaner.io/genid/geoconnex
-  propername: usgsmonitoringlocationnwisgwnwisgw9
+  propername: usgs_monitoringlocation_nwisgw_nwisgw__9
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/usgs/monitoring-location/nwisgw/nwisgw__9.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: usgsmonitoringlocationnwisgwnwisgw17
+  name: usgs_monitoringlocation_nwisgw_nwisgw__17
   pid: https://gleaner.io/genid/geoconnex
-  propername: usgsmonitoringlocationnwisgwnwisgw17
+  propername: usgs_monitoringlocation_nwisgw_nwisgw__17
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/usgs/monitoring-location/nwisgw/nwisgw__17.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: usgsmonitoringlocationnwisgwnwisgw16
+  name: usgs_monitoringlocation_nwisgw_nwisgw__16
   pid: https://gleaner.io/genid/geoconnex
-  propername: usgsmonitoringlocationnwisgwnwisgw16
+  propername: usgs_monitoringlocation_nwisgw_nwisgw__16
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/usgs/monitoring-location/nwisgw/nwisgw__16.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: usgsmonitoringlocationnwisgwnwisgw6
+  name: usgs_monitoringlocation_nwisgw_nwisgw__6
   pid: https://gleaner.io/genid/geoconnex
-  propername: usgsmonitoringlocationnwisgwnwisgw6
+  propername: usgs_monitoringlocation_nwisgw_nwisgw__6
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/usgs/monitoring-location/nwisgw/nwisgw__6.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: usgsmonitoringlocationnwisgwnwisgw2
+  name: usgs_monitoringlocation_nwisgw_nwisgw__2
   pid: https://gleaner.io/genid/geoconnex
-  propername: usgsmonitoringlocationnwisgwnwisgw2
+  propername: usgs_monitoringlocation_nwisgw_nwisgw__2
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/usgs/monitoring-location/nwisgw/nwisgw__2.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: usgsmonitoringlocationnwisgwnwisgw28
+  name: usgs_monitoringlocation_nwisgw_nwisgw__28
   pid: https://gleaner.io/genid/geoconnex
-  propername: usgsmonitoringlocationnwisgwnwisgw28
+  propername: usgs_monitoringlocation_nwisgw_nwisgw__28
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/usgs/monitoring-location/nwisgw/nwisgw__28.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: usgsmonitoringlocationnwisgwnwisgw4
+  name: usgs_monitoringlocation_nwisgw_nwisgw__4
   pid: https://gleaner.io/genid/geoconnex
-  propername: usgsmonitoringlocationnwisgwnwisgw4
+  propername: usgs_monitoringlocation_nwisgw_nwisgw__4
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/usgs/monitoring-location/nwisgw/nwisgw__4.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: usgsmonitoringlocationnwisgwnwisgw26
+  name: usgs_monitoringlocation_nwisgw_nwisgw__26
   pid: https://gleaner.io/genid/geoconnex
-  propername: usgsmonitoringlocationnwisgwnwisgw26
+  propername: usgs_monitoringlocation_nwisgw_nwisgw__26
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/usgs/monitoring-location/nwisgw/nwisgw__26.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: usgsmonitoringlocationnwisgwnwisgw13
+  name: usgs_monitoringlocation_nwisgw_nwisgw__13
   pid: https://gleaner.io/genid/geoconnex
-  propername: usgsmonitoringlocationnwisgwnwisgw13
+  propername: usgs_monitoringlocation_nwisgw_nwisgw__13
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/usgs/monitoring-location/nwisgw/nwisgw__13.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: usgsmonitoringlocationnwisgwnwisgw11
+  name: usgs_monitoringlocation_nwisgw_nwisgw__11
   pid: https://gleaner.io/genid/geoconnex
-  propername: usgsmonitoringlocationnwisgwnwisgw11
+  propername: usgs_monitoringlocation_nwisgw_nwisgw__11
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/usgs/monitoring-location/nwisgw/nwisgw__11.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: usgsmonitoringlocationnwisgwnwisgw14
+  name: usgs_monitoringlocation_nwisgw_nwisgw__14
   pid: https://gleaner.io/genid/geoconnex
-  propername: usgsmonitoringlocationnwisgwnwisgw14
+  propername: usgs_monitoringlocation_nwisgw_nwisgw__14
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/usgs/monitoring-location/nwisgw/nwisgw__14.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: usgsmonitoringlocationnwisgwnwisgw5
+  name: usgs_monitoringlocation_nwisgw_nwisgw__5
   pid: https://gleaner.io/genid/geoconnex
-  propername: usgsmonitoringlocationnwisgwnwisgw5
+  propername: usgs_monitoringlocation_nwisgw_nwisgw__5
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/usgs/monitoring-location/nwisgw/nwisgw__5.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: usgsmonitoringlocationnwisgwnwisgw19
+  name: usgs_monitoringlocation_nwisgw_nwisgw__19
   pid: https://gleaner.io/genid/geoconnex
-  propername: usgsmonitoringlocationnwisgwnwisgw19
+  propername: usgs_monitoringlocation_nwisgw_nwisgw__19
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/usgs/monitoring-location/nwisgw/nwisgw__19.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: usgsmonitoringlocationnwisgwnwisgw8
+  name: usgs_monitoringlocation_nwisgw_nwisgw__8
   pid: https://gleaner.io/genid/geoconnex
-  propername: usgsmonitoringlocationnwisgwnwisgw8
+  propername: usgs_monitoringlocation_nwisgw_nwisgw__8
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/usgs/monitoring-location/nwisgw/nwisgw__8.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: usgsmonitoringlocationnwisgwnwisgw20
+  name: usgs_monitoringlocation_nwisgw_nwisgw__20
   pid: https://gleaner.io/genid/geoconnex
-  propername: usgsmonitoringlocationnwisgwnwisgw20
+  propername: usgs_monitoringlocation_nwisgw_nwisgw__20
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/usgs/monitoring-location/nwisgw/nwisgw__20.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: usgsmonitoringlocationnwisgwnwisgw1
+  name: usgs_monitoringlocation_nwisgw_nwisgw__1
   pid: https://gleaner.io/genid/geoconnex
-  propername: usgsmonitoringlocationnwisgwnwisgw1
+  propername: usgs_monitoringlocation_nwisgw_nwisgw__1
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/usgs/monitoring-location/nwisgw/nwisgw__1.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: usgsmonitoringlocationnwisgwnwisgw0
+  name: usgs_monitoringlocation_nwisgw_nwisgw__0
   pid: https://gleaner.io/genid/geoconnex
-  propername: usgsmonitoringlocationnwisgwnwisgw0
+  propername: usgs_monitoringlocation_nwisgw_nwisgw__0
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/usgs/monitoring-location/nwisgw/nwisgw__0.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: usgsmonitoringlocationnwisgwnwisgw18
+  name: usgs_monitoringlocation_nwisgw_nwisgw__18
   pid: https://gleaner.io/genid/geoconnex
-  propername: usgsmonitoringlocationnwisgwnwisgw18
+  propername: usgs_monitoringlocation_nwisgw_nwisgw__18
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/usgs/monitoring-location/nwisgw/nwisgw__18.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: usgsmonitoringlocationnwisgwnwisgw27
+  name: usgs_monitoringlocation_nwisgw_nwisgw__27
   pid: https://gleaner.io/genid/geoconnex
-  propername: usgsmonitoringlocationnwisgwnwisgw27
+  propername: usgs_monitoringlocation_nwisgw_nwisgw__27
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/usgs/monitoring-location/nwisgw/nwisgw__27.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: usgsmonitoringlocationnwisgwnwisgw3
+  name: usgs_monitoringlocation_nwisgw_nwisgw__3
   pid: https://gleaner.io/genid/geoconnex
-  propername: usgsmonitoringlocationnwisgwnwisgw3
+  propername: usgs_monitoringlocation_nwisgw_nwisgw__3
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/usgs/monitoring-location/nwisgw/nwisgw__3.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: usgsmonitoringlocationnwisgwnwisgw24
+  name: usgs_monitoringlocation_nwisgw_nwisgw__24
   pid: https://gleaner.io/genid/geoconnex
-  propername: usgsmonitoringlocationnwisgwnwisgw24
+  propername: usgs_monitoringlocation_nwisgw_nwisgw__24
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/usgs/monitoring-location/nwisgw/nwisgw__24.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: usgsmonitoringlocationnwisgwnwisgw22
+  name: usgs_monitoringlocation_nwisgw_nwisgw__22
   pid: https://gleaner.io/genid/geoconnex
-  propername: usgsmonitoringlocationnwisgwnwisgw22
+  propername: usgs_monitoringlocation_nwisgw_nwisgw__22
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/usgs/monitoring-location/nwisgw/nwisgw__22.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: usgsmonitoringlocationnwisgwnwisgw12
+  name: usgs_monitoringlocation_nwisgw_nwisgw__12
   pid: https://gleaner.io/genid/geoconnex
-  propername: usgsmonitoringlocationnwisgwnwisgw12
+  propername: usgs_monitoringlocation_nwisgw_nwisgw__12
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/usgs/monitoring-location/nwisgw/nwisgw__12.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: usgsmonitoringlocationnwisgwnwisgw7
+  name: usgs_monitoringlocation_nwisgw_nwisgw__7
   pid: https://gleaner.io/genid/geoconnex
-  propername: usgsmonitoringlocationnwisgwnwisgw7
+  propername: usgs_monitoringlocation_nwisgw_nwisgw__7
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/usgs/monitoring-location/nwisgw/nwisgw__7.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: usgsmonitoringlocationnwisgwnwisgw25
+  name: usgs_monitoringlocation_nwisgw_nwisgw__25
   pid: https://gleaner.io/genid/geoconnex
-  propername: usgsmonitoringlocationnwisgwnwisgw25
+  propername: usgs_monitoringlocation_nwisgw_nwisgw__25
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/usgs/monitoring-location/nwisgw/nwisgw__25.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: usgsmonitoringlocationnwisgwnwisgw15
+  name: usgs_monitoringlocation_nwisgw_nwisgw__15
   pid: https://gleaner.io/genid/geoconnex
-  propername: usgsmonitoringlocationnwisgwnwisgw15
+  propername: usgs_monitoringlocation_nwisgw_nwisgw__15
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/usgs/monitoring-location/nwisgw/nwisgw__15.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: iowdemo0
+  name: iow_demo__0
   pid: https://gleaner.io/genid/geoconnex
-  propername: iowdemo0
+  propername: iow_demo__0
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/iow/demo__0.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: iowlinks0
+  name: iow_links__0
   pid: https://gleaner.io/genid/geoconnex
-  propername: iowlinks0
+  propername: iow_links__0
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/iow/links__0.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: iowstategagesmtdnrc0
+  name: iow_stategages_mtdnrc__0
   pid: https://gleaner.io/genid/geoconnex
-  propername: iowstategagesmtdnrc0
+  propername: iow_stategages_mtdnrc__0
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/iow/state-gages/mtdnrc__0.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: iowstategagesnednr0
+  name: iow_stategages_nednr__0
   pid: https://gleaner.io/genid/geoconnex
-  propername: iowstategagesnednr0
+  propername: iow_stategages_nednr__0
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/iow/state-gages/nednr__0.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: iowstategagesndwr0
+  name: iow_stategages_ndwr__0
   pid: https://gleaner.io/genid/geoconnex
-  propername: iowstategagesndwr0
+  propername: iow_stategages_ndwr__0
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/iow/state-gages/ndwr__0.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: iowstategagescdss0
+  name: iow_stategages_cdss__0
   pid: https://gleaner.io/genid/geoconnex
-  propername: iowstategagescdss0
+  propername: iow_stategages_cdss__0
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/iow/state-gages/cdss__0.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: iowstategageswyseo0
+  name: iow_stategages_wyseo__0
   pid: https://gleaner.io/genid/geoconnex
-  propername: iowstategageswyseo0
+  propername: iow_stategages_wyseo__0
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/iow/state-gages/wyseo__0.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: iowusgssta0
+  name: iow_usgs_sta__0
   pid: https://gleaner.io/genid/geoconnex
-  propername: iowusgssta0
+  propername: iow_usgs_sta__0
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/iow/usgs/sta__0.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: iowusbrrise0
+  name: iow_usbr_rise__0
   pid: https://gleaner.io/genid/geoconnex
-  propername: iowusbrrise0
+  propername: iow_usbr_rise__0
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/iow/usbr/rise__0.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: examplenamespaceexampleids0
+  name: examplenamespace_example_ids__0
   pid: https://gleaner.io/genid/geoconnex
-  propername: examplenamespaceexampleids0
+  propername: examplenamespace_example_ids__0
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/example-namespace/example_ids__0.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: usbrrise0
+  name: usbr_rise__0
   pid: https://gleaner.io/genid/geoconnex
-  propername: usbrrise0
+  propername: usbr_rise__0
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/usbr/rise__0.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: refcbsacbsa0
+  name: ref_cbsa_cbsa__0
   pid: https://gleaner.io/genid/geoconnex
-  propername: refcbsacbsa0
+  propername: ref_cbsa_cbsa__0
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/ref/cbsa/cbsa__0.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: refdamsdams1
+  name: ref_dams_dams__1
   pid: https://gleaner.io/genid/geoconnex
-  propername: refdamsdams1
+  propername: ref_dams_dams__1
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/ref/dams/dams__1.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: refdamsdams0
+  name: ref_dams_dams__0
   pid: https://gleaner.io/genid/geoconnex
-  propername: refdamsdams0
+  propername: ref_dams_dams__0
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/ref/dams/dams__0.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: refsechydrgregsechydrgreg0
+  name: ref_sec_hydrg_reg_sec_hydrg_reg__0
   pid: https://gleaner.io/genid/geoconnex
-  propername: refsechydrgregsechydrgreg0
+  propername: ref_sec_hydrg_reg_sec_hydrg_reg__0
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/ref/sec_hydrg_reg/sec_hydrg_reg__0.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: refhu04hu040
+  name: ref_hu04_hu04__0
   pid: https://gleaner.io/genid/geoconnex
-  propername: refhu04hu040
+  propername: ref_hu04_hu04__0
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/ref/hu04/hu04__0.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: refprinciaqprinciaq0
+  name: ref_princi_aq_princi_aq__0
   pid: https://gleaner.io/genid/geoconnex
-  propername: refprinciaqprinciaq0
+  propername: ref_princi_aq_princi_aq__0
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/ref/princi_aq/princi_aq__0.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: refplacesplaces0
+  name: ref_places_places__0
   pid: https://gleaner.io/genid/geoconnex
-  propername: refplacesplaces0
+  propername: ref_places_places__0
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/ref/places/places__0.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: refcountiescounties0
+  name: ref_counties_counties__0
   pid: https://gleaner.io/genid/geoconnex
-  propername: refcountiescounties0
+  propername: ref_counties_counties__0
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/ref/counties/counties__0.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: refhu02hu020
+  name: ref_hu02_hu02__0
   pid: https://gleaner.io/genid/geoconnex
-  propername: refhu02hu020
+  propername: ref_hu02_hu02__0
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/ref/hu02/hu02__0.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: refmainstemsmainstems0
+  name: ref_mainstems_mainstems__0
   pid: https://gleaner.io/genid/geoconnex
-  propername: refmainstemsmainstems0
+  propername: ref_mainstems_mainstems__0
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/ref/mainstems/mainstems__0.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: refhu08hu080
+  name: ref_hu08_hu08__0
   pid: https://gleaner.io/genid/geoconnex
-  propername: refhu08hu080
+  propername: ref_hu08_hu08__0
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/ref/hu08/hu08__0.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: refpwspws0
+  name: ref_pws_pws__0
   pid: https://gleaner.io/genid/geoconnex
-  propername: refpwspws0
+  propername: ref_pws_pws__0
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/ref/pws/pws__0.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: refstatesstates0
+  name: ref_states_states__0
   pid: https://gleaner.io/genid/geoconnex
-  propername: refstatesstates0
+  propername: ref_states_states__0
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/ref/states/states__0.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: refua10ua100
+  name: ref_ua10_ua10__0
   pid: https://gleaner.io/genid/geoconnex
-  propername: refua10ua100
+  propername: ref_ua10_ua10__0
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/ref/ua10/ua10__0.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: refaiannhaiannh0
+  name: ref_aiannh_aiannh__0
   pid: https://gleaner.io/genid/geoconnex
-  propername: refaiannhaiannh0
+  propername: ref_aiannh_aiannh__0
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/ref/aiannh/aiannh__0.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: refgagesgages3
+  name: ref_gages_gages__3
   pid: https://gleaner.io/genid/geoconnex
-  propername: refgagesgages3
+  propername: ref_gages_gages__3
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/ref/gages/gages__3.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: refgagesgages1
+  name: ref_gages_gages__1
   pid: https://gleaner.io/genid/geoconnex
-  propername: refgagesgages1
+  propername: ref_gages_gages__1
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/ref/gages/gages__1.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: refgagesgages2
+  name: ref_gages_gages__2
   pid: https://gleaner.io/genid/geoconnex
-  propername: refgagesgages2
+  propername: ref_gages_gages__2
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/ref/gages/gages__2.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: refgagesgages0
+  name: ref_gages_gages__0
   pid: https://gleaner.io/genid/geoconnex
-  propername: refgagesgages0
+  propername: ref_gages_gages__0
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/ref/gages/gages__0.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: refhu10hu100
+  name: ref_hu10_hu10__0
   pid: https://gleaner.io/genid/geoconnex
-  propername: refhu10hu100
+  propername: ref_hu10_hu10__0
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/ref/hu10/hu10__0.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: refnataqnataq0
+  name: ref_nat_aq_nat_aq__0
   pid: https://gleaner.io/genid/geoconnex
-  propername: refnataqnataq0
+  propername: ref_nat_aq_nat_aq__0
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/ref/nat_aq/nat_aq__0.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: refhu06hu060
+  name: ref_hu06_hu06__0
   pid: https://gleaner.io/genid/geoconnex
-  propername: refhu06hu060
+  propername: ref_hu06_hu06__0
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/ref/hu06/hu06__0.xml
 - active: 'true'
   domain: https://geoconnex.us
   headless: 'false'
-  name: cagageassessmentcagagespids0
+  name: cagageassessment_ca_gages_pids__0
   pid: https://gleaner.io/genid/geoconnex
-  propername: cagageassessmentcagagespids0
+  propername: cagageassessment_ca_gages_pids__0
   sourcetype: sitemap
   url: https://geoconnex.us/sitemap/ca-gage-assessment/ca_gages_pids__0.xml
