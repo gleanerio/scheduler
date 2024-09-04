@@ -1,14 +1,10 @@
-# Scheduler
+# How to use this repository
 
-
-## About
-
-This repo is focused on the use of Dagster to build out code and Docker containers
-to run the Gleaner and Nabu packages for indexing websites with JSON-LD based
-structured data on the web.
-
-
-Details of the approach can be found in the [github io](https://earthcube.github.io/scheduler/).
-
-
+1. Create a new .venv
+2. Source the .venv
+3. Install `requirements.txt`
+4. Use the functions in main.py to build your jobs and config before spinning up the docker containers
+    1. Run `python3 main.py generate-config`
+    2. Run `python3 main.py generate-jobs`
+    3. After these two, your `build/` directory should be populated with the jobs
 

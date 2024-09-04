@@ -1,0 +1,112 @@
+#!/bin/bash
+set -euo pipefail
+
+# https://dockerswarm.rocks/traefik/
+helpFunction()
+{
+   echo "setup dagster network and volume"
+   echo "Usage: $0 -e envfile  -u"
+   echo -e "\t-e envfile to use"
+
+   exit 1 # Exit script after printing help
+}
+
+envfile=".env"
+
+if [ -f $envfile ]
+  then
+    echo "using " $envfile
+    export $(sed  '/^[ \t]*#/d' $envfile |  sed '/^$/d' | xargs)
+  else
+    echo "missing environment file. pass flag, or copy and edit file"
+    echo "cp envFile.env .env"
+    echo "OR"
+    echo "cp {yourenv}.env .env"
+    exit 1
+fi
+
+# Cleanup old configs before creating new ones. Always return true since we don't care if it fails
+docker config rm gleaner || true
+docker config rm nabu || true
+docker config rm workspace || true
+
+if [  "$(docker network ls  | grep ${GLEANERIO_HEADLESS_NETWORK})" ] ; then
+   echo ${GLEANERIO_HEADLESS_NETWORK} network exists;
+      if [ "$(docker info --format '{{.Swarm.LocalNodeState}}')" == "inactive" ]; then
+        echo Network is not swarm
+      else
+        echo Network is swarm
+      fi
+else
+   echo Creating network
+   if [ "$(docker info --format '{{.Swarm.LocalNodeState}}')" == "inactive" ]; then
+        if docker network create -d bridge --attachable ${GLEANERIO_HEADLESS_NETWORK}; then
+           echo "Created network ${GLEANERIO_HEADLESS_NETWORK}"
+        else
+           echo "ERROR: *** Failed to create local network. "
+            exit 1
+        fi
+   else
+        if docker network create -d overlay --attachable ${GLEANERIO_HEADLESS_NETWORK}; then
+          echo "Created network ${GLEANERIO_HEADLESS_NETWORK}"
+        else
+            echo "ERROR: *** Failed to create swarm network.  "
+            exit 1
+        fi
+   fi
+
+fi
+
+#echo NOTE: Verify that the traefik_proxy network  SCOPE is swarm
+
+if [  "$(docker volume ls  | grep ${GLEANERIO_CONFIG_VOLUME})" ] ; then
+   echo ${GLEANERIO_CONFIG_VOLUME} volume exists;
+else
+   echo creating volume
+   if `docker volume create ${GLEANERIO_CONFIG_VOLUME}`; then
+      echo "Created volume ${GLEANERIO_CONFIG_VOLUME}"
+   else
+      echo "ERROR: *** Failed to create volume. "
+      exit 1
+   fi
+fi
+
+
+if [  "$(docker config ls  | grep ${GLEANERIO_GLEANER_CONFIG_PATH})" ] ; then
+   echo ${GLEANERIO_GLEANER_CONFIG_PATH} config exists;
+else
+   echo creating config
+
+      if docker config create gleaner "${GLEANERIO_GLEANER_CONFIG_PATH}"; then
+         echo "Created gleaner config gleaner ${GLEANERIO_GLEANER_CONFIG_PATH}"
+      else
+         echo "ERROR: *** Failed to create gleaner config. "
+         exit 1
+      fi
+fi
+
+if [  "$(docker config ls  | grep ${GLEANERIO_NABU_CONFIG_PATH})" ] ; then
+   echo ${GLEANERIO_NABU_CONFIG_PATH} config exists;
+else
+   echo Moving nabu config into docker
+
+      if docker config create nabu "${GLEANERIO_NABU_CONFIG_PATH}"; then
+         echo "Created gleaner config  nabu ${GLEANERIO_NABU_CONFIG_PATH}"
+      else
+         echo "ERROR: *** Failed to create nabu config. "
+          exit 1
+      fi
+fi
+
+if [  "$(docker config ls  | grep ${GLEANERIO_WORKSPACE_CONFIG_PATH})" ] ; then
+   echo ${GLEANERIO_WORKSPACE_CONFIG_PATH} config exists;
+else
+   echo creating config
+
+      if docker config create workspace "${GLEANERIO_WORKSPACE_CONFIG_PATH}"; then
+         echo "Created config workspace ${GLEANERIO_WORKSPACE_CONFIG_PATH}"
+      else
+         echo "ERROR: *** Failed to create workspace config. "
+          exit 1
+      fi
+fi
