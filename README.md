@@ -7,4 +7,5 @@
     1. Run `python3 main.py generate-config`
     2. Run `python3 main.py generate-jobs`
     3. After these two, your `build/` directory should be populated with the jobs
-
+5. Run `docker-compose up`
+6. Access dagster at http://localhost:3000

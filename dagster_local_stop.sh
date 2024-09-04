@@ -1,6 +1,8 @@
 #!/bin/bash
 set -euxo pipefail
 
+PROJECT="iow"
+
 # https://dockerswarm.rocks/traefik/
 if [ -f compose_local_${PROJECT}_override.yaml ]
   then

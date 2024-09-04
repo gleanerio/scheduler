@@ -32,7 +32,7 @@ services:
         build:
           #context: .
           context: ..
-          dockerfile: build/Dockerfile_dagster
+          dockerfile: docker/Dockerfile_dagster
           args:
             implnet: ${PROJECT:-eco}
         # you should be able to change the source locally, without a full rebuild.
@@ -201,7 +201,7 @@ services:
         build:
           #context: .
           context: ..
-          dockerfile: build/Dockerfile_code
+          dockerfile: docker/Dockerfile_code
           args:
             implnet: ${PROJECT:-eco}
         # you should be able to change the source locally, without a full rebuild.
@@ -233,7 +233,7 @@ services:
         build:
           #context: .
           context: ..
-          dockerfile: build/Dockerfile_code
+          dockerfile: docker/Dockerfile_code
           args:
             implnet: ${PROJECT:-eco}
         # you should be able to change the source locally, without a full rebuild.

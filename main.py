@@ -7,17 +7,16 @@ from bs4 import BeautifulSoup
 import requests
 import typer
 import shutil
-
+from jinja2 import Environment, FileSystemLoader
 import yaml
 
 app = typer.Typer()
 
-BUILD_DIR =  os.path.join(os.path.dirname(__file__), "build")
+BUILD_DIR =    os.path.join(os.path.dirname(__file__), "build")
 TEMPLATE_DIR = os.path.join(os.path.dirname(__file__), "templates")
 
-def gencode(cf, od, td, days) -> str:
-    """Generate code"""
-    # read config
+def generate_code(cf, od, template_dir: str, days: int) -> str:
+    """Generate each individual dagster job that is a separate python file"""
     c = yaml.safe_load(open(cf, 'r'))
 
     with tempfile.TemporaryDirectory() as tmpdirname:
@@ -31,15 +30,12 @@ def gencode(cf, od, td, days) -> str:
 
         print("index event every {} hours over {} day(s) period for {} items".format(inc, days, len(c["sources"])))
 
-        for i, s in enumerate(c["sources"]):
-
-            # could put an if statement here for those that are active
-            # print(s["name"])
+        for i, source in enumerate(c["sources"]):
 
             # copy the templates to the temp dir
             for operation in operations:
-                src = "{0}/implnet_{1}_SOURCEVAL.py".format(td, operation)
-                dst = "{0}/implnet_{1}_{2}.py".format(tmpdirname, operation, s["name"])
+                src = "{0}/implnet_{1}_SOURCEVAL.py".format(template_dir, operation)
+                dst = "{0}/implnet_{1}_{2}.py".format(tmpdirname, operation, source["name"])
                 shutil.copyfile(src, dst)
 
                 # update the templates loop 1
@@ -47,7 +43,7 @@ def gencode(cf, od, td, days) -> str:
                     file_contents = file.read()
 
                 # replace the desired text in the string
-                new_contents = file_contents.replace("SOURCEVAL", s["name"])
+                new_contents = file_contents.replace("SOURCEVAL", source["name"])
 
                 # write the new contents back to the file
                 with open(dst, 'w') as file:
@@ -73,48 +69,27 @@ def gencode(cf, od, td, days) -> str:
 
             # copy new files to output dir
             for operation in operations:
-                src = "{0}/implnet_{1}_{2}.py".format(tmpdirname, operation, s["name"])
-                dst = "{0}/{1}/implnet_{1}_{2}.py".format(od, operation, s["name"])
+                src = "{0}/implnet_{1}_{2}.py".format(tmpdirname, operation, source["name"])
+                dst = "{0}/{1}/implnet_{1}_{2}.py".format(od, operation, source["name"])
                 shutil.copyfile(src, dst)
 
     return "done"
 
-def repo(cf, od) -> str:
-    repofile = "{0}/repositories/repository.py".format(od)
+def generate_repository(config, output_dir: str) -> str:
+    """Generate the topline repository python file that links to all the jobs"""
+    c = yaml.safe_load(open(config, 'r'))
 
-    if not os.path.exists("{0}/repositories".format(od)):
-        os.makedirs("{0}/repositories".format(od))
+    # Set up Jinja2 environment and load the template
+    env = Environment(loader=FileSystemLoader(TEMPLATE_DIR))
+    template = env.get_template('repository.py.j2')
 
-    c = yaml.safe_load(open(cf, 'r'))
+    # Render the template with the context
+    rendered_content = template.render(sources=c["sources"])
 
+    # Write the rendered content to the output file
+    repofile = f"{output_dir}/repository.py"
     with open(repofile, 'w+') as file:
-        file.write("from dagster import repository\n")
-
-        for s in c["sources"]:
-            file.write("from jobs.implnet_jobs_{0} import implnet_job_{0}\n".format(s["name"]))
-            file.write("from sch.implnet_sch_{0}  import implnet_sch_{0}\n".format(s["name"]))
-
-        file.write(" \n")
-
-        file.write("@repository\n")
-        file.write("def gleaner():\n")
-
-        ja = []
-        sa = []
-        for s in c["sources"]:
-            ja.append("implnet_job_{}".format(s["name"]))
-            sa.append("implnet_sch_{}".format(s["name"]))
-
-        ja_str = ", ".join(ja)
-        sa_str = ", ".join(sa)
-        file.write("\tjobs = [{}]\n".format(ja_str))
-        file.write("\tschedules = [{}]\n\n".format(sa_str))
-
-        file.write(" \n")
-
-        file.write("\treturn jobs + schedules\n")
-
-    return "done"
+        file.write(rendered_content)
 
 @app.command()
 def generate_jobs(
@@ -128,16 +103,16 @@ def generate_jobs(
 ):
     """Generate the Python files for each dagster job"""
     
-    gencode(config, outputs, templates, days)
-    repo(config, outputs)
+    generate_code(config, outputs, templates, days)
+    generate_repository(config, outputs)
     
-
-    with open(os.path.join(BUILD_DIR, "workspace.yaml"), 'w') as file:
-        file.write("""load_from:
-      - python_file:
-          relative_path: "repositories/repository.py"
-          working_directory: .""")
-
+    # in every dir in the BUILD_DIR create an empty __init__.py
+    for root, dirs, files in os.walk(BUILD_DIR):
+        for name in dirs:
+            if name != '__pycache__':
+                os.makedirs(os.path.join(root, name), exist_ok=True)
+                with open(os.path.join(root, name, "__init__.py"), 'w') as file:
+                    file.write("")
 
 
 
@@ -166,6 +141,7 @@ def generate_config(sitemap: Annotated[str, typer.Option()] = "https://geoconnex
         Lines.append(sitemap.findNext("loc").text)  # type: ignore
 
     sources = []
+    names = set()
     for line in Lines:
         data = {}
 
@@ -173,12 +149,20 @@ def generate_config(sitemap: Annotated[str, typer.Option()] = "https://geoconnex
         name = remove_non_alphanumeric(target.lower().replace(".xml", ""))
         data["sourcetype"] = "sitemap"
         data["name"] = name
+        
+        if name in names:
+            print(f"Warning! Skipping duplicate name {name}")
+            continue
+        else:
+            names.add(name)
+        
         data["url"] = line.strip()
         data["headless"] = "false"
         data["pid"] = "https://gleaner.io/genid/geoconnex"
         data["propername"] = name
         data["domain"] = "https://geoconnex.us"
         data["active"] = "true"
+
         sources.append(data)
 
     # Combine base data with the new sources
@@ -201,10 +185,8 @@ def clean():
         
         for root, dirs, files in os.walk(BUILD_DIR):
             for name in files:
-                if name != '.gitkeep':
+                if name != '.gitkeep' and name != "__init__.py":
                     os.remove(os.path.join(root, name))
-            for name in dirs:
-                shutil.rmtree(os.path.join(root, name))
     else:
         print("Build directory does not exist")
 
