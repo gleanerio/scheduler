@@ -312,7 +312,7 @@ def gleanerio(context, mode, source):
         IMAGE =GLEANERIO_GLEANER_IMAGE
 
        # ARGS = f"gleaner --cfg/gleaner/gleanerconfig.yaml -source {source} --rude"
-        ARGS = ["--cfg", GLEANERIO_GLEANER_CONFIG_PATH,"-source", source, "--rude"]
+        ARGS = ["--cfg", GLEANERIO_GLEANER_CONFIG_PATH,"--source", source, "--rude"]
         NAME = f"sch_{source}_{str(mode)}"
         WorkingDir = "/gleaner/"
         #Entrypoint = ["/gleaner/gleaner", "--cfg", "/gleaner/gleanerconfig.yaml", "-source", source, "--rude"]

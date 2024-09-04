@@ -58,16 +58,16 @@ oih-push:
 # ----  IoW  ----
 
 iow-cfgbuild:
-	cd ./tooling/cfgBuilder/NSDF && python cfgBuilder.py -s https://geoconnex.us/sitemap.xml
+	cd ../../tooling/cfgBuilder/iow && python3 cfgBuilder.py -s https://geoconnex.us/sitemap.xml
 
 iow-clean:
 	cd ./generatedCode/implnet-iow && rm -rf ./output/*
 
 iow-generate:
-	python pygen.py -cf ./configs/iow/gleanerconfig.yaml -od ./generatedCode/implnet-iow/output  -td ./templates/v1   -d 27
+	python3 pygen.py -cf ./configs/iow/gleanerconfig.yaml -od ./generatedCode/implnet-iow/output  -td ./templates/v1   -d 27
 
 iow-build:
-	podman build  --tag="docker.io/fils/dagster_iow:$(VERSION)"  --build-arg implnet=iow --file=./build/Dockerfile .
+	docker build --tag="docker.io/webbben/dagster_iow:$(VERSION)" --build-arg implnet=iow --file=./Dockerfile .
 
 iow-push:
-	podman push docker.io/fils/dagster_iow:$(VERSION)
+	docker push docker.io/webbben/dagster_iow:$(VERSION)

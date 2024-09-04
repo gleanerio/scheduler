@@ -368,7 +368,7 @@ def gleanerio(context, mode, source):
 
     if str(mode) == "gleaner":
         IMAGE = GLEANERIO_GLEANER_IMAGE
-        ARGS = ["--cfg", GLEANERIO_GLEANER_CONFIG_PATH, "-source", source, "--rude"]
+        ARGS = ["--cfg", GLEANERIO_GLEANER_CONFIG_PATH, "--source", source, "--rude"]
         NAME = f"sch_{source}_{str(mode)}"
         WorkingDir = "/gleaner/"
         # LOGFILE = 'log_gleaner.txt'  # only used for local log file writing
