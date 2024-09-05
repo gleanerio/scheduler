@@ -78,10 +78,31 @@ services:
   minio:
     image: minio/minio
     container_name: minio
-    command: server /data
+    command: server /data --console-address ":9001"
+    ports:
+      - "9000:9000"
+      - "9001:9001"
     environment:
       MINIO_ACCESS_KEY: "minio_access_key"
       MINIO_SECRET_KEY: "minio_secret_key"
+    networks:
+      - headless_gleanerio
+
+  createbuckets:
+    image: minio/mc
+    depends_on:
+      - minio
+    entrypoint: >
+      /bin/sh -c "
+      /usr/bin/mc alias set myminio http://minio:9000 minio_access_key minio_secret_key;
+      /usr/bin/mc mb gleaner_bucket;
+      /usr/bin/mc policy set public gleaner_bucket;
+      exit 0;
+      "
+
+  graphdb:
+    image: ontotext/graphdb
+    container_name: graphdb
     networks:
       - headless_gleanerio
 

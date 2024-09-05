@@ -17,9 +17,21 @@ WORKDIR /opt/dagster/app
 
 COPY build /opt/dagster/app/build
 
-# Run dagster gRPC server on port 4000
+ENV GLEANERIO_MINIO_ADDRESS=0.0.0.0
+ENV GLEANERIO_MINIO_PORT=9000
+ENV GLEANERIO_MINIO_USE_SSL=false
+ENV GLEANERIO_MINIO_BUCKET=gleaner_bucket
+ENV GLEANERIO_MINIO_ACCESS_KEY=minio_access_key
+ENV GLEANERIO_MINIO_SECRET_KEY=minio_secret_key
+ENV GLEANERIO_HEADLESS_ENDPOINT=http://headless:9222
+ENV GLEANERIO_GRAPH_URL=localhost
+ENV GLEANERIO_GRAPH_PORT=7300
+ENV GLEANERIO_GRAPH_NAMESPACE="test"
 
+# Run dagster gRPC server on port 4000
 EXPOSE 4000
+
+COPY ../nabuconfig.example.yaml /opt/dagster/app/nabuconfig.example.yaml
 
 # CMD allows this to be overridden from run launchers or executors that want
 # to run other commands against your repository

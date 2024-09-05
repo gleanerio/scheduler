@@ -1,11 +1,11 @@
 ---
 minio:
-  address:
-  port:
-  accessKey:
-  secretKey:
-  ssl:
-  bucket: oih
+  address: 0.0.0.0
+  port: 9000
+  accessKey: minio_access_key
+  secretKey: minio_secret_key
+  ssl: false
+  bucket: gleaner_bucket
 gleaner:
   runid: oih # this will be the bucket the output is placed in...
   summon: true # do we want to visit the web sites and pull down the files
