@@ -1,11 +1,11 @@
 ---
 minio:
-  address: 127.0.0.1
+  address: minio
   port: 9000
   accessKey: minio_access_key
   secretKey: minio_secret_key
   ssl: false
-  bucket: gleaner_bucket
+  bucket: gleanerbucket
   region: null
 implementation_network:
   orgname: iow
