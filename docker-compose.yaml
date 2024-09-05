@@ -95,11 +95,14 @@ services:
       - minio
     entrypoint: >
       /bin/sh -c "
-      /usr/bin/mc alias set myminio http://minio:9000 minio_access_key minio_secret_key;
-      /usr/bin/mc mb gleanerbucket;
-      /usr/bin/mc anonymous set public gleanerbucket;
-      sleep infinity;
-      "
+       sleep 10;
+       /usr/bin/mc alias set myminio http://minio:9000 minio_access_key minio_secret_key;
+      /usr/bin/mc mb myminio/gleanerbucket;
+      /usr/bin/mc anonymous set public myminio/gleanerbucket;
+       "
+    networks:
+      - docker_example_network
+
 
   graphdb:
     image: ontotext/graphdb:10.6.4
