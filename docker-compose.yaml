@@ -87,6 +87,7 @@ services:
       MINIO_SECRET_KEY: "minio_secret_key"
     networks:
       - headless_gleanerio
+      - docker_example_network
 
   createbuckets:
     image: minio/mc
@@ -95,14 +96,16 @@ services:
     entrypoint: >
       /bin/sh -c "
       /usr/bin/mc alias set myminio http://minio:9000 minio_access_key minio_secret_key;
-      /usr/bin/mc mb gleaner_bucket;
-      /usr/bin/mc policy set public gleaner_bucket;
-      exit 0;
+      /usr/bin/mc mb gleanerbucket;
+      /usr/bin/mc anonymous set public gleanerbucket;
+      sleep infinity;
       "
 
   graphdb:
-    image: ontotext/graphdb
+    image: ontotext/graphdb:10.6.4
     container_name: graphdb
+    ports:
+      - 7200:7200
     networks:
       - headless_gleanerio
 

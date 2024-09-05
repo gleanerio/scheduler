@@ -94,7 +94,7 @@ APIKEY = os.environ.get("PORTAINER_KEY")
 
 GLEANER_MINIO_ADDRESS = str(os.environ.get("GLEANERIO_MINIO_ADDRESS"))
 GLEANER_MINIO_PORT = str(os.environ.get("GLEANERIO_MINIO_PORT"))
-GLEANER_MINIO_USE_SSL = bool(os.environ.get("GLEANERIO_MINIO_USE_SSL"))
+GLEANER_MINIO_USE_SSL = not os.environ.get("GLEANERIO_MINIO_USE_SSL") in [False, 'false', 'False']
 GLEANER_MINIO_SECRET_KEY = str(os.environ.get("GLEANERIO_MINIO_SECRET_KEY"))
 GLEANER_MINIO_ACCESS_KEY = str(os.environ.get("GLEANERIO_MINIO_ACCESS_KEY"))
 GLEANER_MINIO_BUCKET = str(os.environ.get("GLEANERIO_MINIO_BUCKET"))
@@ -622,23 +622,23 @@ def gleanerio(context, mode, source):
         get_dagster_logger().info("container Logs to s3: ")
 
         ## get log files
-        url = URL + "containers/" + cid + "/archive"
-        params = {"path": f"{WorkingDir}/logs"}
-        query_string = urllib.parse.urlencode(params)
-        url = url + "?" + query_string
+        # url = f"{URL}containers/{cid}/archive"
+        # params = {"path": f"{WorkingDir}/logs"}
+        # query_string = urllib.parse.urlencode(params)
+        # url = url + "?" + query_string
 
         # print(url)
-        get_dagster_logger().info(f"url: {url} ")
-        req = request.Request(url, method="GET")
-        req.add_header("X-API-Key", APIKEY)
-        req.add_header("content-type", "application/x-compressed")
-        req.add_header("accept", "application/json")
-        r = request.urlopen(req)
+        # get_dagster_logger().info(f"url: {url} ")
+        # req = request.Request(url, method="GET")
+        # req.add_header("X-API-Key", APIKEY)
+        # req.add_header("content-type", "application/x-compressed")
+        # req.add_header("accept", "application/json")
+        # r = request.urlopen(req)
 
-        log.info(f"{r.status} ")
-        get_dagster_logger().info(f"Container Archive Retrieved: {str(r.status)}")
+        # log.info(f"{r.status} ")
+        # get_dagster_logger().info(f"Container Archive Retrieved: {str(r.status)}")
         # s3loader(r.read().decode('latin-1'), NAME)
-        s3loader(r.read(), f"{source}_{mode}_runlogs")
+        # s3loader(r.read(), f"{source}_{mode}_runlogs")
         # Future, need to extraxct files, and upload
         # pw_tar = tarfile.TarFile(fileobj=StringIO(d.decode('utf-8')))
         #    pw_tar.extractall("extract_to/")
