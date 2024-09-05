@@ -37,6 +37,7 @@ plugins:
 nav:
   - Gleaner IO Scheduler:
     - Scheduler: README.md
+    - Ingest Workflow: ingest_workflow.md
     - Quick: quick.md
     - Add Containers:  add_containers.md
     - Scheduler Deployment: eco_deploy.md

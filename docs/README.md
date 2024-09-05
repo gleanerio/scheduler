@@ -17,7 +17,7 @@ The key elements are:
 
 * sources to configuration  to load into the Gleaner and Nabu tools, and push to the triplestore. These are now stored in
 an s3 location
-  * gleaner configuration. a list of sources to load
+  * gleaner configuration. a list of sources to load. (NOTE: This is also a docker config that needs to be updated to mactch to make things work)
   * tenant configuration. a list communities, and which sources they load
 * The Dagster set which loads three containers to support workflow operations
 * The Gleaner Architecture images which loads three or more containers to support 
@@ -25,10 +25,7 @@ an s3 location
   * graph database (triplestore)
   * headless chrome for page rendering to support dynamically inserted JSON-LD
   * any other support packages like text, semantic or spatial indexes
-* The GleanerIO tools which loads two containers  as services (Gleaner and Nabu) that are run 
-and removed by the Dagster workflow
 
-![upper level](images/gleanerDagster.svg)
 
 ### WORKFLOWS
 
@@ -268,6 +265,7 @@ They are installed in two places:
 | gleanerconfig.yaml | configs/PROJECT/gleanerconfig.yaml       | dockerconfig: gleaner                             | mounted in gleaner docker container     
 | nabuconfig.yaml | configs/PROJECT/nabuconfig.yaml          | dockerconfig: nabu                                | mounted in gleaner docker container     
 
+(NOTE: This is also a gleaner config (below in runtime configuration) that needs to be updated to mactch to make things work)
 
 [Docker Configs for gleanerio containers ](https://github.com/earthcube/scheduler/issues/106) are still needed:
 
@@ -424,60 +422,7 @@ SLACK_TOKEN=
 
 ```
 
-# Implementation Networks
 
-This ([https://github.com/sharmasagar25/dagster-docker-example](https://github.com/sharmasagar25/dagster-docker-example)) 
-is an example on how to structure a [Dagster] project in order to organize
-the jobs, repositories, schedules, and ops. The example also contains
-examples on unit-tests and a docker-compose deployment file that utilizes a
-Postgresql database for the run, event_log and schedule storage.
-
-This example should in no way be considered suitable for production and is
-merely my own example of a possible file structure. I personally felt that it
-was difficult to put the Dagster concepts to use since the projects own examples
-had widely different structure and was difficult to overview as a beginner.
-
-The example is based on the official [tutorial].
-
-## Folders
-
-* build:  build directives for the docker containers
-* configs
-* src
-* tooling
-
-## Running 
-
-There is an example on how to run a single pipeline in `src/main.py`. First
-install the dependencies in an isolated Python environment.
-
-```bash
-pip install -r requirements
-```
-
-The code built above can be run locally, though your templates may be set up 
-to reference services and other resources not present on your dev machine.  For 
-complex examples like these, it can be problematic.  
-
-If you are looking for some simple examples of Dagster, check out the directory
-examples for some smaller self-contained workflows.  There are good for testing
-things like sensors and other approaches. 
-
-If you wish to still try the generated code cd into the output directory
-you specified in the pygen command.
-
-
-
-# Appendix
-
-## Setup
-
-
-![orchestration](images/orchestrationInit.svg)
-
-## Docker API sequence
-
-![sequence](../docs/images/sequence.svg)
 
 
 ## Appendix
@@ -489,26 +434,6 @@ at the documentation for [Accessing the Portainer API](https://docs.portainer.io
 
 ## Notes
 
-Single file testing run
-
-```bash
- dagit -h ghost.lan -f test1.py
-```
-
-* Don't forget to set the DAGSTER_HOME dir like in 
-
-```bash
- export DAGSTER_HOME=/home/fils/src/Projects/gleaner.io/scheduler/python/dagster
-```
-
-```
-dagster-daemon run
-```
-
-Run from directory where workspace.yaml is.
-```
-dagit --host 192.168.202.159
-```
 
 ### Handle Multiple Organizations
 
@@ -516,9 +441,39 @@ thoughts...
 
 * Each organization can be in a container with its own code workflow. 
    *  in the workflows directory: `dagster project projectname`
-   * it think
 * If we can standardize the loading and transforming workflows as much as possible, then the graph loading workflows 
- should be more customizable
+ should be [standardized](https://github.com/earthcube/scheduler/issues/142). We could just define an additional container in a compose file, and add that to the workflows
+
+```
+load_from:
+#      - python_file:
+#          relative_path: "project/eco/repositories/repository.py"
+#          location_name: project
+#          working_directory: "./project/eco/"
+#      - python_file:
+#          relative_path: "workflows/ecrr/repositories/repository.py"
+#          working_directory: "./workflows/ecrr/"
+      # module starting out with the definitions api
+     # - python_module: "workflows.tasks.tasks"
+
+      - grpc_server:
+            host: dagster-code-tasks
+            port: 4000
+            location_name: "tasks"
+      - grpc_server:
+            host: dagster-code-eco-ingest
+            port: 4000
+            location_name: "ingest"
+      - grpc_server:
+            host: dagster-code-ios-ingest
+            port: 4000
+            location_name: "ingest"
+      - grpc_server:
+            host: dagster-code-eco-ecrr
+            port: 4000
+            location_name: "ecrr"
+```
+
 * to add a container, you need to edit the workflows.yaml in an organizations configuration
 
 ## Cron Notes
@@ -557,7 +512,4 @@ We can then use the docker approach
 
 to run indexes on specific sources in these configuration files.  
 
-## References
-
-* [Simple Dagster example](https://bakerwho.github.io/posts/datascience/Deployable-Dagster-MVP/)
 
