@@ -72,6 +72,18 @@ services:
     depends_on:
       - docker_example_postgresql
       - docker_example_user_code
+    env_file: ".env"
+    
+
+  minio:
+    image: minio/minio
+    container_name: minio
+    command: server /data
+    environment:
+      MINIO_ACCESS_KEY: "minio_access_key"
+      MINIO_SECRET_KEY: "minio_secret_key"
+    networks:
+      - headless_gleanerio
 
 networks:
   docker_example_network:

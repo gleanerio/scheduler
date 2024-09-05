@@ -11,6 +11,8 @@ helpFunction()
    exit 1 # Exit script after printing help
 }
 
+python3 main.py all
+
 # reset the swarm if it exists
 docker swarm leave --force || true
 docker swarm init

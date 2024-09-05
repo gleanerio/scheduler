@@ -175,6 +175,12 @@ def generate_config(sitemap_url: Annotated[str, typer.Option()] = "https://geoco
     with open(os.path.join(BUILD_DIR, 'gleanerconfig.yaml'), 'w') as outfile:
         yaml.dump(base_data, outfile, default_flow_style=False)
 
+@app.command()
+def all():
+    """Generate all the files"""
+    clean()
+    generate_config()
+    generate_jobs()
 
 @app.command()
 def clean():
