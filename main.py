@@ -75,20 +75,19 @@ def generate_code(cf, od, template_dir: str, days: int) -> str:
 
     return "done"
 
-def generate_repository(config, output_dir: str) -> str:
+def generate_repository(config, output_dir: str):
     """Generate the topline repository python file that links to all the jobs"""
     c = yaml.safe_load(open(config, 'r'))
 
     # Set up Jinja2 environment and load the template
     env = Environment(loader=FileSystemLoader(TEMPLATE_DIR))
-    template = env.get_template('repository.py.j2')
+    template = env.get_template('repository.py.j2') 
 
     # Render the template with the context
     rendered_content = template.render(sources=c["sources"])
 
     # Write the rendered content to the output file
-    repofile = f"{output_dir}/repository.py"
-    with open(repofile, 'w+') as file:
+    with open(os.path.join(output_dir, "repository.py"), 'w+') as file:
         file.write(rendered_content)
 
 @app.command()
@@ -117,13 +116,13 @@ def generate_jobs(
 
 
 @app.command()
-def generate_config(sitemap: Annotated[str, typer.Option()] = "https://geoconnex.us/sitemap.xml",
+def generate_config(sitemap_url: Annotated[str, typer.Option()] = "https://geoconnex.us/sitemap.xml",
             base: Annotated[str, typer.Option()] = "gleanerconfigPREFIX.example.yaml"
             ):
     """Generate the gleaner config from a remote sitemap"""
 
     def remove_non_alphanumeric(string):
-        return re.sub(r'[^a-zA-Z0-9]+', '', string)
+        return re.sub(r'[^a-zA-Z0-9_]+', '', string)
 
     # Load the base YAML file
     with open(base, 'r') as base_file:
@@ -132,7 +131,7 @@ def generate_config(sitemap: Annotated[str, typer.Option()] = "https://geoconnex
     # Parse the sitemap INDEX for the referenced sitemaps for a config file
     Lines = []
 
-    r = requests.get(sitemap)
+    r = requests.get(sitemap_url)
     xml = r.text
     soup = BeautifulSoup(xml, features='xml')
     sitemapTags = soup.find_all("sitemap")
@@ -145,17 +144,18 @@ def generate_config(sitemap: Annotated[str, typer.Option()] = "https://geoconnex
     for line in Lines:
         data = {}
 
-        target = line.rsplit('/', 1)[-1]
-        name = remove_non_alphanumeric(target.lower().replace(".xml", ""))
+        basename = sitemap_url.removesuffix(".xml")
+        name =  line.removeprefix(basename).removesuffix(".xml").removeprefix("/").removesuffix("/").replace("/", "_")
+        name = remove_non_alphanumeric(name)
+        
         data["sourcetype"] = "sitemap"
-        data["name"] = name
         
         if name in names:
             print(f"Warning! Skipping duplicate name {name}")
             continue
-        else:
-            names.add(name)
         
+        names.add(name)
+        data["name"] = name
         data["url"] = line.strip()
         data["headless"] = "false"
         data["pid"] = "https://gleaner.io/genid/geoconnex"

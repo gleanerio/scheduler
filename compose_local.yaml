@@ -16,13 +16,13 @@ volumes:
 configs:
   gleaner:
     name: ${GLEANERIO_GLEANER_DOCKER_CONFIG:-gleaner}
-    file: ../configs/${PROJECT:-eco}/gleanerconfig.yaml
+    file: ./build/gleanerconfig.yaml
   nabu:
     name: ${GLEANERIO_NABU_DOCKER_CONFIG:-nabu}
-    file: ../configs/${PROJECT:-eco}/nabuconfig.yaml
+    file: ./nabuconfig.yaml
   workspace:
     name: ${GLEANERIO_WORKSPACE_DOCKER_CONFIG:-workspace}
-    file: ../configs/${PROJECT:-eco}/workspace.yaml
+    file: ./workspace.yaml
 # DO NOT START IN PYCHARM (unless you set the env variables in your runconfig
 # USE:
 # ./docker_localstart.sh

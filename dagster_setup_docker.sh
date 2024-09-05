@@ -11,6 +11,12 @@ helpFunction()
    exit 1 # Exit script after printing help
 }
 
+# reset the swarm if it exists
+docker swarm leave --force || true
+docker swarm init
+# creates a network that we can attach to from the swarm
+docker network create --driver overlay --attachable docker_example_network
+
 envfile=".env"
 
 if [ -f $envfile ]
@@ -25,7 +31,7 @@ if [ -f $envfile ]
     exit 1
 fi
 
-# Cleanup old configs before creating new ones. Always return true since we don't care if it fails
+# Cleanup old configs before creating new ones. Always return true since we don't care if it fails due to it not existing
 docker config rm gleaner || true
 docker config rm nabu || true
 docker config rm workspace || true
@@ -110,3 +116,10 @@ else
           exit 1
       fi
 fi
+
+docker build -t docker_example_user_code_image -f ./Docker/Dockerfile_user_code .
+docker build -t docker_example_webserver_image -f ./Docker/Dockerfile_dagster .
+docker build -t docker_example_daemon_image -f ./Docker/Dockerfile_dagster .
+
+
+docker stack deploy -c docker-compose.yaml e2edagster --detach=false

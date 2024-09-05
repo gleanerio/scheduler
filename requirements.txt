@@ -1,8 +1,4 @@
-minio
+# These are the requirements for the main.py cli which generates all build artifacts that dagster runs
 typer
-dagster
-dagster-webserver
-dagster-docker
-earthcube-utilities
 beautifulsoup4
 jinja2

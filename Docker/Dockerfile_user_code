@@ -7,10 +7,12 @@ RUN pip install \
     dagster \
     dagster-postgres \
     dagster-docker \
-    earthcube-utilities
+    # our utilities
+    earthcube-utilities \
+    minio \
+    dagster
 
 # Add repository code
-
 WORKDIR /opt/dagster/app
 
 COPY build /opt/dagster/app/build
