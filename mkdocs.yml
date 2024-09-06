@@ -39,12 +39,12 @@ nav:
     - Scheduler: README.md
     - Ingest Workflow: ingest_workflow.md
     - Quick: quick.md
-    - Add Containers:  add_containers.md
     - Scheduler Deployment: eco_deploy.md
 
     - Develeopment:
       - Local Developement: README_LOCAL_DEVELOPMENT.md
-      - Developing Schedules: developement.md
-      - Troubleshooting Workflows:  monitoring_workflows.md
 
+      - Troubleshooting Workflows:  monitoring_workflows.md
+    - Depreciated:
+      - Developing Schedules: developement_uisng_generated_code.md
 

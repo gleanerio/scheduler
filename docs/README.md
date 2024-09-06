@@ -223,28 +223,33 @@ We use portainer to manage our docker deployments.
 ## Server Deployment. 
  [Production example for Earthcube](eco_deploy.md) 
 
-## DEVELOPER Pycharm --  Run local with remote services
+## DEVELOPER Pycharm --  Run local with **remote** services
 You can test components in pycharm. Run configurations for pycgharm  are in runConfigurations (TODO: Instructions)
 use the [ENVFIle plugin.](https://plugins.jetbrains.com/plugin/7861-envfile) 
 ![pycharm runconfig](images/pycharm_runconfig.png)
-1) move to the  implnets/deployment directory
-2) copy the envFile.env to .env [see](#environment-files)  use the [ENVFIle plugin.](https://plugins.jetbrains.com/plugin/7861-envfile)
-3) edit the entries to point at a portainer/traefik with running services
-4) edit configuration files in implnets/configs/PROJECT: gleanerconfig.yaml, tenant.yaml
-5) upload configuration implnets/configs/PROJECT to s3 scheduler/configs: gleanerconfig.yaml, tenant.yaml
-4) run a Pycharm runconfig 
-   5) eg dagster_ingest_debug
-4) go to http://localhost:3000/
-6) you can [test the schedules](#test-schedules) 
+1. move to the  implnets/deployment directory
+2. copy the envFile.env to .env [see](#environment-files)  use the [ENVFIle plugin.](https://plugins.jetbrains.com/plugin/7861-envfile)
+3. edit the entries to point at Geocodes services:
+   * minio/s3 - oss.geocodes-aws-dev.earthcube.org
+   * blazegraph graph.geocodes-aws-dev.earthcube.org
+   * container deployment portainer.geocodes-aws-dev.earthcube.org
+4. edit configuration files in implnets/configs/PROJECT (aka eco): gleanerconfig.yaml, tenant.yaml
+5. upload configuration implnets/configs/PROJECT (aka eco) to s3 scheduler/configs: gleanerconfig.yaml, tenant.yaml
+4. run a Pycharm runconfig 
+   * eg _dagster_ingest_debug_
+4. go to http://localhost:3000/
+6. you can [test the schedules](#test-schedules) 
 
 ## full stack test Run local with remote services
-1) move to the implnets/deployment directory
-2) copy the envFile.env to .env [see](#environment-files)use the [ENVFIle plugin.](https://plugins.jetbrains.com/plugin/7861-envfile) [see](#environment-files)  use the [ENVFIle plugin.](https://plugins.jetbrains.com/plugin/7861-envfile) 
-3) edit the entries.
-4) edit configuration files in implnets/configs/PROJECT to s3: gleanerconfig.yaml, tenant.yaml
-5) upload configuration implnets/configs/PROJECT to scheduler/configs s3: gleanerconfig.yaml, tenant.yaml
-4) for local, `./dagster_localrun.sh`
-5) go to http://localhost:3000/
+This will deploy a set of containers to your local docker.
+(this needs work)
+1. move to the implnets/deployment directory
+2. copy the envFile.env to .env [see](#environment-files)use the [ENVFIle plugin.](https://plugins.jetbrains.com/plugin/7861-envfile) [see](#environment-files)  use the [ENVFIle plugin.](https://plugins.jetbrains.com/plugin/7861-envfile) 
+3. edit the entries.
+4. edit configuration files in implnets/configs/PROJECT (aka eco) to s3: gleanerconfig.yaml, tenant.yaml
+5. upload configuration implnets/configs/PROJECT (aka eco) to scheduler/configs s3: gleanerconfig.yaml, tenant.yaml
+4. for local, `./dagster_localrun.sh`
+5. go to http://localhost:3000/
 
 To deploy in portainer, use the deployment/compose_project.yaml docker stack.
 
@@ -253,26 +258,30 @@ there are configuration  files that are needed.
 They are installed in two places:
 * as docker configs
 * as scheduler configs in S3
+* 
+**Note:** env(variable). These are environment variables substituted in the docker compose files.
+ 
+NOTE: the (gleaner/nabu) configs still need to be mounted in the containers executing gleaner and nabu
 
- (NOTE: I think the configs are still needed in the containers) 
+| file               | local                                    |                                                      | note                                    |
+|--------------------|------------------------------------------|------------------------------------------------------|-----------------------------------------|
+| workspace          | configs/PROJECT/worksapce.yaml           | dockerconfig: env(GLEANERIO_DOCKER_WORKSPACE_CONFIG) | docker compose: used by dagster         |
+| gleanerconfig.yaml | configs/PROJECT/gleanerconfig.yaml       | s3:{bucket}/scheduler/configs/gleanerconfigs.yaml    | ingest workflow needs to be in minio/s3 
+| tenant.yaml        | configs/PROJECT/tenant.yaml              | s3:{bucket}/scheduler/configs/tenant.yaml            | ingest workflow needs to be in minio/s3 
+| dagster.yaml       | dagster/implnets/deployment/dagster.yaml | docker config:  env(GLEANERIO_DOCKER_DAGSTER_CONFIG) | docker compose: used by dagster  
+| gleanerconfig.yaml | configs/PROJECT/gleanerconfig.yaml       | docker config: env (GLEANERIO_DOCKER_GLEANER_CONFIG) | mounted in gleaner docker container     
+| nabuconfig.yaml | configs/PROJECT/nabuconfig.yaml          | docker config: env (GLEANERIO_DOCKER_NABU_CONFIG)    | mounted in gleaner docker container     
 
-| file               | local                                    |                                                   | note                                    |
-|--------------------|------------------------------------------|---------------------------------------------------|-----------------------------------------|
-| workspace          | configs/PROJECT/worksapce.yaml           | dockerconfig: workspace                           | docker compose: used by dagster         |
-| gleanerconfig.yaml | configs/PROJECT/gleanerconfig.yaml       | s3:{bucket}/scheduler/configs/gleanerconfigs.yaml | ingest workflow needs to be in minio/s3 
-| tenant.yaml        | configs/PROJECT/tenant.yaml              | s3:{bucket}/scheduler/configs/tenant.yaml         | ingest workflow needs to be in minio/s3 
-| dagster.yaml       | dagster/implnets/deployment/dagster.yaml | dockerconfig: dagster                             | docker compose: used by dagster  
-| gleanerconfig.yaml | configs/PROJECT/gleanerconfig.yaml       | dockerconfig: gleaner                             | mounted in gleaner docker container     
-| nabuconfig.yaml | configs/PROJECT/nabuconfig.yaml          | dockerconfig: nabu                                | mounted in gleaner docker container     
 
-(NOTE: This is also a gleaner config (below in runtime configuration) that needs to be updated to mactch to make things work)
+
+(NOTE: This is also a gleaner config (below in runtime configuration) that needs to be updated to match to make things work)
 
 [Docker Configs for gleanerio containers ](https://github.com/earthcube/scheduler/issues/106) are still needed:
 
-| file                | local                                                     | stack | note                                  |
-|---------------------|-----------------------------------------------------------| ------ |---------------------------------------|
-| gleanerconfig.yaml  | configs/PROJECT/gleanerconfigs.yaml                       | env () | generated code needs to be in ~~portainer~~          |
-| nabuconfig.yaml | configs/PROJECT/nabuconfigs.yaml                          | env () | generated codeneeds to be in ~~portainer~~ |
+| file                | local                                                     | docker config | note                 |
+|---------------------|-----------------------------------------------------------|---------------|----------------------|
+| gleanerconfig.yaml  | configs/PROJECT/gleanerconfigs.yaml                       | env (GLEANERIO_DOCKER_GLEANER_CONFIG)        | mounted in container |
+| nabuconfig.yaml | configs/PROJECT/nabuconfigs.yaml                          | env (GLEANERIO_DOCKER_NABU_CONFIG)        |   mounted in container                   |
 
 3) when the containers are running in a  stack, on portainer, there will need to
    be updated by pulling from dockerhub. The ENV variables may need to be updated for the CONTAINER*_TAG
@@ -284,13 +293,13 @@ They are installed in two places:
 
 | file               | local                                             |  | note                                  |
 |--------------------|---------------------------------------------------| ------ |---------------------------------------|
-| gleanerconfig.yaml | s3:{bucket}/scheduler/configs/gleanerconfigs.yaml | | ingest workflow needs to be in minio/s3  
-| tenant.yaml        | s3:{bucket}/scheduler/configs/enant.yaml          |  | ingest workflow needs to be in minio/s3  
+| gleanerconfig.yaml | s3:{bucket}/scheduler/configs/gleanerconfigs.yaml | | ingest workflow configs read from minio/s3  
+| tenant.yaml        | s3:{bucket}/scheduler/configs/enant.yaml          |  | ingest workflow configs read from in minio/s3  
 
 ### updating config
 You can update a config, and a sensor should pick up the changes.
 1) Upload changed file to s3
-   2) note, if this is a new source, you need to add it to the docker config (gleaner-PROJECT). 
+   2) note, if this is a new source, you need to update the  docker config, by cloning, and editing the file. Then change the variable env (GLEANERIO_DOCKER_GLEANER_CONFIG) to that name
 2) go to overview, ![overview](images/overview_sensors_tab.png)
 3) go to  s3_config_source_sensor  for gleanerconfig.yaml changes, and s3_config_tenant_sensor for tenant.yaml changes
  ![sensor](images/sources_sensor.png).
