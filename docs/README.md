@@ -29,7 +29,8 @@ an s3 location
 
 ### WORKFLOWS
 
-There are three workflows
+There are three workflows:
+
 * ingest works to load sources
 * tasks weekly task
 * ecrr - loads Earthcube Resource Registry
@@ -231,13 +232,13 @@ use the [ENVFIle plugin.](https://plugins.jetbrains.com/plugin/7861-envfile)
 1. move to the  implnets/deployment directory
 2. copy the envFile.env to .env [see](#environment-files)  use the [ENVFIle plugin.](https://plugins.jetbrains.com/plugin/7861-envfile)
 3. edit the entries to point at Geocodes services:
-   * minio/s3 - oss.geocodes-aws-dev.earthcube.org
-   * blazegraph graph.geocodes-aws-dev.earthcube.org
-   * container deployment portainer.geocodes-aws-dev.earthcube.org
+    * minio/s3 - oss.geocodes-aws-dev.earthcube.org
+    * blazegraph graph.geocodes-aws-dev.earthcube.org
+    * container deployment portainer.geocodes-aws-dev.earthcube.org
 4. edit configuration files in implnets/configs/PROJECT (aka eco): gleanerconfig.yaml, tenant.yaml
 5. upload configuration implnets/configs/PROJECT (aka eco) to s3 scheduler/configs: gleanerconfig.yaml, tenant.yaml
 4. run a Pycharm runconfig 
-   * eg _dagster_ingest_debug_
+    * eg _dagster_ingest_debug_
 4. go to http://localhost:3000/
 6. you can [test the schedules](#test-schedules) 
 
@@ -308,25 +309,26 @@ You can update a config, and a sensor should pick up the changes.
 3. go to  s3_config_source_sensor  for gleanerconfig.yaml changes, and s3_config_tenant_sensor for tenant.yaml changes
  ![sensor](images/sources_sensor.png).
 3. at some point, a run should occur.  ![run](images/runs.png).
-4. then go to the sources_sensor, or tenant sensor 
-if job does not run, you can do a backfill.
+4. then go to the sources_sensor, or tenant sensor and watch to see that it triggers a run. Then go to runs and see it run
+    * if job does not run, you can do a backfill.
 
 #### new sources:
 
-6.  so to job tab, and run summon_and_release with the 'partitions' aka 'sources' that are recent.
-7. click materialize_all, and in the backfill dialog be sure only the added partition is selected.  ![backfill](images/materialize.png).
-8. go to runs, and see that a job with a partition with that name is queued/running
-9. run tenant_release_job with same partition name to load data to tenants
+1. so to job tab, and run summon_and_release with the 'partitions' aka 'sources' that are recent.
+2. click materialize_all, and in the backfill dialog be sure only the added partition is selected.  ![backfill](images/materialize.png).
+3. go to runs, and see that a job with a partition with that name is queued/running
+4. run tenant_release_job with same partition name to load data to tenants
 
 
 #### new tenants:
 
 There are two jobs that need to run to move data to a tenant. (third will be needed for UI)
-6.  so to job tab, and run tenant_namespaces_job with the 'partitions' aka 'tenant' that are recent.'
-7. click materialize_all, and be sure only the added partition is selected
-8. go to runs, and see that a job with a partition with that name is queded,/running
-6.  so to job tab, and run tenant_release_job with the 'partitions' aka 'sources' for that tenant
-7. click materialize_all, The data will be pushed to all tenant namespaces
+
+1. so to job tab, and run tenant_namespaces_job with the 'partitions' aka 'tenant' that are recent.'
+2. click materialize_all, and be sure only the added partition is selected
+3. go to runs, and see that a job with a partition with that name is queded,/running
+4. so to job tab, and run tenant_release_job with the 'partitions' aka 'sources' for that tenant
+5. click materialize_all, The data will be pushed to all tenant namespaces
 
 ## test schedules
  
