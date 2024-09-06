@@ -283,8 +283,9 @@ use the [ENVFIle plugin.](https://plugins.jetbrains.com/plugin/7861-envfile)
 4. go to http://localhost:3000/
 6. you can [test the schedules](#test-schedules) 
 
-## full stack test Run local with remote services
+## full stack test Run local with remote gleanerio container services
 This will deploy a set of containers to your local docker.
+to simplify, we use remote gleanerio container.
 (this needs work)
 
 1. move to the implnets/deployment directory
@@ -377,6 +378,7 @@ There are two jobs that need to run to move data to a tenant. (third will be nee
 ![schedules example](images/schedules_example.png)
 ![schedules select](images/schedules_select.png)
 ![schedules test](images/schedules_test.png)
+
 ### Environment files
 
 1. cp deployment/envFile.env .env
