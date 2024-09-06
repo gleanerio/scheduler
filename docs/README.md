@@ -15,10 +15,10 @@ basic view and doesn't present any scaling or fail over elements.
 
 The key elements are:
 
-* sources to configuration  to load into the Gleaner and Nabu tools, and push to the triplestore. These are now stored in
-an s3 location
-    * gleaner configuration. a list of sources to load. (NOTE: This is also a docker config that needs to be updated to mactch to make things work)
-    * tenant configuration. a list communities, and which sources they load
+* source  configurations  to load into the Gleaner and Nabu tools, and push to the triplestore. These are now stored in
+a s3 location
+    * _gleaner configuration_. a list of sources to load. (NOTE: This is also a docker config that needs to be updated to mactch to make things work)
+    * _tenant configuration_. a list communities, and which sources they load
 * The Dagster set which loads three containers to support workflow operations
 * The Gleaner Architecture images which loads three or more containers to support 
     * s3 object storage
@@ -27,13 +27,14 @@ an s3 location
     * any other support packages like text, semantic or spatial indexes
 
 
+
 ### WORKFLOWS
 
 There are three workflows:
 
-* ingest works to load sources
-* tasks weekly task
-* ecrr - loads Earthcube Resource Registry
+* **ingest** - works to load sources
+* **tasks** - weekly task
+* **ecrr** - loads Earthcube Resource Registry
 
 
 
@@ -101,6 +102,46 @@ flowchart LR
 3. portainer deploys containers
 4. when ingest and tasks are executed, they read
 
+```mermaid
+---
+title: Dagster Deployment Elements
+---
+flowchart LR
+    subgraph DockerCompose[Docker Compose Stacks]
+            maincompose[dagster/implents/deployment/compose_project.yaml]
+            project_overrides[dagster/implnets/deployment/compose_project_eco_override.yaml]
+    end
+    
+    subgraph Config
+         subgraph s3 [ path bucket/scheduler/configs/config]
+            gleanconfig[gleanerconfig.yaml]
+            tenant[tenant.yaml]
+            
+        end
+        
+        subgraph Dagster/Config
+            workflow[ workspace-project ]
+            container-config-gleaner[gleaner-project]
+            container-config-nabu[nabu-project]
+            dagster[dagster]
+        end
+        env['environment variables']
+
+    end
+    env -- many--> maincompose
+    env -- many --> project_overrides
+    env -- GLEANERIO_DOCKER_WORKSPACE_CONFIG --> workflow
+    env -- GLEANERIO_DOCKER_GLEANER_CONFIG--> container-config-gleaner
+    env -- GLEANERIO_DOCKER_NABU_CONFIG--> container-config-nabu
+    env -- GLEANERIO_DOCKER_DAGSTER_CONFIG --> dagster
+    env -- GLEANERIO_CONFIG_PATH --> s3
+```
+
+The deployment of the docker compose stacks utilize many variables, including the ones shown in config.
+
+The names workspace-project, gleaner-project are stored in the environment variables, so the configurations can be easily updated.
+
+The path of the configuraiton files in the s3 bucket used to allow for easier testing. The filenames are usually not changed, but can be. GLEANERIO_SOURCES_FILENAME, GLEANERIO_TENANT_FILENAME
 
 #### Ingest Workflow
 ```mermaid
