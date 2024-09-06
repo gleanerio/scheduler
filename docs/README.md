@@ -17,14 +17,14 @@ The key elements are:
 
 * sources to configuration  to load into the Gleaner and Nabu tools, and push to the triplestore. These are now stored in
 an s3 location
-  * gleaner configuration. a list of sources to load. (NOTE: This is also a docker config that needs to be updated to mactch to make things work)
-  * tenant configuration. a list communities, and which sources they load
+    * gleaner configuration. a list of sources to load. (NOTE: This is also a docker config that needs to be updated to mactch to make things work)
+    * tenant configuration. a list communities, and which sources they load
 * The Dagster set which loads three containers to support workflow operations
 * The Gleaner Architecture images which loads three or more containers to support 
-  * s3 object storage
-  * graph database (triplestore)
-  * headless chrome for page rendering to support dynamically inserted JSON-LD
-  * any other support packages like text, semantic or spatial indexes
+    * s3 object storage
+    * graph database (triplestore)
+    * headless chrome for page rendering to support dynamically inserted JSON-LD
+    * any other support packages like text, semantic or spatial indexes
 
 
 ### WORKFLOWS
@@ -227,6 +227,7 @@ We use portainer to manage our docker deployments.
 You can test components in pycharm. Run configurations for pycgharm  are in runConfigurations (TODO: Instructions)
 use the [ENVFIle plugin.](https://plugins.jetbrains.com/plugin/7861-envfile) 
 ![pycharm runconfig](images/pycharm_runconfig.png)
+
 1. move to the  implnets/deployment directory
 2. copy the envFile.env to .env [see](#environment-files)  use the [ENVFIle plugin.](https://plugins.jetbrains.com/plugin/7861-envfile)
 3. edit the entries to point at Geocodes services:
@@ -243,6 +244,7 @@ use the [ENVFIle plugin.](https://plugins.jetbrains.com/plugin/7861-envfile)
 ## full stack test Run local with remote services
 This will deploy a set of containers to your local docker.
 (this needs work)
+
 1. move to the implnets/deployment directory
 2. copy the envFile.env to .env [see](#environment-files)use the [ENVFIle plugin.](https://plugins.jetbrains.com/plugin/7861-envfile) [see](#environment-files)  use the [ENVFIle plugin.](https://plugins.jetbrains.com/plugin/7861-envfile) 
 3. edit the entries.
@@ -256,9 +258,10 @@ To deploy in portainer, use the deployment/compose_project.yaml docker stack.
 ### docker compose Configuration:
 there are configuration  files that are needed.
 They are installed in two places:
+
 * as docker configs
 * as scheduler configs in S3
-* 
+
 **Note:** env(variable). These are environment variables substituted in the docker compose files.
  
 NOTE: the (gleaner/nabu) configs still need to be mounted in the containers executing gleaner and nabu
@@ -283,7 +286,7 @@ NOTE: the (gleaner/nabu) configs still need to be mounted in the containers exec
 | gleanerconfig.yaml  | configs/PROJECT/gleanerconfigs.yaml                       | env (GLEANERIO_DOCKER_GLEANER_CONFIG)        | mounted in container |
 | nabuconfig.yaml | configs/PROJECT/nabuconfigs.yaml                          | env (GLEANERIO_DOCKER_NABU_CONFIG)        |   mounted in container                   |
 
-3) when the containers are running in a  stack, on portainer, there will need to
+when the containers are running in a  stack, on portainer, there will need to
    be updated by pulling from dockerhub. The ENV variables may need to be updated for the CONTAINER*_TAG
 
 
@@ -298,27 +301,32 @@ NOTE: the (gleaner/nabu) configs still need to be mounted in the containers exec
 
 ### updating config
 You can update a config, and a sensor should pick up the changes.
-1) Upload changed file to s3
-   2) note, if this is a new source, you need to update the  docker config, by cloning, and editing the file. Then change the variable env (GLEANERIO_DOCKER_GLEANER_CONFIG) to that name
-2) go to overview, ![overview](images/overview_sensors_tab.png)
-3) go to  s3_config_source_sensor  for gleanerconfig.yaml changes, and s3_config_tenant_sensor for tenant.yaml changes
+
+1. Upload changed file to s3
+    * note, if this is a new source, you need to update the  docker config, by cloning, and editing the file. Then change the variable env (GLEANERIO_DOCKER_GLEANER_CONFIG) to that name
+2. go to overview, ![overview](images/overview_sensors_tab.png)
+3. go to  s3_config_source_sensor  for gleanerconfig.yaml changes, and s3_config_tenant_sensor for tenant.yaml changes
  ![sensor](images/sources_sensor.png).
-4) at some point, a run should occur.  ![run](images/runs.png).
-5) then go to the sources_sensor, or tenant sensor 
+3. at some point, a run should occur.  ![run](images/runs.png).
+4. then go to the sources_sensor, or tenant sensor 
 if job does not run, you can do a backfill.
+
 #### new sources:
-6)  so to job tab, and run summon_and_release with the 'partitions' aka 'sources' that are recent.
-7) click materialize_all, and in the backfill dialog be sure only the added partition is selected.  ![backfill](images/materialize.png).
-8) go to runs, and see that a job with a partition with that name is queued/running
-9) run tenant_release_job with same partition name to load data to tenants
-###
+
+6.  so to job tab, and run summon_and_release with the 'partitions' aka 'sources' that are recent.
+7. click materialize_all, and in the backfill dialog be sure only the added partition is selected.  ![backfill](images/materialize.png).
+8. go to runs, and see that a job with a partition with that name is queued/running
+9. run tenant_release_job with same partition name to load data to tenants
+
+
 #### new tenants:
+
 There are two jobs that need to run to move data to a tenant. (third will be needed for UI)
-6)  so to job tab, and run tenant_namespaces_job with the 'partitions' aka 'tenant' that are recent.'
-7) click materialize_all, and be sure only the added partition is selected
-8) go to runs, and see that a job with a partition with that name is queded,/running
-6)  so to job tab, and run tenant_release_job with the 'partitions' aka 'sources' for that tenant
-7) click materialize_all, The data will be pushed to all tenant namespaces
+6.  so to job tab, and run tenant_namespaces_job with the 'partitions' aka 'tenant' that are recent.'
+7. click materialize_all, and be sure only the added partition is selected
+8. go to runs, and see that a job with a partition with that name is queded,/running
+6.  so to job tab, and run tenant_release_job with the 'partitions' aka 'sources' for that tenant
+7. click materialize_all, The data will be pushed to all tenant namespaces
 
 ## test schedules
  
@@ -328,9 +336,9 @@ There are two jobs that need to run to move data to a tenant. (third will be nee
 ![schedules test](images/schedules_test.png)
 ### Environment files
 
-1) cp deployment/envFile.env .env
-2) edit
-3) `export $(cat .env | xargs)`
+1. cp deployment/envFile.env .env
+2. edit
+3. `export $(cat .env | xargs)`
 export $(cat .env | xargs)
 ```yaml
 ######
