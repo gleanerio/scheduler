@@ -297,7 +297,7 @@ def _get_client(docker_container_context: DockerContainerContext):
 
 def _create_service(
     op_context: OpExecutionContext,
-    client,
+    client: docker.DockerClient,
     container_context: DockerContainerContext,
     image: str,
     entrypoint: Optional[Sequence[str]],
