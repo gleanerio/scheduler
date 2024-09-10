@@ -14,6 +14,20 @@ run_launcher:
       - DAGSTER_POSTGRES_USER
       - DAGSTER_POSTGRES_PASSWORD
       - DAGSTER_POSTGRES_DB
+      - GLEANERIO_MINIO_ADDRESS
+      - GLEANERIO_MINIO_PORT
+      - GLEANERIO_MINIO_USE_SSL
+      - GLEANERIO_MINIO_BUCKET
+      - GLEANERIO_MINIO_ACCESS_KEY
+      - GLEANERIO_MINIO_SECRET_KEY
+      - GLEANERIO_HEADLESS_ENDPOINT
+      - GLEANERIO_GRAPH_URL
+      - GLEANERIO_GRAPH_NAMESPACE
+      - GLEANERIO_DATAGRAPH_ENDPOINT
+      - GLEANERIO_PROVGRAPH_ENDPOINT
+      - GLEANERIO_GLEANER_IMAGE
+      - GLEANERIO_NABU_IMAGE
+      
     network: docker_example_network
     container_kwargs:
       volumes: # Make docker client accessible to any launched containers as well
