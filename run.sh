@@ -11,6 +11,24 @@ helpFunction()
    exit 1 # Exit script after printing help
 }
 
+# CHeck if a .env file exists, otherwise prompt the user to create one by coping a .env.example file
+if [ ! -f .env ]; then
+   echo "Missing .env file. Do you want to copy .env.example to .env ? (y/n)"
+   read answer
+   if [ "$answer" == "y" ] || [ "$answer" == "Y" ]; then
+      cp .env.example .env
+   else
+      exit 1
+   fi 
+fi
+
+
+# Build local artifacts
+if [ ! -d .venv ]; then
+    python3 -m venv .venv
+fi
+source .venv/bin/activate
+python3 -m pip install -r requirements.txt
 python3 main.py all
 
 # reset the swarm if it exists
