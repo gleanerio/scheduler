@@ -270,18 +270,75 @@ You can test components in pycharm. Run configurations for pycgharm  are in runC
 use the [ENVFIle plugin.](https://plugins.jetbrains.com/plugin/7861-envfile) 
 ![pycharm runconfig](images/pycharm_runconfig.png)
 
-1. move to the  implnets/deployment directory
-2. copy the envFile.env to .env [see](#environment-files)  use the [ENVFIle plugin.](https://plugins.jetbrains.com/plugin/7861-envfile)
-3. edit the entries to point at Geocodes services:
-    * minio/s3 - oss.geocodes-aws-dev.earthcube.org
-    * blazegraph graph.geocodes-aws-dev.earthcube.org
-    * container deployment portainer.geocodes-aws-dev.earthcube.org
-4. edit configuration files in implnets/configs/PROJECT (aka eco): gleanerconfig.yaml, tenant.yaml
-5. upload configuration implnets/configs/PROJECT (aka eco) to s3 scheduler/configs: gleanerconfig.yaml, tenant.yaml
-4. run a Pycharm runconfig 
-    * eg _dagster_ingest_debug_
-4. go to http://localhost:3000/
-6. you can [test the schedules](#test-schedules) 
+### Setup Dagster on Local 
+1. Needs to get access to the followings
+https://minioadmin.geocodes-aws-dev.earthcube.org/
+https://graph.geocodes-aws-dev.earthcube.org/blazegraph
+https://portainer.geocodes-aws-dev.earthcube.org/
+2. Git clone repo https://github.com/earthcube/scheduler
+3. Install pycharm
+4. Go to terminal > Cd scheduler/dagster/implnets and run 
+    pip install -r requirements.txt
+5. Go to Pycharm settings > Plugins and suggest installing the followings: 
+   - Mermaid, (for docs)
+   - RDf and SPARQL (paid version, comes free with .edu email address)
+   - Big Data Tools Core 
+   - Big Data File Viewer 
+6. Need to create a bucket for testing in Minio 
+   - Go to https://minioadmin.geocodes-aws-dev.earthcube.org/
+   - Go to Buckets on left menu Create a new bucket. This bucket will be used for storage for running dagster.
+   ![minio_create_bucket](images/minio_create_bucket.png)
+7. Go to https://graph.geocodes-aws-dev.earthcube.org/blazegraph
+   - Go to Namespaces 
+   - Create a new namespace with quads (Note: fill in the details and then click on ‘Create new namespace’)
+![blazegraph_create_namespace](images/blazegraph_namespace_quads.png)
+
+   - Create another one with triples
+![blazegraph_create_namespace](images/blazegraph_namespace_triples.png)
+The result graphs will be stored here. We are using both quads and triples for rdf queries.
+8. Go to portainer https://portainer.geocodes-aws-dev.earthcube.org and create new access token and keep it somewhere safe.
+![portainer](images/portainer_access_token.png)
+
+9. In pycharm 
+   - Cd implnets/deployment 
+   - Copy envFile.env to .env 
+   - Edit the followings in .env 
+     - Use absolute path for property DAGSTER_HOME 
+     - Set GLEANERIO_MINIO_ADDRESS=oss.geocodes-aws-dev.earthcube.org (minio address)
+     - Set GLEANERIO_MINIO_PORT=443 
+     - Set GLEANERIO_MINIO_USE_SSL=true 
+     - Set GLEANERIO_MINIO_BUCKET=<minio_bucket_name>
+     - Set GLEANERIO_MINIO_ACCESS_KEY and Set GLEANERIO_MINIO_SECRET_KEY (ask one of team members for the credentials)
+     - Set GLEANERIO_GRAPH_URL=https://graph.geocodes-aws-dev.earthcube.org/blazegraph
+     - Set GLEANERIO_GRAPH_NAMESPACE=<blazegraph namespace with quads>
+     - Set GLEANERIO_GRAPH_SUMMARY_NAMESPACE=<blazegraph namespace with triples>
+     - Go to poratiner > Containers and get the url from browser.Replace #! Via api/endpoints and it should looks similar to 
+        https://portainer.geocodes-aws-dev.earthcube.org:443/api/endpoints/2/docker/
+     - Set GLEANERIO_DOCKER_URL=<above url>
+     - Set GLEANERIO_PORTAINER_APIKEY=<poratiner_access_key>
+     - Edit the followings in configs/eco/gleanerconfig.yaml (ask one of the team members)
+     - gEdit the followings in configs/eco/tenant.yaml
+               Set the namespace and Set main_namespace and main_namespace_summary
+        tenant:
+        - community: dev
+          hostname: dipa
+          description: GeoCodes is...
+          name: Geocodes Science on Schema
+          url: https://www.earthcube.org
+          logo: https://unsplash.com/random
+          graph:
+            main_namespace: test_dipa
+            summary_namespace: test_dipa_summary
+          sources:
+            - iris
+            - geocodes_demo_datasets
+     Iris and geocodes_demo_datasets are the datasets the code will run on. Comment out rest of the things in tenant.yaml if you don’t want the code to run on all the datasets. 
+
+10. run dagster_ingest_debug from Pycharm runconfig
+   The local should be up and running
+   localhost:3000 
+11. You can [test the schedules](#test-schedules)
+
 
 ## full stack test Run local with remote gleanerio container services
 This will deploy a set of containers to your local docker.
