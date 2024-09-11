@@ -11,6 +11,24 @@ helpFunction()
    exit 1 # Exit script after printing help
 }
 
+# CHeck if a .env file exists, otherwise prompt the user to create one by coping a .env.example file
+if [ ! -f .env ]; then
+   echo "Missing .env file. Do you want to copy .env.example to .env ? (y/n)"
+   read answer
+   if [ "$answer" == "y" ] || [ "$answer" == "Y" ]; then
+      cp .env.example .env
+   else
+      exit 1
+   fi 
+fi
+
+
+# Build local artifacts
+if [ ! -d .venv ]; then
+    python3 -m venv .venv
+fi
+source .venv/bin/activate
+python3 -m pip install -r requirements.txt
 python3 main.py all
 
 # reset the swarm if it exists
@@ -27,7 +45,7 @@ if [ -f $envfile ]
     export $(sed  '/^[ \t]*#/d' $envfile |  sed '/^$/d' | xargs)
   else
     echo "missing environment file. pass flag, or copy and edit file"
-    echo "cp envFile.env .env"
+    echo "cp .env.example .env"
     echo "OR"
     echo "cp {yourenv}.env .env"
     exit 1
@@ -124,6 +142,5 @@ mkdir -p /tmp/io_manager_storage
 docker build -t docker_example_user_code_image -f ./Docker/Dockerfile_user_code .
 docker build -t docker_example_webserver_image -f ./Docker/Dockerfile_dagster .
 docker build -t docker_example_daemon_image -f ./Docker/Dockerfile_dagster .
-
 
 docker stack deploy -c docker-compose.yaml e2edagster --detach=false
