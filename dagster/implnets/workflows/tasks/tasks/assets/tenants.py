@@ -18,6 +18,7 @@ asset_sensor, AssetKey,
 from ec.datastore import s3
 from distutils import util
 from ..resources.gleanerS3 import _pythonMinioAddress
+from ec.reporting.report import generateReportStats
 
 GLEANER_MINIO_ADDRESS = os.environ.get('GLEANERIO_MINIO_ADDRESS')
 GLEANER_MINIO_PORT = os.environ.get('GLEANERIO_MINIO_PORT')
@@ -25,17 +26,26 @@ GLEANER_MINIO_USE_SSL = bool(util.strtobool(os.environ.get('GLEANERIO_MINIO_USE_
 GLEANER_MINIO_SECRET_KEY = os.environ.get('GLEANERIO_MINIO_SECRET_KEY')
 GLEANER_MINIO_ACCESS_KEY = os.environ.get('GLEANERIO_MINIO_ACCESS_KEY')
 GLEANER_MINIO_BUCKET = os.environ.get('GLEANERIO_MINIO_BUCKET')
+GLEANERIO_GRAPH_URL = os.environ.get('GLEANERIO_GRAPH_URL')
+GLEANERIO_GRAPH_SUMMARY_NAMESPACE = os.environ.get('GLEANERIO_GRAPH_SUMMARY_NAMESPACE')
+GLEANERIO_CSV_CONFIG_URL = os.environ.get('GLEANERIO_CSV_CONFIG_URL')
 
 MINIO_OPTIONS={"secure":GLEANER_MINIO_USE_SSL
 
               ,"access_key": GLEANER_MINIO_ACCESS_KEY
               ,"secret_key": GLEANER_MINIO_SECRET_KEY
                }
+
+def _graphSummaryEndpoint(community):
+    if community == "all":
+        url = f"{GLEANERIO_GRAPH_URL}/namespace/{GLEANERIO_GRAPH_SUMMARY_NAMESPACE}/sparql"
+    else:
+        url = f"{GLEANERIO_GRAPH_URL}/namespace/{community}_summary/sparql"
+    return url
 @asset(group_name="community",key_prefix="task",
        required_resource_keys={"triplestore"})
 def task_tenant_sources(context) ->Any:
     s3_resource = context.resources.triplestore.s3
-
     t=s3_resource.getTennatInfo()
     tenants = t['tenant']
     listTenants = map (lambda a: {a['community']}, tenants)
@@ -144,11 +154,9 @@ def loadstatsCommunity(context, task_tenant_sources) -> str:
         ts = task_tenant_sources
         t =list(filter ( lambda a: a['community']== community_code, ts["tenant"] ))
         s = t[0]["sources"]
+
         for source in s:
-
             dirs = s3Minio.listPath(GLEANER_MINIO_BUCKET,path=f"{REPORT_PATH}{source}/",recursive=False )
-
-
             for d in dirs:
                 latestpath = f"{REPORT_PATH}{source}/latest/"
                 if (d.object_name.casefold() == latestpath.casefold()) or (d.is_dir == False):
@@ -210,4 +218,14 @@ def loadstatsCommunity(context, task_tenant_sources) -> str:
     #     s3.upload_fileobj(f, s3.GLEANERIO_MINIO_BUCKET, f"data/all/all_stats.csv")
     context.log.info(f"all_stats.csv uploaded using ec.datastore.putReportFile {s3_config.GLEANERIO_MINIO_BUCKET}tenant/{community_code} ")
     #return df_csv # now checking return types
+
+    context.log.info(f"GLEANERIO_CSV_CONFIG_URL {GLEANERIO_CSV_CONFIG_URL}  ")
+
+    report = generateReportStats(GLEANERIO_CSV_CONFIG_URL, s3_config.GLEANERIO_MINIO_BUCKET, s3Minio,
+                                 _graphSummaryEndpoint(community_code), community_code)
+    bucket, object = s3Minio.putReportFile(s3_config.GLEANERIO_MINIO_BUCKET, f"tenant/{community_code}",
+                                           f"report_stats.json", report)
+    context.log.info(
+        f"report_stats.json uploaded using ec.datastore.putReportFile {s3_config.GLEANERIO_MINIO_BUCKET}tenant/{community_code} ")
+
     return df_csv

@@ -13,6 +13,7 @@ on:
       - dev_eco
       - v0_generated_code
       - 133_dev_sitemaps
+      - 151-integrate-community-stats-codes
     tags:
       - "v*.*.*"
 
