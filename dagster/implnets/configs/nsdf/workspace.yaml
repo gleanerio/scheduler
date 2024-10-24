@@ -7,5 +7,12 @@ load_from:
 #          relative_path: "workflows/ecrr/repositories/repository.py"
 #          working_directory: "./workflows/ecrr/"
       # module starting out with the definitions api
-      - python_module: "workflows.tasks.tasks"
+      - grpc_server:
+            host: dagster-code-ingest
+            port: 4000
+            location_name: "ingest"
+#      - grpc_server:
+#            host: dagster-code-project
+#            port: 4000
+#            location_name: "project_grpc"
 

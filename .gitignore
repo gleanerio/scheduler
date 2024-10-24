@@ -8,3 +8,10 @@ venv/**
 /dagster/.telemetry/
 /dagster/.telemetry/
 .env
+
+/dagster/implnets/generatedCode/implnet-*/output/
+
+/dagster/implnets/deployment/prod.env
+
+**/tmp**
+/dagster/dagster_home/

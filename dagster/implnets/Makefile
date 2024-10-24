@@ -2,6 +2,14 @@
 .SHELLFLAGS += -e
 VERSION :=`cat VERSION`
 
+# ----  workflows  ----
+# no code generation is neede for workflows
+
+wf-build:
+	podman build  --tag="docker.io/fils/dagster_wf:$(VERSION)"  --build-arg implnet=eco --file=./build/Dockerfile_workflows .
+
+wf-push:
+	podman push docker.io/fils/dagster_wf:$(VERSION)
 
 # ----  ECO  ----
 

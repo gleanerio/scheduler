@@ -20,6 +20,26 @@ minio:
     accesskey:
     secretkey:
 sources:
+    # not a sitemap... an s3 directory.. readable by nabu... but this will be difficult.
+#    - sourcetype: sitemap
+#      name: resource_registry
+#      logo: https://www.earthcube.org/sites/default/files/doc-repository/logo_earthcube_full_horizontal.png
+#      url: https://object.cloud.sdsc.edu/v1/AUTH_85f46aa78936477d8e71b186269414e8/gleaner-summoned
+#      headless: false
+#      pid: ""
+#      propername: Resource Registry
+#      domain: http://www.earthcube.org/resourceregistry/
+#      active: true
+#      credentialsfile: ""
+#      other: { }
+#      headlesswait: 0
+#      delay: 0
+#      identifierpath: $.@id
+#      apipagelimit: 0
+#      identifiertype: identifierstring
+#      fixcontextoption: 0
+#      acceptcontenttype: application/ld+json, text/html
+#      jsonprofile: application/ld+json
     - sourcetype: googledrive
       name: ecrr_submitted
       logo: https://www.earthcube.org/sites/default/files/doc-repository/logo_earthcube_full_horizontal.png
@@ -42,7 +62,7 @@ sources:
     - sourcetype: sitemap
       name: ecrr_examples
       logo: https://www.earthcube.org/sites/default/files/doc-repository/logo_earthcube_full_horizontal.png
-      url: https://raw.githubusercontent.com/earthcube/ecrro/gh-pages/Examples/sitemap.xml
+      url: https://earthcube.github.io/ecrro/Examples/sitemap.xml
       headless: false
       pid: ""
       propername: Earthcube Resource Registry Examples
