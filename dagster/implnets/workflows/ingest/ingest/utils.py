@@ -5,6 +5,8 @@ def PythonMinioAddress(url, port=None):
         PYTHON_MINIO_URL = "s3.amazonaws.com"
     else:
         PYTHON_MINIO_URL = url
-    if port is not None:
+
+    if port is not None and port != "":
         PYTHON_MINIO_URL = f"{PYTHON_MINIO_URL}:{port}"
+
     return PYTHON_MINIO_URL

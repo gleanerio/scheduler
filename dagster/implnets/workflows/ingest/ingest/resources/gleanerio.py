@@ -132,7 +132,7 @@ class GleanerioResource(ConfigurableResource):
 
     def _get_client(self, docker_container_context: DockerContainerContext):
         headers = {'X-API-Key': self.GLEANERIO_PORTAINER_APIKEY}
-        client = docker.DockerClient(base_url=self.GLEANERIO_DOCKER_URL, version="1.43")
+        client = docker.DockerClient(base_url=self.GLEANERIO_DOCKER_URL, version="1.47")
         # client = docker.APIClient(base_url=URL, version="1.35")
         get_dagster_logger().info(f"create docker client")
         if (client.api._general_configs):
