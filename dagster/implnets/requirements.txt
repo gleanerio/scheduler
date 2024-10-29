@@ -17,8 +17,8 @@ pydash
 pyyaml
 orjson
 
-earthcube-utilities>=0.1.26
-#earthcube-utilities @ git+https://github.com/earthcube/earthcube_utilities@5d2158f#subdirectory=earthcube_utilities
+#earthcube-utilities>=0.1.26
+earthcube-utilities @ git+https://github.com/earthcube/earthcube_utilities@dev#egg=earthcube_utilities&subdirectory=earthcube_utilities
 
 # if we want to use an non-released branch 2c1dcab is the commit
 # earthcube-utilities @ git+https://github.com/earthcube/earthcube_utilities@2c1dcab#subdirectory=earthcube_utilities
