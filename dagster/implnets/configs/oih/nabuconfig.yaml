@@ -14,10 +14,10 @@ contextmaps:
   - prefix: "http://schema.org/"
     file: "/assets/schemaorg-current-http.jsonld"  # wget http://schema.org/docs/jsonldcontext.jsonld
 implementation_network:
- orgname: eco
+  orgname: oih
 endpoints:
   - service: ec_blazegraph
-    baseurl: https://graph.geocodes-aws-dev.earthcube.org/blazegraph/namespace/test
+    baseurl: http://nas.lan:49153/blazegraph/namespace/oih_prod
     type: blazegraph
     authenticate: false
     username:
