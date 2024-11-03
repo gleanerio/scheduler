@@ -10,5 +10,8 @@ structured data on the web.
 
 Details of the approach can be found in the [github io](https://earthcube.github.io/scheduler/).
 
+NOTE: Generate code brach v0_generated_code branch
+This is the original code that utilized a generate code approach to build the workflows. 
+v0_generated_code is where gleaner and nabu config file updates should be done when using the original code
 
 

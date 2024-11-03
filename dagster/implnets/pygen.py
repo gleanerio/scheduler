@@ -6,7 +6,7 @@ import os
 import fileinput
 import re
 import shutil
-
+import pydash
 
 #  python pygen.py -cf ../../configs/oih/gleanerconfig.yaml -od ./output -td ./templates
 
@@ -24,8 +24,9 @@ def gencode(cf, od, td, days) -> str:
         inc = round(hours / len(c["sources"])) # divide hours we want to run over by number of source to get increment
 
         print("index event every {} hours over {} day(s) period for {} items".format(inc, days, len(c["sources"])))
-
-        for i, s in enumerate(c["sources"]):
+        sources = pydash.union_by(c["sources"], lambda source: source["name"])
+        #for i, s in enumerate(c["sources"]):
+        for i, s in enumerate(sources):
 
             # could put an if statement here for those that are active
             # print(s["name"])

@@ -1,10 +1,11 @@
-
-dagit>=1.4.2
-dagster-postgres>=0.20.2
-dagster>=1.4.2
-dagster-webserver>=1.4.2
-dagster-docker
-dagster-aws
+dagit>=1.7.7
+dagster-postgres>=0.23.7
+dagster>=1.7.7
+dagster-webserver>=1.7.7
+dagster-docker>=0.23.7
+dagster-aws>=0.23.7
+dagstermill>=0.23.7
+dagster_slack>=0.23.7
 ###
 # this are modules that are not part of dagster base image
 # ipython-genutils==0.2.0
@@ -12,7 +13,7 @@ dagster-aws
 # minio==7.1.13
 # docker>=6.1.0
 #
-# earthcube-utilities>=0.1.17
+# earthcube-utilities>=0.1.25
 
 
 

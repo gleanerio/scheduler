@@ -1,7 +1,9 @@
+import csv
 import distutils
 import logging
 import time
 
+import pandas
 from dagster import job, op, graph,In, Nothing, get_dagster_logger
 import os, json, io
 import urllib
@@ -12,10 +14,12 @@ from docker.types import RestartPolicy, ServiceMode
 from ec.gleanerio.gleaner import getGleaner, getSitemapSourcesFromGleaner, endpointUpdateNamespace
 import json
 
+from ec.graph.release_graph import ReleaseGraph
 from minio import Minio
 from minio.error import S3Error
 from datetime import datetime
-from ec.reporting.report import missingReport, generateGraphReportsRepo, reportTypes, generateIdentifierRepo
+from ec.reporting.report import missingReport, generateGraphReportsRepo, reportTypes, generateIdentifierRepo, \
+    generateGraphReportsRelease
 from ec.datastore import s3
 from ec.summarize import summaryDF2ttl, get_summary4graph, get_summary4repoSubset
 from ec.graph.manageGraph import ManageBlazegraph as mg
@@ -36,19 +40,19 @@ from dagster_docker.docker_run_launcher import DockerRunLauncher
 from dagster_docker.utils import DOCKER_CONFIG_SCHEMA, validate_docker_image
 from docker.types.services import ContainerSpec, TaskTemplate, ConfigReference
 
-DEBUG=(os.getenv('DEBUG', 'False').lower()  == 'true')
+DEBUG=(os.getenv('DEBUG_CONTAINER', 'False').lower()  == 'true')
 # #
 # path to gleaner config in Dagster-daemon is "/scheduler/gleanerconfig.yaml" (config file mounted)
 #  WHEN RUNNING dagster-dev, this needs to be a path to a local file
 ##
-DAGSTER_GLEANER_CONFIG_PATH = os.environ.get('DAGSTER_GLEANER_CONFIG_PATH', "/scheduler/gleanerconfig.yaml")
+DAGSTER_GLEANER_CONFIG_PATH = os.environ.get('GLEANERIO_DAGSTER_CONFIG_PATH', "/scheduler/gleanerconfig.yaml")
 
 # Vars and Envs
-GLEANER_HEADLESS_NETWORK=os.environ.get('GLEANERIO_HEADLESS_NETWORK', "headless_gleanerio")
+GLEANER_HEADLESS_NETWORK=os.environ.get('GLEANERIO_DOCKER_HEADLESS_NETWORK', "headless_gleanerio")
 # env items
-URL = os.environ.get('PORTAINER_URL')
-APIKEY = os.environ.get('PORTAINER_KEY')
-
+URL = os.environ.get('GLEANERIO_DOCKER_URL')
+APIKEY = os.environ.get('GLEANERIO_PORTAINER_APIKEY')
+CONTAINER_WAIT_TIMEOUT= int( os.environ.get('GLEANERIO_DOCKER_CONTAINER_WAIT_TIMEOUT',300))
 
 GLEANER_MINIO_ADDRESS = str(os.environ.get('GLEANERIO_MINIO_ADDRESS'))
 GLEANER_MINIO_PORT = str(os.environ.get('GLEANERIO_MINIO_PORT'))
@@ -77,10 +81,11 @@ GLEANERIO_GLEANER_ARCHIVE_OBJECT = str(os.environ.get('GLEANERIO_GLEANER_ARCHIVE
 GLEANERIO_GLEANER_ARCHIVE_PATH = str(os.environ.get('GLEANERIO_GLEANER_ARCHIVE_PATH', '/gleaner/'))
 GLEANERIO_NABU_ARCHIVE_OBJECT=str(os.environ.get('GLEANERIO_NABU_ARCHIVE_OBJECT', 'scheduler/configs/NabuCfg.tgz'))
 GLEANERIO_NABU_ARCHIVE_PATH=str(os.environ.get('GLEANERIO_NABU_ARCHIVE_PATH', '/nabu/'))
-GLEANERIO_GLEANER_DOCKER_CONFIG=str(os.environ.get('GLEANERIO_GLEANER_DOCKER_CONFIG', 'gleaner'))
-GLEANERIO_NABU_DOCKER_CONFIG=str(os.environ.get('GLEANERIO_NABU_DOCKER_CONFIG', 'nabu'))
+GLEANERIO_DOCKER_GLEANER_CONFIG=str(os.environ.get('GLEANERIO_DOCKER_GLEANER_CONFIG', 'gleaner'))
+GLEANERIO_DOCKER_NABU_CONFIG=str(os.environ.get('GLEANERIO_DOCKER_NABU_CONFIG', 'nabu'))
 #GLEANERIO_SUMMARY_GRAPH_ENDPOINT = os.environ.get('GLEANERIO_SUMMARY_GRAPH_ENDPOINT')
-GLEANERIO_SUMMARY_GRAPH_NAMESPACE = os.environ.get('GLEANERIO_SUMMARY_GRAPH_NAMESPACE',f"{GLEANER_GRAPH_NAMESPACE}_summary" )
+GLEANERIO_SUMMARY_GRAPH_NAMESPACE = os.environ.get('GLEANERIO_GRAPH_SUMMARY_NAMESPACE',f"{GLEANER_GRAPH_NAMESPACE}_summary" )
+GLEANERIO_SUMMARIZE_GRAPH=(os.getenv('GLEANERIO_GRAPH_SUMMARIZE', 'False').lower()  == 'true')
 
 SUMMARY_PATH = 'graphs/summary'
 RELEASE_PATH = 'graphs/latest'
@@ -138,7 +143,7 @@ def s3reader(object):
         get_dagster_logger().info(f"S3 read error : {str(err)}")
 
 
-def s3loader(data, name):
+def s3_log_uploader(data, name, date_string=datetime.now().strftime("%Y_%m_%d_%H_%M_%S")):
     secure= GLEANER_MINIO_USE_SSL
 
     server = _pythonMinioAddress(GLEANER_MINIO_ADDRESS, GLEANER_MINIO_PORT)
@@ -158,8 +163,8 @@ def s3loader(data, name):
     # else:
     #     print("Bucket 'X' already exists")
 
-    now = datetime.now()
-    date_string = now.strftime("%Y_%m_%d_%H_%M_%S")
+    # now = datetime.now()
+    # date_string = now.strftime("%Y_%m_%d_%H_%M_%S")
 
     logname = name + '_{}.log'.format(date_string)
     objPrefix = GLEANERIO_LOG_PREFIX + logname
@@ -167,24 +172,38 @@ def s3loader(data, name):
     #length = f.write(bytes(json_str, 'utf-8'))
     length = f.write(data)
     f.seek(0)
-    client.put_object(GLEANER_MINIO_BUCKET,
-                      objPrefix,
-                      f, #io.BytesIO(data),
-                      length, #len(data),
-                      content_type="text/plain"
-                         )
-    get_dagster_logger().info(f"Log uploaded: {str(objPrefix)}")
-def post_to_graph(source, path=RELEASE_PATH, extension="nq", graphendpoint=_graphEndpoint()):
-    # revision of EC utilities, will have a insertFromURL
-    #instance =  mg.ManageBlazegraph(os.environ.get('GLEANER_GRAPH_URL'),os.environ.get('GLEANER_GRAPH_NAMESPACE') )
-    proto = "http"
+    try:
+        client.put_object(GLEANER_MINIO_BUCKET,
+                          objPrefix,
+                          f, #io.BytesIO(data),
+                          length, #len(data),
+                          content_type="text/plain"
+                             )
+        get_dagster_logger().info(f"Log uploaded: {str(objPrefix)}")
+    except Exception as ex:
+        get_dagster_logger().error(f"Log uploaded failed: {str(objPrefix)}")
 
+def _releaseUrl( source, path=RELEASE_PATH, extension="nq"):
+    proto = "http"
     if GLEANER_MINIO_USE_SSL:
         proto = "https"
-    port = GLEANER_MINIO_PORT
     address = _pythonMinioAddress(GLEANER_MINIO_ADDRESS, GLEANER_MINIO_PORT)
     bucket = GLEANER_MINIO_BUCKET
     release_url = f"{proto}://{address}/{bucket}/{path}/{source}_release.{extension}"
+    return release_url
+
+def post_to_graph(source, path=RELEASE_PATH, extension="nq", graphendpoint=_graphEndpoint()):
+    # revision of EC utilities, will have a insertFromURL
+    #instance =  mg.ManageBlazegraph(os.environ.get('GLEANER_GRAPH_URL'),os.environ.get('GLEANER_GRAPH_NAMESPACE') )
+    # proto = "http"
+    #
+    # if GLEANER_MINIO_USE_SSL:
+    #     proto = "https"
+    # port = GLEANER_MINIO_PORT
+    # address = _pythonMinioAddress(GLEANER_MINIO_ADDRESS, GLEANER_MINIO_PORT)
+    # bucket = GLEANER_MINIO_BUCKET
+    # release_url = f"{proto}://{address}/{bucket}/{path}/{source}_release.{extension}"
+
     # BLAZEGRAPH SPECIFIC
     # url = f"{_graphEndpoint()}?uri={release_url}"  # f"{os.environ.get('GLEANER_GRAPH_URL')}/namespace/{os.environ.get('GLEANER_GRAPH_NAMESPACE')}/sparql?uri={release_url}"
     # get_dagster_logger().info(f'graph: insert "{source}" to {url} ')
@@ -201,6 +220,7 @@ def post_to_graph(source, path=RELEASE_PATH, extension="nq", graphendpoint=_grap
     #     get_dagster_logger().info(f'graph: error')
     #     raise Exception(f' graph: insert failed: status:{r.status_code}')
 
+    release_url = _releaseUrl(source, path, extension)
     ### GENERIC LOAD FROM
     url = f"{graphendpoint}" # f"{os.environ.get('GLEANER_GRAPH_URL')}/namespace/{os.environ.get('GLEANER_GRAPH_NAMESPACE')}/sparql?uri={release_url}"
     get_dagster_logger().info(f'graph: insert "{source}" to {url} ')
@@ -263,13 +283,13 @@ def _create_service(
     serivce_mode = ServiceMode("replicated-job",concurrency=1,replicas=1)
     get_dagster_logger().info(str(client.configs.list()))
   #  gleanerid = client.configs.list(filters={"name":{"gleaner-eco": "true"}})
-    gleanerconfig = client.configs.list(filters={"name": [GLEANERIO_GLEANER_DOCKER_CONFIG]})
+    gleanerconfig = client.configs.list(filters={"name": [GLEANERIO_DOCKER_GLEANER_CONFIG]})
     get_dagster_logger().info(f"docker config gleaner id {str(gleanerconfig[0].id)}")
-    nabuconfig = client.configs.list(filters={"name":[GLEANERIO_NABU_DOCKER_CONFIG]})
+    nabuconfig = client.configs.list(filters={"name":[GLEANERIO_DOCKER_NABU_CONFIG]})
     get_dagster_logger().info(f"docker config nabu id {str(nabuconfig[0].id)}")
     get_dagster_logger().info(f"create docker service for {name}")
-    gleaner = ConfigReference(gleanerconfig[0].id, GLEANERIO_GLEANER_DOCKER_CONFIG,GLEANERIO_GLEANER_CONFIG_PATH)
-    nabu = ConfigReference(nabuconfig[0].id, GLEANERIO_NABU_DOCKER_CONFIG,GLEANERIO_NABU_CONFIG_PATH)
+    gleaner = ConfigReference(gleanerconfig[0].id, GLEANERIO_DOCKER_GLEANER_CONFIG,GLEANERIO_GLEANER_CONFIG_PATH)
+    nabu = ConfigReference(nabuconfig[0].id, GLEANERIO_DOCKER_NABU_CONFIG,GLEANERIO_NABU_CONFIG_PATH)
     configs = [gleaner,nabu]
    # name = name if len(name) else _get_container_name(op_context.run_id, op_context.op.name, op_context.retry_number),
     service = client.services.create(
@@ -307,7 +327,7 @@ def gleanerio(context, mode, source):
     ## ------------   Create
     returnCode = 0
     get_dagster_logger().info(f"Gleanerio mode: {str(mode)}")
-
+    date_string = datetime.now().strftime("%Y_%m_%d_%H_%M_%S")
     if str(mode) == "gleaner":
         IMAGE =GLEANERIO_GLEANER_IMAGE
 
@@ -424,13 +444,8 @@ def gleanerio(context, mode, source):
         data["Env"] = enva
         data["HostConfig"] = {
             "NetworkMode": GLEANER_HEADLESS_NETWORK,
-           # "Binds":  [f"{GLEANER_CONFIG_VOLUME}:/configs"]
         }
-        # data["Volumes"] = [
-        #     "dagster-project:/configs"
-        # ]
-        # we would like this to be "dagster-${PROJECT:-eco}" but that is a bit tricky
-        # end setup of data
+
 
 # docker dagster
         get_dagster_logger().info(f"start docker code region: ")
@@ -468,102 +483,74 @@ def gleanerio(context, mode, source):
         cid = container.id # legacy til the start get's fixed
 
 
+# Removed watching the logs, in favor of periodic upload
+        wait_count = 0
+        while True:
+            wait_count += 1
+            try:
+                container.wait(timeout=CONTAINER_WAIT_TIMEOUT)
+                exit_status = container.wait()["StatusCode"]
+                get_dagster_logger().info(f"Container Wait Exit status:  {exit_status}")
+                # WE PULL THE LOGS, then will throw an error
+                returnCode = exit_status
+                c = container.logs(stdout=True, stderr=True, stream=False, follow=False).decode('latin-1')
 
-        ## ------------  Archive to load, which is how to send in the config (from where?)
+                # write to s3
 
+                s3_log_uploader(str(c).encode(), NAME, date_string=date_string)  # s3loader needs a bytes like object
+                # s3loader(str(c).encode('utf-8'), NAME)  # s3loader needs a bytes like object
+                # write to minio (would need the minio info here)
 
+                get_dagster_logger().info(f"container Logs to s3: ")
+# this needs to be address at some point. https://www.appsloveworld.com/docker/100/85/docker-py-getarchive-destination-folder
+                path = f"{WorkingDir}/logs"
+                tar_archive_stream, tar_stat = container.get_archive(path)
+                archive = bytearray()
+                for chunk in tar_archive_stream:
+                    archive.extend(chunk)
+                s3_log_uploader(archive, f"{source}_{mode}_runlogs", date_string=date_string)
+                get_dagster_logger().info(f"uploaded logs : {source}_{mode}_runlogs to  {path}")
+                break
+            except requests.exceptions.ReadTimeout as ex:
+                path = f"{WorkingDir}/logs"
+                tar_archive_stream, tar_stat = container.get_archive(path)
+                archive = bytearray()
+                for chunk in tar_archive_stream:
+                    archive.extend(chunk)
+                s3_log_uploader(archive, f"{source}_{mode}_runlogs", date_string=date_string)
+                get_dagster_logger().info(f"uploaded {wait_count}th log : {source}_{mode}_runlogs to  {path}")
+            except docker.errors.APIError as ex:
+                get_dagster_logger().info(f"Container Wait docker API error :  {str(ex)}")
+                returnCode = 1
+                break
+            if container.status == 'exited' or container.status == 'removed':
+                get_dagster_logger().info(f"Container exited or removed. status:  {container.status}")
+                exit_status = container.wait()["StatusCode"]
+                returnCode = exit_status
+                s3_log_uploader(str(c).encode(), NAME)  # s3loader needs a bytes like object
+                # s3loader(str(c).encode('utf-8'), NAME)  # s3loader needs a bytes like object
+                # write to minio (would need the minio info here)
 
-# this method of watching the logs,
-        # do not let a possible issue with container logs  stop log upload.
-        ## I thinkthis happens when a container exits immediately.
-        try:
-            for line in container.logs(stdout=True, stderr=True, stream=True, follow=True):
-                get_dagster_logger().debug(line)  # noqa: T201
-        except docker.errors.APIError as ex:
+                get_dagster_logger().info(f"container Logs to s3: ")
+                # this needs to be address at some point. https://www.appsloveworld.com/docker/100/85/docker-py-getarchive-destination-folder
+                path = f"{WorkingDir}/logs"
+                tar_archive_stream, tar_stat = container.get_archive(path)
+                archive = bytearray()
+                for chunk in tar_archive_stream:
+                    archive.extend(chunk)
+                s3_log_uploader(archive, f"{source}_{mode}_runlogs", date_string=date_string)
+                get_dagster_logger().info(f"uploaded logs : {source}_{mode}_runlogs to  {path}")
+                break
 
-            get_dagster_logger().info(f"This is ok. watch container logs failed Docker API ISSUE: {repr(ex)}")
-        except Exception as ex:
-            get_dagster_logger().info(f"This is ok. watch container logs failed other issue:{repr(ex)} ")
-
-
-
-
-        # ## ------------  Wait expect 200
-        # we want to get the logs, no matter what, so do not exit, yet.
-        ## or should logs be moved into finally?
-        ### in which case they need to be methods that don't send back errors.
-        exit_status = container.wait()["StatusCode"]
-        get_dagster_logger().info(f"Container Wait Exit status:  {exit_status}")
-        # WE PULL THE LOGS, then will throw an error
-        returnCode = exit_status
-
-
-
-
-        ## ------------  Copy logs  expect 200
-
-
-        c = container.logs(stdout=True, stderr=True, stream=False, follow=False).decode('latin-1')
-
-        # write to s3
-
-        s3loader(str(c).encode(), NAME)  # s3loader needs a bytes like object
-        #s3loader(str(c).encode('utf-8'), NAME)  # s3loader needs a bytes like object
-        # write to minio (would need the minio info here)
-
-        get_dagster_logger().info(f"container Logs to s3: ")
-
-## get log files
-        url = URL + 'containers/' + cid + '/archive'
-        params = {
-            'path': f"{WorkingDir}/logs"
-        }
-        query_string = urllib.parse.urlencode(params)
-        url = url + "?" + query_string
-
-        # print(url)
-        req = request.Request(url, method="GET")
-        req.add_header('X-API-Key', APIKEY)
-        req.add_header('content-type', 'application/x-compressed')
-        req.add_header('accept', 'application/json')
-        r = request.urlopen(req)
-
-        log.info(f"{r.status} ")
-        get_dagster_logger().info(f"Container Archive Retrieved: {str(r.status)}")
-        # s3loader(r.read().decode('latin-1'), NAME)
-        s3loader(r.read(), f"{source}_{mode}_runlogs")
-    # Future, need to extraxct files, and upload
+    # ABOVE Future, need to extraxct files, and upload
     # pw_tar = tarfile.TarFile(fileobj=StringIO(d.decode('utf-8')))
     #    pw_tar.extractall("extract_to/")
 
-    # looks like get_archive also has issues. Returns nothing,
-       #  strm, stat =  container.get_archive(f"{WorkingDir}/logs/")
-       #  get_dagster_logger().info(f"container Logs to s3: {str(stat)}")
-       #
-       #  i =0
-       #  for d in strm:
-       #      r = d.decode('utf-8')
-       # # s3loader(r.read().decode('latin-1'), NAME)
-       #      s3loader(r.encode(), f"{source}_{i}_runlogs")
-       #      i+=1
-
-       # s3loader(r.read().decode('latin-1'), NAME)
 
         if exit_status != 0:
             raise Exception(f"Gleaner/Nabu container returned exit code {exit_status}")
     finally:
         if (not DEBUG) :
-            # if (cid):
-            #     url = URL + 'containers/' + cid
-            #     req = request.Request(url, method="DELETE")
-            #     req.add_header('X-API-Key', APIKEY)
-            #     # req.add_header('content-type', 'application/json')
-            #     req.add_header('accept', 'application/json')
-            #     r = request.urlopen(req)
-            #     print(r.status)
-            #     get_dagster_logger().info(f"Container Remove: {str(r.status)}")
-            # else:
-            #     get_dagster_logger().info(f"Container Not created, so not removed.")
             if (service):
                 service.remove()
                 get_dagster_logger().info(f"Service Remove: {service.name}")
@@ -572,14 +559,7 @@ def gleanerio(context, mode, source):
 
         else:
             get_dagster_logger().info(f"Service {service.name} NOT Removed : DEBUG ENABLED")
-        #     if (container):
-        #         container.remove(force=True)
-        #         get_dagster_logger().info(f"Container Remove: {container.name}")
-        #     else:
-        #         get_dagster_logger().info(f"Container Not created, so not removed.")
-        #
-        # else:
-        #     get_dagster_logger().info(f"Container {container.name} NOT Removed : DEBUG ENABLED")
+
 
     if (returnCode != 0):
         get_dagster_logger().info(f"Gleaner/Nabu container non-zero exit code. See logs in S3")
@@ -685,14 +665,15 @@ def SOURCEVAL_graph_reports(context) :
 
     graphendpoint = _graphEndpoint() # f"{os.environ.get('GLEANER_GRAPH_URL')}/namespace/{os.environ.get('GLEANER_GRAPH_NAMESPACE')}/sparql"
 
-    milled = False
-    summon = True
-    returned_value = generateGraphReportsRepo(source_name,  graphendpoint, reportList=reportTypes["repo_detailed"])
+
+    #returned_value = generateGraphReportsRepo(source_name,  graphendpoint, reportList=reportTypes["repo_detailed"])
+    s3FileUrl = _releaseUrl(source_name )
+    returned_value = generateGraphReportsRelease(source_name,s3FileUrl)
     r = str('returned value:{}'.format(returned_value))
     #report = json.dumps(returned_value, indent=2) # value already json.dumps
     report = returned_value
     s3Minio.putReportFile(bucket, source_name, "graph_stats.json", report)
-    get_dagster_logger().info(f"graph report  returned  {r} ")
+    get_dagster_logger().info(f"graph stats  returned  {r} ")
     return
 
 @op(ins={"start": In(Nothing)})
@@ -718,8 +699,8 @@ def SOURCEVAL_bucket_urls(context):
 
     res = s3Minio.listSummonedUrls(bucket, source_name)
     r = str('returned value:{}'.format(res))
-    bucketurls = json.dumps(res, indent=2)
-    s3Minio.putReportFile(GLEANER_MINIO_BUCKET, source_name, "bucketutil_urls.json", bucketurls)
+    bucketurls = pandas.DataFrame(res).to_csv(index=False, quoting=csv.QUOTE_NONNUMERIC)
+    s3Minio.putReportFile(GLEANER_MINIO_BUCKET, source_name, "bucketutil_urls.csv", bucketurls)
     get_dagster_logger().info(f"bucker urls report  returned  {r} ")
     return
 
@@ -738,7 +719,13 @@ def SOURCEVAL_summarize(context) :
 
     try:
 
-        summarydf = get_summary4repoSubset(endpoint, source_name)
+       # summarydf = get_summary4repoSubset(endpoint, source_name)
+        rg = ReleaseGraph()
+        rg.read_release(_pythonMinioAddress(GLEANER_MINIO_ADDRESS, GLEANER_MINIO_PORT),
+                        bucket,
+                        source_name,
+                        options=MINIO_OPTIONS)
+        summarydf = rg.summarize()
         nt, g = summaryDF2ttl(summarydf, source_name)  # let's try the new generator
         summaryttl = g.serialize(format='longturtle')
         # Lets always write out file to s3, and insert as a separate process
@@ -791,10 +778,11 @@ def harvest_SOURCEVAL():
 # defingin nothing dependencies
     # https://docs.dagster.io/concepts/ops-jobs-graphs/graphs#defining-nothing-dependencies
 
-    report_ms3 = SOURCEVAL_missingreport_s3(start=harvest)
+    report_bucketurl = SOURCEVAL_bucket_urls(start=harvest)
+    report_ms3 = SOURCEVAL_missingreport_s3(start=report_bucketurl)
     report_idstat = SOURCEVAL_identifier_stats(start=report_ms3)
     # for some reason, this causes a msg parameter missing
-    report_bucketurl = SOURCEVAL_bucket_urls(start=report_idstat)
+
 
     #report1 = missingreport_s3(harvest, source="SOURCEVAL")
     load_release = SOURCEVAL_naburelease(start=harvest)
@@ -804,11 +792,14 @@ def harvest_SOURCEVAL():
     load_prov = SOURCEVAL_nabuprov(start=load_prune)
     load_org = SOURCEVAL_nabuorg(start=load_prov)
 
-    summarize = SOURCEVAL_summarize(start=load_uploadrelease)
-    upload_summarize = SOURCEVAL_upload_summarize(start=summarize)
+    if(GLEANERIO_SUMMARIZE_GRAPH):
+        summarize = SOURCEVAL_summarize(start=load_uploadrelease)
+        upload_summarize = SOURCEVAL_upload_summarize(start=summarize)
+
+
 
 # run after load
-    report_msgraph = SOURCEVAL_missingreport_graph(start=summarize)
+    report_msgraph = SOURCEVAL_missingreport_graph(start=load_prov)
     report_graph = SOURCEVAL_graph_reports(start=report_msgraph)
 
 

@@ -1,0 +1,41 @@
+# prototype tennants file
+
+# prototype tennants file
+
+tenant:
+  - community: dev
+    hostname: geocodes-dev
+    description: GeoCodes is...
+    name: Geocodes Science on Schema
+    url: https://www.earthcube.org
+    logo: https://unsplash.com/random
+    graph:
+      main_namespace: test
+      summary_namespace: test_summary
+    sources:
+      - iris
+      - geocodes_demo_datasets
+######
+  - community: geocodesall
+    hostname: geocodes-all
+    description: GeoCodes is...
+    name: Geocodes Science on Schema
+    url: https://www.earthcube.org
+    logo: https://unsplash.com/random
+    graph:
+      main_namespace: geocodes_test
+      summary_namespace: geocodes_test_summary
+    sources:
+      - all
+#  - community: dev3
+#    hostname: geocodes-dev32
+#    description: GeoCodes is...
+#    name: Geocodes Science on Schema
+#    url: https://www.earthcube.org
+#    logo: https://unsplash.com/random
+#    graph:
+#      main_namespace: test3
+#      summary_namespace: test3_summary
+#    sources:
+#      - iris
+#      - geocodes_examples
