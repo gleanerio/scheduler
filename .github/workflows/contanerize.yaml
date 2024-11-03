@@ -32,7 +32,7 @@ jobs:
     steps:
       - name: Set variables
         run: |
-            REGISTRY_IMAGE=nsfearthcube/dagster-gleanerio
+            REGISTRY_IMAGE=fils/dagster-gleanerio
             echo "REGISTRY_IMAGE=$REGISTRY_IMAGE" >> $GITHUB_ENV
         working-directory:  /
       - name: Checkout Repo
@@ -108,7 +108,7 @@ jobs:
           file: ./build/Dockerfile_dagster
           context:  "{{defaultContext}}:dagster/implnets"
           tags: ${{ steps.meta.outputs.tags }}
-#          tags: nsfearthcube/ec_facets_client:latest
+#          tags: fils/ec_facets_client:latest
           labels: ${{ steps.meta.outputs.labels }}
           #platforms: ${{ matrix.platform }}
           #outputs: type=image,name=${{ env.REGISTRY_IMAGE }},push-by-digest=true,name-canonical=true,push=true
@@ -127,7 +127,7 @@ jobs:
     steps:
       - name: Set variables
         run: |
-            REGISTRY_IMAGE=nsfearthcube/dagster-gleanerio-${{ matrix.project }}
+            REGISTRY_IMAGE=fils/dagster-gleanerio-${{ matrix.project }}
             echo "REGISTRY_IMAGE=$REGISTRY_IMAGE" >> $GITHUB_ENV
         working-directory:  /
       - name: Checkout Repo
@@ -165,7 +165,7 @@ jobs:
     steps:
       - name: Set variables
         run: |
-            REGISTRY_IMAGE=nsfearthcube/dagster-gleanerio-workflows
+            REGISTRY_IMAGE=fils/dagster-gleanerio-workflows
             echo "REGISTRY_IMAGE=$REGISTRY_IMAGE" >> $GITHUB_ENV
         working-directory:  /
       - name: Checkout Repo
@@ -240,7 +240,7 @@ jobs:
           file: ./build/Dockerfile_workflows
           context:  "{{defaultContext}}:dagster/implnets"
           tags: ${{ steps.meta.outputs.tags }}
-#          tags: nsfearthcube/ec_facets_client:latest
+#          tags: fils/ec_facets_client:latest
           labels: ${{ steps.meta.outputs.labels }}
           #platforms: ${{ matrix.platform }}
           #outputs: type=image,name=${{ env.REGISTRY_IMAGE }},push-by-digest=true,name-canonical=true,push=true
