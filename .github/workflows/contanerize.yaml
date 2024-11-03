@@ -3,6 +3,7 @@ name: Dockerize  Dagster
 # dockerbuildandpush pulls the repo.
 # overwrites any files created.
 on:
+  workflow_dispatch:
   push:
     # be wary of using **  for the branch...
     # it will fail, and only pull the main branch... which means old code, usually
