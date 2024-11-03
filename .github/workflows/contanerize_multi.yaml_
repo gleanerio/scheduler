@@ -3,6 +3,7 @@ name: Dockerize  Dagster
 # dockerbuildandpush pulls the repo.
 # overwrites any files created.
 on:
+  workflow_dispatch:
   push:
     # be wary of using **  for the branch...
     # it will fail, and only pull the main branch... which means old code, usually
@@ -32,7 +33,7 @@ jobs:
     steps:
       - name: Set variables
         run: |
-            REGISTRY_IMAGE=nsfearthcube/dagster-${{ matrix.project }}
+            REGISTRY_IMAGE=fils/dagster-${{ matrix.project }}
             echo "REGISTRY_IMAGE=$REGISTRY_IMAGE" >> $GITHUB_ENV
         working-directory:  /
       - name: Checkout Repo
@@ -108,7 +109,7 @@ jobs:
           file: ./build/Dockerfile_ci
           context:  "{{defaultContext}}:dagster/implnets"
           #tags: ${{ steps.meta.outputs.tags }}
-#          tags: nsfearthcube/ec_facets_client:latest
+#          tags: fils/ec_facets_client:latest
           labels: ${{ steps.meta.outputs.labels }}
           platforms: ${{ matrix.platform }}
           outputs: type=image,name=${{ env.REGISTRY_IMAGE }},push-by-digest=true,name-canonical=true,push=true
@@ -134,7 +135,7 @@ jobs:
     steps:
       - name: Set variables
         run: |
-            REGISTRY_IMAGE=nsfearthcube/dagster-${{ matrix.project }}
+            REGISTRY_IMAGE=fils/dagster-${{ matrix.project }}
             echo "REGISTRY_IMAGE=$REGISTRY_IMAGE" >> $GITHUB_ENV
         working-directory:  /
       - name: Download digests
