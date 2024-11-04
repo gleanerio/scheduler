@@ -22,7 +22,7 @@ load_from:
 #            host: dagster-code-project
 #            port: 4000
 #            location_name: "project_grpc"
-      - grpc_server:
-            host: dagster-code-eco-ecrr
-            port: 4000
-            location_name: "ecrr"
+#      - grpc_server:
+#            host: dagster-code-eco-ecrr
+#            port: 4000
+#            location_name: "ecrr"
