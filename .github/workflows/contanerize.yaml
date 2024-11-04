@@ -3,17 +3,14 @@ name: Dockerize  Dagster
 # dockerbuildandpush pulls the repo.
 # overwrites any files created.
 on:
+  workflow_dispatch:
   push:
     # be wary of using **  for the branch...
     # it will fail, and only pull the main branch... which means old code, usually
     branches:
       - main
       - dev
-      - dv_dev
-      - dev_eco
-      - v0_generated_code
-      - 133_dev_sitemaps
-      - 151-integrate-community-stats-codes
+      - dev_df
     tags:
       - "v*.*.*"
 
@@ -36,7 +33,7 @@ jobs:
     steps:
       - name: Set variables
         run: |
-            REGISTRY_IMAGE=nsfearthcube/dagster-gleanerio
+            REGISTRY_IMAGE=fils/dagster-gleanerio
             echo "REGISTRY_IMAGE=$REGISTRY_IMAGE" >> $GITHUB_ENV
         working-directory:  /
       - name: Checkout Repo
@@ -112,7 +109,7 @@ jobs:
           file: ./build/Dockerfile_dagster
           context:  "{{defaultContext}}:dagster/implnets"
           tags: ${{ steps.meta.outputs.tags }}
-#          tags: nsfearthcube/ec_facets_client:latest
+#          tags: fils/ec_facets_client:latest
           labels: ${{ steps.meta.outputs.labels }}
           #platforms: ${{ matrix.platform }}
           #outputs: type=image,name=${{ env.REGISTRY_IMAGE }},push-by-digest=true,name-canonical=true,push=true
@@ -131,7 +128,7 @@ jobs:
     steps:
       - name: Set variables
         run: |
-            REGISTRY_IMAGE=nsfearthcube/dagster-gleanerio-${{ matrix.project }}
+            REGISTRY_IMAGE=fils/dagster-gleanerio-${{ matrix.project }}
             echo "REGISTRY_IMAGE=$REGISTRY_IMAGE" >> $GITHUB_ENV
         working-directory:  /
       - name: Checkout Repo
@@ -169,7 +166,7 @@ jobs:
     steps:
       - name: Set variables
         run: |
-            REGISTRY_IMAGE=nsfearthcube/dagster-gleanerio-workflows
+            REGISTRY_IMAGE=fils/dagster-gleanerio-workflows
             echo "REGISTRY_IMAGE=$REGISTRY_IMAGE" >> $GITHUB_ENV
         working-directory:  /
       - name: Checkout Repo
@@ -244,7 +241,7 @@ jobs:
           file: ./build/Dockerfile_workflows
           context:  "{{defaultContext}}:dagster/implnets"
           tags: ${{ steps.meta.outputs.tags }}
-#          tags: nsfearthcube/ec_facets_client:latest
+#          tags: fils/ec_facets_client:latest
           labels: ${{ steps.meta.outputs.labels }}
           #platforms: ${{ matrix.platform }}
           #outputs: type=image,name=${{ env.REGISTRY_IMAGE }},push-by-digest=true,name-canonical=true,push=true
