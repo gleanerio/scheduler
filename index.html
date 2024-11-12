@@ -1,0 +1,1195 @@
+
+<!DOCTYPE html>
+
+<html class="no-js" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<link href="ingest_workflow/" rel="next"/>
+<link href="assets/images/favicon.png" rel="icon"/>
+<meta content="mkdocs-1.6.1, mkdocs-material-9.5.44" name="generator"/>
+<title>Scheduler - Gleaner IO Scheduler</title>
+<link href="assets/stylesheets/main.0253249f.min.css" rel="stylesheet"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&amp;display=fallback" rel="stylesheet"/>
+<style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+<script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+</head>
+<body dir="ltr">
+<input autocomplete="off" class="md-toggle" data-md-toggle="drawer" id="__drawer" type="checkbox"/>
+<input autocomplete="off" class="md-toggle" data-md-toggle="search" id="__search" type="checkbox"/>
+<label class="md-overlay" for="__drawer"></label>
+<div data-md-component="skip">
+<a class="md-skip" href="#scheduler-aka-dagster">
+          Skip to content
+        </a>
+</div>
+<div data-md-component="announce">
+</div>
+<header class="md-header md-header--shadow" data-md-component="header">
+<nav aria-label="Header" class="md-header__inner md-grid">
+<a aria-label="Gleaner IO Scheduler" class="md-header__button md-logo" data-md-component="logo" href="." title="Gleaner IO Scheduler">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"></path></svg>
+</a>
+<label class="md-header__button md-icon" for="__drawer">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"></path></svg>
+</label>
+<div class="md-header__title" data-md-component="header-title">
+<div class="md-header__ellipsis">
+<div class="md-header__topic">
+<span class="md-ellipsis">
+            Gleaner IO Scheduler
+          </span>
+</div>
+<div class="md-header__topic" data-md-component="header-topic">
+<span class="md-ellipsis">
+            
+              Scheduler
+            
+          </span>
+</div>
+</div>
+</div>
+<script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+<label class="md-header__button md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+</label>
+<div class="md-search" data-md-component="search" role="dialog">
+<label class="md-search__overlay" for="__search"></label>
+<div class="md-search__inner" role="search">
+<form class="md-search__form" name="search">
+<input aria-label="Search" autocapitalize="off" autocomplete="off" autocorrect="off" class="md-search__input" data-md-component="search-query" name="query" placeholder="Search" required="" spellcheck="false" type="text"/>
+<label class="md-search__icon md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"></path></svg>
+</label>
+<nav aria-label="Search" class="md-search__options">
+<button aria-label="Clear" class="md-search__icon md-icon" tabindex="-1" title="Clear" type="reset">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path></svg>
+</button>
+</nav>
+</form>
+<div class="md-search__output">
+<div class="md-search__scrollwrap" data-md-scrollfix="" tabindex="0">
+<div class="md-search-result" data-md-component="search-result">
+<div class="md-search-result__meta">
+            Initializing search
+          </div>
+<ol class="md-search-result__list" role="presentation"></ol>
+</div>
+</div>
+</div>
+</div>
+</div>
+</nav>
+</header>
+<div class="md-container" data-md-component="container">
+<main class="md-main" data-md-component="main">
+<div class="md-main__inner md-grid">
+<div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav aria-label="Navigation" class="md-nav md-nav--primary" data-md-level="0">
+<label class="md-nav__title" for="__drawer">
+<a aria-label="Gleaner IO Scheduler" class="md-nav__button md-logo" data-md-component="logo" href="." title="Gleaner IO Scheduler">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"></path></svg>
+</a>
+    Gleaner IO Scheduler
+  </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+<input checked="" class="md-nav__toggle md-toggle" id="__nav_1" type="checkbox"/>
+<label class="md-nav__link" for="__nav_1" id="__nav_1_label" tabindex="">
+<span class="md-ellipsis">
+    Gleaner IO Scheduler
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="true" aria-labelledby="__nav_1_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_1">
+<span class="md-nav__icon md-icon"></span>
+            Gleaner IO Scheduler
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item md-nav__item--active">
+<input class="md-nav__toggle md-toggle" id="__toc" type="checkbox"/>
+<label class="md-nav__link md-nav__link--active" for="__toc">
+<span class="md-ellipsis">
+    Scheduler
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<a class="md-nav__link md-nav__link--active" href=".">
+<span class="md-ellipsis">
+    Scheduler
+  </span>
+</a>
+<nav aria-label="Table of contents" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#about">
+<span class="md-ellipsis">
+      About
+    </span>
+</a>
+<nav aria-label="About" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#overview">
+<span class="md-ellipsis">
+      Overview
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#workflows">
+<span class="md-ellipsis">
+      WORKFLOWS
+    </span>
+</a>
+<nav aria-label="WORKFLOWS" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#basic-deployment">
+<span class="md-ellipsis">
+      basic deployment
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#ingest-workflow">
+<span class="md-ellipsis">
+      Ingest Workflow
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#task-workflows">
+<span class="md-ellipsis">
+      Task workflows
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#steps-to-build-and-deploy">
+<span class="md-ellipsis">
+      Steps to build and deploy
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#server-deployment">
+<span class="md-ellipsis">
+      Server Deployment.
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#developer-pycharm-run-local-with-remote-services">
+<span class="md-ellipsis">
+      DEVELOPER Pycharm -- Run local with remote services
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#full-stack-test-run-local-with-remote-services">
+<span class="md-ellipsis">
+      full stack test Run local with remote services
+    </span>
+</a>
+<nav aria-label="full stack test Run local with remote services" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#docker-compose-configuration">
+<span class="md-ellipsis">
+      docker compose Configuration:
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#runtime-configuration">
+<span class="md-ellipsis">
+      Runtime configuration
+    </span>
+</a>
+<nav aria-label="Runtime configuration" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#upload-to-an-s3-bucket">
+<span class="md-ellipsis">
+      upload to an s3 bucket
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#updating-config">
+<span class="md-ellipsis">
+      updating config
+    </span>
+</a>
+<nav aria-label="updating config" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#new-sources">
+<span class="md-ellipsis">
+      new sources:
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#_1">
+<span class="md-ellipsis">
+</span>
+</a>
+<nav aria-label="" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#new-tenants">
+<span class="md-ellipsis">
+      new tenants:
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#test-schedules">
+<span class="md-ellipsis">
+      test schedules
+    </span>
+</a>
+<nav aria-label="test schedules" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#environment-files">
+<span class="md-ellipsis">
+      Environment files
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#appendix">
+<span class="md-ellipsis">
+      Appendix
+    </span>
+</a>
+<nav aria-label="Appendix" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#portainer-api-setup">
+<span class="md-ellipsis">
+      Portainer API setup
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#notes">
+<span class="md-ellipsis">
+      Notes
+    </span>
+</a>
+<nav aria-label="Notes" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#handle-multiple-organizations">
+<span class="md-ellipsis">
+      Handle Multiple Organizations
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cron-notes">
+<span class="md-ellipsis">
+      Cron Notes
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#indexing-approaches">
+<span class="md-ellipsis">
+      Indexing Approaches
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="ingest_workflow/">
+<span class="md-ellipsis">
+    Ingest Workflow
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="quick/">
+<span class="md-ellipsis">
+    Quick
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="add_containers.md">
+<span class="md-ellipsis">
+    Add Containers
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="eco_deploy/">
+<span class="md-ellipsis">
+    Scheduler Deployment
+  </span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_1_6" type="checkbox"/>
+<label class="md-nav__link" for="__nav_1_6" id="__nav_1_6_label" tabindex="0">
+<span class="md-ellipsis">
+    Develeopment
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_1_6_label" class="md-nav" data-md-level="2">
+<label class="md-nav__title" for="__nav_1_6">
+<span class="md-nav__icon md-icon"></span>
+            Develeopment
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="README_LOCAL_DEVELOPMENT/">
+<span class="md-ellipsis">
+    Local Developement
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="developement.md">
+<span class="md-ellipsis">
+    Developing Schedules
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="monitoring_workflows/">
+<span class="md-ellipsis">
+    Troubleshooting Workflows
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav aria-label="Table of contents" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#about">
+<span class="md-ellipsis">
+      About
+    </span>
+</a>
+<nav aria-label="About" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#overview">
+<span class="md-ellipsis">
+      Overview
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#workflows">
+<span class="md-ellipsis">
+      WORKFLOWS
+    </span>
+</a>
+<nav aria-label="WORKFLOWS" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#basic-deployment">
+<span class="md-ellipsis">
+      basic deployment
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#ingest-workflow">
+<span class="md-ellipsis">
+      Ingest Workflow
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#task-workflows">
+<span class="md-ellipsis">
+      Task workflows
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#steps-to-build-and-deploy">
+<span class="md-ellipsis">
+      Steps to build and deploy
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#server-deployment">
+<span class="md-ellipsis">
+      Server Deployment.
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#developer-pycharm-run-local-with-remote-services">
+<span class="md-ellipsis">
+      DEVELOPER Pycharm -- Run local with remote services
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#full-stack-test-run-local-with-remote-services">
+<span class="md-ellipsis">
+      full stack test Run local with remote services
+    </span>
+</a>
+<nav aria-label="full stack test Run local with remote services" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#docker-compose-configuration">
+<span class="md-ellipsis">
+      docker compose Configuration:
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#runtime-configuration">
+<span class="md-ellipsis">
+      Runtime configuration
+    </span>
+</a>
+<nav aria-label="Runtime configuration" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#upload-to-an-s3-bucket">
+<span class="md-ellipsis">
+      upload to an s3 bucket
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#updating-config">
+<span class="md-ellipsis">
+      updating config
+    </span>
+</a>
+<nav aria-label="updating config" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#new-sources">
+<span class="md-ellipsis">
+      new sources:
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#_1">
+<span class="md-ellipsis">
+</span>
+</a>
+<nav aria-label="" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#new-tenants">
+<span class="md-ellipsis">
+      new tenants:
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#test-schedules">
+<span class="md-ellipsis">
+      test schedules
+    </span>
+</a>
+<nav aria-label="test schedules" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#environment-files">
+<span class="md-ellipsis">
+      Environment files
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#appendix">
+<span class="md-ellipsis">
+      Appendix
+    </span>
+</a>
+<nav aria-label="Appendix" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#portainer-api-setup">
+<span class="md-ellipsis">
+      Portainer API setup
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#notes">
+<span class="md-ellipsis">
+      Notes
+    </span>
+</a>
+<nav aria-label="Notes" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#handle-multiple-organizations">
+<span class="md-ellipsis">
+      Handle Multiple Organizations
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cron-notes">
+<span class="md-ellipsis">
+      Cron Notes
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#indexing-approaches">
+<span class="md-ellipsis">
+      Indexing Approaches
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-content" data-md-component="content">
+<article class="md-content__inner md-typeset">
+<h1 id="scheduler-aka-dagster">Scheduler, AKA Dagster</h1>
+<h2 id="about">About</h2>
+<p>The following is a description of the steps and requirements for
+building and deploying the docker based workflow implemented in 
+dagster.</p>
+<h3 id="overview">Overview</h3>
+<p>The image following provides a broad overview of the elements that 
+are loaded in to the Docker orchestration environment.  This is a very 
+basic view and doesn't present any scaling or fail over elements.  </p>
+<p>The key elements are:</p>
+<ul>
+<li>sources to configuration  to load into the Gleaner and Nabu tools, and push to the triplestore. These are now stored in
+an s3 location</li>
+<li>gleaner configuration. a list of sources to load. (NOTE: This is also a docker config that needs to be updated to mactch to make things work)</li>
+<li>tenant configuration. a list communities, and which sources they load</li>
+<li>The Dagster set which loads three containers to support workflow operations</li>
+<li>The Gleaner Architecture images which loads three or more containers to support </li>
+<li>s3 object storage</li>
+<li>graph database (triplestore)</li>
+<li>headless chrome for page rendering to support dynamically inserted JSON-LD</li>
+<li>any other support packages like text, semantic or spatial indexes</li>
+</ul>
+<h3 id="workflows">WORKFLOWS</h3>
+<p>There are three workflows
+* ingest works to load sources
+* tasks weekly task
+* ecrr - loads Earthcube Resource Registry</p>
+<div class="mermaid">---
+title: Dagster Stack
+---
+flowchart LR
+    subgraph DockerCompose[Docker Compose Stacks]
+            maincompose[dagster/implents/deployment/compose_project.yaml]
+            project_overrides[dagster/implnets/deployment/compose_project_eco_override.yaml]
+    end
+
+    subgraph Config
+         subgraph s3
+            gleanconfig[gleanerconfig.yaml]
+            tenant[tenant.yaml]
+
+        end
+
+        subgraph Dagster/Config
+            workflow[ eco-wf ]
+            container-config-gleaner[gleanerio contaianer config]
+            container-config-nabu[gleanerio container config for nabu]
+        end
+        env['environment variables']
+
+    end
+    subgraph docker[docker managed by portainer]
+
+        subgraph Containers
+                dagit
+                dagster
+                postgres
+                ingest
+                tasks
+                ecrr
+        end
+        config
+        subgraph Volumes
+            dagster-postgres
+        end
+    end
+    postgres--uses--&gt;dagster-postgres
+    dagster--uses--&gt;workflow
+    dagit--uses--&gt;workflow
+    workflow--&gt;config
+    maincompose--deploys--&gt;dagit[dagster webserver]
+    maincompose--deploys--&gt;dagster[dagster main]
+    maincompose--deploys--&gt;ingest[gleanerio ingest code]
+    maincompose--deploys--&gt;tasks[gleanerio task code]
+    project_overrides--deploys--&gt;ecrr[earthcube code]
+    ingest--reads--&gt;gleanconfig
+    ingest--reads--&gt;tenant
+    tasks--reads--&gt;gleanconfig
+    tasks--reads--&gt;gleanconfig
+    dagster--uses--&gt;postgres
+</div>
+<h4 id="basic-deployment">basic deployment</h4>
+<ol>
+<li>information for environment variables is created</li>
+<li>The configuration files are created and loaded to s3, and docker/config</li>
+<li>a docker stack is created, and the environment variables are added.</li>
+<li>portainer deploys containers</li>
+<li>when ingest and tasks are executed, they read</li>
+</ol>
+<h4 id="ingest-workflow">Ingest Workflow</h4>
+<div class="mermaid">---
+title: Ingest Workflow Sequence
+---
+sequenceDiagram
+    participant S3
+    participant Ingest
+    participant Portainer
+    participant Graph
+    S3-&gt;&gt;Ingest: read sources from scheduler/configs/gleanerconfig.yaml
+    S3-&gt;&gt;Ingest: read tenant from scheduler/configs/tenant.yaml
+    Ingest--&gt;Ingest: create gleanerio container
+    Ingest-&gt;&gt;Portainer: run gleanerio 
+    Portainer--&gt;Portainer: docker configs mounted in gleanerio container
+    Portainer--&gt;Portainer: summon for sources
+    Portainer-&gt;&gt;S3: jsonld  to s3
+    Portainer-&gt;&gt;Ingest:  logs returned
+    Ingest-&gt;&gt;S3: logs from run to S3
+    Ingest-&gt;&gt;Ingest: create load reports using EC Utils
+    Ingest-&gt;&gt;S3: load reports  to s3
+    Ingest-&gt;&gt;Portainer: run nabu  to 
+    Portainer--&gt;Portainer: convert jsonld  to release and release summary
+    Portainer-&gt;&gt;S3: release and release summary  to s3
+    Ingest-&gt;&gt;Ingest: create graph report using EC Utils
+    Ingest-&gt;&gt;S3: graph report  to s3
+    Ingest-&gt;&gt;Graph: Create a namespaces for tenant
+    Ingest-&gt;&gt;Graph: load release and release summary to namespaces</div>
+<div class="mermaid">---
+title: Ingest Simplified Flowchart 
+---
+flowchart LR
+    subgraph config
+          s3_config_sensors
+    end    
+    subgraph jobs
+        summon_and_release
+        tenant_release
+    end
+    subgraph assets
+        sources
+        tenants
+    end
+
+
+
+    s3_config_sensors--monitors --&gt; configs
+    s3_config_sensors--writes  --&gt;sources 
+    s3_config_sensors--writes  --&gt;tenants
+    summon_and_release--uses--&gt;sources --runs --&gt; gleanerio
+    tenant_release--uses--&gt;tenants --runs --&gt; tenant_release
+    gleanerio--stores JSONLD --&gt;summon
+    gleanerio--stores log --&gt;logs
+    summon_and_release-- reads --&gt; summon
+    summon_and_release-- converts to graph  --&gt;graph_path
+    tenant_release -- monitors --&gt; graph_path
+    tenant_release -- loads releases to --&gt; tenant_namespace
+    tenant_release -- loads releases to --&gt; tenant_summary_namespace
+
+
+    subgraph portainer
+      gleanerio 
+      tenant_ui
+      end
+      subgraph services
+           triplestore
+               tenant_namespace
+               tenant_summary_namespace
+            end
+
+          subgraph minio_s3 
+            subgraph bucket_paths
+                subgraph scheduler
+                     configs["`scheduler/configs`"]
+                     logs
+                end
+                summon
+                graph_path['graph']
+            end
+            end
+
+
+
+
+</div>
+<h4 id="task-workflows">Task workflows</h4>
+<div class="mermaid">---
+title: Task Workflow Sequence
+---
+sequenceDiagram
+    participant S3
+    participant Ingest
+    participant Portainer
+    participant Graph
+    Ingest-&gt;&gt;Ingest: all_graph_stats assets: graph statistics using EC Utils
+    Ingest-&gt;&gt;S3: load all_graph_stats  to s3
+    Ingest-&gt;&gt;Ingest: source_stats assets: loadstatsHistory using EC Utils
+    Ingest-&gt;&gt;Graph: sparql query to get graph stats
+    Graph-&gt;&gt;Ingest: results for source_stats
+    Ingest-&gt;&gt;S3: source_stats  to s3
+</div>
+<h2 id="steps-to-build-and-deploy">Steps to build and deploy</h2>
+<p>The deployment can be tested locally. You can setup a services stack in docker to locally test, or use existing 
+services.</p>
+<p>The production 'containers' dagster, gleaner, and nabu are built with a github action. You can also use  a makefile.</p>
+<p>This describes the local and container deployment
+We use portainer to manage our docker deployments.</p>
+<h2 id="server-deployment">Server Deployment.</h2>
+<p><a href="eco_deploy/">Production example for Earthcube</a> </p>
+<h2 id="developer-pycharm-run-local-with-remote-services">DEVELOPER Pycharm --  Run local with remote services</h2>
+<p>You can test components in pycharm. Run configurations for pycgharm  are in runConfigurations (TODO: Instructions)
+use the <a href="https://plugins.jetbrains.com/plugin/7861-envfile">ENVFIle plugin.</a>
+<img alt="pycharm runconfig" src="images/pycharm_runconfig.png"/>
+1) move to the  implnets/deployment directory
+2) copy the envFile.env to .env <a href="#environment-files">see</a>  use the <a href="https://plugins.jetbrains.com/plugin/7861-envfile">ENVFIle plugin.</a>
+3) edit the entries to point at a portainer/traefik with running services
+4) edit configuration files in implnets/configs/PROJECT: gleanerconfig.yaml, tenant.yaml
+5) upload configuration implnets/configs/PROJECT to s3 scheduler/configs: gleanerconfig.yaml, tenant.yaml
+4) run a Pycharm runconfig 
+   5) eg dagster_ingest_debug
+4) go to http://localhost:3000/
+6) you can <a href="#test-schedules">test the schedules</a> </p>
+<h2 id="full-stack-test-run-local-with-remote-services">full stack test Run local with remote services</h2>
+<p>1) move to the implnets/deployment directory
+2) copy the envFile.env to .env <a href="#environment-files">see</a>use the <a href="https://plugins.jetbrains.com/plugin/7861-envfile">ENVFIle plugin.</a> <a href="#environment-files">see</a>  use the <a href="https://plugins.jetbrains.com/plugin/7861-envfile">ENVFIle plugin.</a> 
+3) edit the entries.
+4) edit configuration files in implnets/configs/PROJECT to s3: gleanerconfig.yaml, tenant.yaml
+5) upload configuration implnets/configs/PROJECT to scheduler/configs s3: gleanerconfig.yaml, tenant.yaml
+4) for local, <code>./dagster_localrun.sh</code>
+5) go to http://localhost:3000/</p>
+<p>To deploy in portainer, use the deployment/compose_project.yaml docker stack.</p>
+<h3 id="docker-compose-configuration">docker compose Configuration:</h3>
+<p>there are configuration  files that are needed.
+They are installed in two places:
+* as docker configs
+* as scheduler configs in S3</p>
+<p>(NOTE: I think the configs are still needed in the containers) </p>
+<table>
+<thead>
+<tr>
+<th>file</th>
+<th>local</th>
+<th></th>
+<th>note</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>workspace</td>
+<td>configs/PROJECT/worksapce.yaml</td>
+<td>dockerconfig: workspace</td>
+<td>docker compose: used by dagster</td>
+</tr>
+<tr>
+<td>gleanerconfig.yaml</td>
+<td>configs/PROJECT/gleanerconfig.yaml</td>
+<td>s3:{bucket}/scheduler/configs/gleanerconfigs.yaml</td>
+<td>ingest workflow needs to be in minio/s3</td>
+</tr>
+<tr>
+<td>tenant.yaml</td>
+<td>configs/PROJECT/tenant.yaml</td>
+<td>s3:{bucket}/scheduler/configs/tenant.yaml</td>
+<td>ingest workflow needs to be in minio/s3</td>
+</tr>
+<tr>
+<td>dagster.yaml</td>
+<td>dagster/implnets/deployment/dagster.yaml</td>
+<td>dockerconfig: dagster</td>
+<td>docker compose: used by dagster</td>
+</tr>
+<tr>
+<td>gleanerconfig.yaml</td>
+<td>configs/PROJECT/gleanerconfig.yaml</td>
+<td>dockerconfig: gleaner</td>
+<td>mounted in gleaner docker container</td>
+</tr>
+<tr>
+<td>nabuconfig.yaml</td>
+<td>configs/PROJECT/nabuconfig.yaml</td>
+<td>dockerconfig: nabu</td>
+<td>mounted in gleaner docker container</td>
+</tr>
+</tbody>
+</table>
+<p>(NOTE: This is also a gleaner config (below in runtime configuration) that needs to be updated to mactch to make things work)</p>
+<p><a href="https://github.com/earthcube/scheduler/issues/106">Docker Configs for gleanerio containers </a> are still needed:</p>
+<table>
+<thead>
+<tr>
+<th>file</th>
+<th>local</th>
+<th>stack</th>
+<th>note</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>gleanerconfig.yaml</td>
+<td>configs/PROJECT/gleanerconfigs.yaml</td>
+<td>env ()</td>
+<td>generated code needs to be in ~~portainer~~</td>
+</tr>
+<tr>
+<td>nabuconfig.yaml</td>
+<td>configs/PROJECT/nabuconfigs.yaml</td>
+<td>env ()</td>
+<td>generated codeneeds to be in ~~portainer~~</td>
+</tr>
+</tbody>
+</table>
+<p>3) when the containers are running in a  stack, on portainer, there will need to
+   be updated by pulling from dockerhub. The ENV variables may need to be updated for the CONTAINER*_TAG</p>
+<h2 id="runtime-configuration">Runtime configuration</h2>
+<h3 id="upload-to-an-s3-bucket">upload to an s3 bucket</h3>
+<table>
+<thead>
+<tr>
+<th>file</th>
+<th>local</th>
+<th></th>
+<th>note</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>gleanerconfig.yaml</td>
+<td>s3:{bucket}/scheduler/configs/gleanerconfigs.yaml</td>
+<td></td>
+<td>ingest workflow needs to be in minio/s3</td>
+</tr>
+<tr>
+<td>tenant.yaml</td>
+<td>s3:{bucket}/scheduler/configs/enant.yaml</td>
+<td></td>
+<td>ingest workflow needs to be in minio/s3</td>
+</tr>
+</tbody>
+</table>
+<h3 id="updating-config">updating config</h3>
+<p>You can update a config, and a sensor should pick up the changes.
+1) Upload changed file to s3
+   2) note, if this is a new source, you need to add it to the docker config (gleaner-PROJECT). 
+2) go to overview, <img alt="overview" src="images/overview_sensors_tab.png"/>
+3) go to  s3_config_source_sensor  for gleanerconfig.yaml changes, and s3_config_tenant_sensor for tenant.yaml changes
+ <img alt="sensor" src="images/sources_sensor.png"/>.
+4) at some point, a run should occur.  <img alt="run" src="images/runs.png"/>.
+5) then go to the sources_sensor, or tenant sensor 
+if job does not run, you can do a backfill.</p>
+<h4 id="new-sources">new sources:</h4>
+<p>6)  so to job tab, and run summon_and_release with the 'partitions' aka 'sources' that are recent.
+7) click materialize_all, and in the backfill dialog be sure only the added partition is selected.  <img alt="backfill" src="images/materialize.png"/>.
+8) go to runs, and see that a job with a partition with that name is queued/running
+9) run tenant_release_job with same partition name to load data to tenants</p>
+<h3 id="_1"></h3>
+<h4 id="new-tenants">new tenants:</h4>
+<p>There are two jobs that need to run to move data to a tenant. (third will be needed for UI)
+6)  so to job tab, and run tenant_namespaces_job with the 'partitions' aka 'tenant' that are recent.'
+7) click materialize_all, and be sure only the added partition is selected
+8) go to runs, and see that a job with a partition with that name is queded,/running
+6)  so to job tab, and run tenant_release_job with the 'partitions' aka 'sources' for that tenant
+7) click materialize_all, The data will be pushed to all tenant namespaces</p>
+<h2 id="test-schedules">test schedules</h2>
+<p><img alt="schedules tab" src="images/schedules_tab.png"/>
+<img alt="schedules example" src="images/schedules_example.png"/>
+<img alt="schedules select" src="images/schedules_select.png"/>
+<img alt="schedules test" src="images/schedules_test.png"/></p>
+<h3 id="environment-files">Environment files</h3>
+<p>1) cp deployment/envFile.env .env
+2) edit
+3) <code>export $(cat .env | xargs)</code>
+export $(cat .env | xargs)
+<pre class="highlight"><code class="language-yaml">######
+# Nabu and Gleaner configs need to be in docker configs
+## docker config name GLEANER_GLEANER_DOCKER_CONFIG
+## docker config name GLEANER_NABU_DOCKER_CONFIG
+#        suggested DOCKER_CONFIG NAMING PATTERN (nabu||gleaner)-{PROJECT}
+########
+GLEANERIO_DOCKER_GLEANER_CONFIG=gleaner-eco
+GLEANERIO_DOCKER_NABU_CONFIG=nabu-eco
+
+# ###
+# workspace for dagster
+####
+GLEANERIO_WORKSPACE_CONFIG_PATH=/usr/src/app/workspace.yaml
+GLEANERIO_DOCKER_WORKSPACE_CONFIG=workspace-eco
+
+
+
+DEBUG_CONTAINER=false
+
+#### HOST
+#  host base name for treafik. fixed to localhost:3000 when using  compose_local.
+HOST=localhost
+# Applies only to compose_project.yaml runs
+
+#  modify SCHED_HOSTNAME is you want to run more than one instance
+#    aka two different project havests for now.
+SCHED_HOSTNAME=sched
+
+GLEANERIO_DOCKER_CONTAINER_WAIT_TIMEOUT=300
+# debugging set to 10 - 30 seconds
+
+
+PROJECT=eco
+#PROJECT=iow
+#PROJECT=oih
+# tags for docker compose
+CONTAINER_CODE_TAG=latest
+CONTAINER_DAGSTER_TAG=latest
+
+PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python
+# port is required: https://portainer.{HOST}:443/api/endpoints/2/docker/
+GLEANERIO_DOCKER_URL=https://portainer.{HOST}:443/api/endpoints/2/docker/
+GLEANERIO_PORTAINER_APIKEY=
+# if running dagster-dev, then this needs to be set ,
+#       defaults to "/scheduler/gleanerconfig.yaml" which is path to config mounted in containers
+# when debugging generated code "../../../configs/eco/gleanerconfig.yaml"
+# when debugging code in workflows "../../configs/eco/gleanerconfig.yaml"
+GLEANERIO_DAGSTER_CONFIG_PATH=../../../configs/eco/gleanerconfig.yaml
+
+# Network
+GLEANERIO_DOCKER_HEADLESS_NETWORK=headless_gleanerio
+
+### GLEANER/NABU Dockers
+GLEANERIO_GLEANER_IMAGE=nsfearthcube/gleaner:dev_ec
+GLEANERIO_NABU_IMAGE=nsfearthcube/nabu:dev_eco
+
+##
+# path where configs are deployed/mounted
+####
+GLEANERIO_GLEANER_CONFIG_PATH=/gleaner/gleanerconfig.yaml
+GLEANERIO_NABU_CONFIG_PATH=/nabu/nabuconfig.yaml
+###
+#path in s3 for docker log files
+GLEANERIO_LOG_PREFIX=scheduler/logs/
+
+GLEANERIO_MINIO_ADDRESS=
+GLEANERIO_MINIO_PORT=80
+GLEANERIO_MINIO_USE_SSL=false
+GLEANERIO_MINIO_BUCKET=
+GLEANERIO_MINIO_ACCESS_KEY=
+GLEANERIO_MINIO_SECRET_KEY=
+GLEANERIO_HEADLESS_ENDPOINT=http://headless:9222
+
+# just the base address, no namespace https://graph.geocodes-aws-dev.earthcube.org/blazegraph
+GLEANERIO_GRAPH_URL=https://graph.geocodes-aws.earthcube.org/blazegraph
+GLEANERIO_GRAPH_NAMESPACE=mytest
+
+# optional: GLEANERIO_GRAPH_SUMMARY_ENDPOINT defaults to GLEANERIO_GRAPH_URL
+#GLEANERIO_GRAPH_SUMMARY_ENDPOINT=https://graph.geocodes-aws-dev.earthcube.org/blazegraph
+GLEANERIO_GRAPH_SUMMARY_NAMESPACE=mytest_summary
+GLEANERIO_GRAPH_SUMMARIZE=True
+
+# where are the gleaner and tennant configurations
+GLEANERIO_CONFIG_PATH="scheduler/configs/"
+GLEANERIO_TENANT_FILENAME="tenant.yaml"
+GLEANERIO_SOURCES_FILENAME="gleanerconfig.yaml"
+
+# ECO Custom variables for ecrr
+ECRR_GRAPH_NAMESPACE=ecrr
+ECRR_MINIO_BUCKET=ecrr
+
+# only a public slack channel works. DV has no permissions to create a new channel
+#SLACK_CHANNEL="#production_discussion"
+SLACK_CHANNEL="#twitterfeed"
+SLACK_TOKEN=
+</code></pre></p>
+<h2 id="appendix">Appendix</h2>
+<h3 id="portainer-api-setup">Portainer API setup</h3>
+<p>You will need to setup Portainer to allow for an API call.  To do this look 
+at the documentation for <a href="https://docs.portainer.io/api/access">Accessing the Portainer API</a></p>
+<h2 id="notes">Notes</h2>
+<h3 id="handle-multiple-organizations">Handle Multiple Organizations</h3>
+<p>thoughts... </p>
+<ul>
+<li>Each organization can be in a container with its own code workflow. </li>
+<li>in the workflows directory: <code>dagster project projectname</code></li>
+<li>If we can standardize the loading and transforming workflows as much as possible, then the graph loading workflows 
+ should be <a href="https://github.com/earthcube/scheduler/issues/142">standardized</a>. We could just define an additional container in a compose file, and add that to the workflows</li>
+</ul>
+<pre class="highlight"><code>load_from:
+#      - python_file:
+#          relative_path: "project/eco/repositories/repository.py"
+#          location_name: project
+#          working_directory: "./project/eco/"
+#      - python_file:
+#          relative_path: "workflows/ecrr/repositories/repository.py"
+#          working_directory: "./workflows/ecrr/"
+      # module starting out with the definitions api
+     # - python_module: "workflows.tasks.tasks"
+
+      - grpc_server:
+            host: dagster-code-tasks
+            port: 4000
+            location_name: "tasks"
+      - grpc_server:
+            host: dagster-code-eco-ingest
+            port: 4000
+            location_name: "ingest"
+      - grpc_server:
+            host: dagster-code-ios-ingest
+            port: 4000
+            location_name: "ingest"
+      - grpc_server:
+            host: dagster-code-eco-ecrr
+            port: 4000
+            location_name: "ecrr"</code></pre>
+<ul>
+<li>to add a container, you need to edit the workflows.yaml in an organizations configuration</li>
+</ul>
+<h2 id="cron-notes">Cron Notes</h2>
+<p>A useful on-line tool:  <a href="https://crontab.cronhub.io/">https://crontab.cronhub.io/</a></p>
+<pre class="highlight"><code>0 3 * * *   is at 3 AM each day
+
+0 3,5 * * * at 3 and 5 am each day
+
+0 3 * * 0  at 3 am on Sunday
+
+0 3 5 * *  At 03:00 AM, on day 5 of the month
+
+0 3 5,19 * * At 03:00 AM, on day 5 and 19 of the month
+
+0 3 1/4 * * At 03:00 AM, every 4 days</code></pre>
+<h2 id="indexing-approaches">Indexing Approaches</h2>
+<p>The following approaches</p>
+<ul>
+<li>Divide up the sources by sitemap and sitegraph</li>
+<li>Also divide by production and queue sources</li>
+</ul>
+<p>The above will result in at most 4 initial sets.</p>
+<p>We can then use the docker approach</p>
+<pre class="highlight"><code>./gleanerDocker.sh -cfg /gleaner/wd/rundir/oih_queue.yaml  --source cioosatlantic</code></pre>
+<p>to run indexes on specific sources in these configuration files.  </p>
+</article>
+</div>
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+</div>
+</main>
+<footer class="md-footer">
+<div class="md-footer-meta md-typeset">
+<div class="md-footer-meta__inner md-grid">
+<div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" rel="noopener" target="_blank">
+      Material for MkDocs
+    </a>
+</div>
+</div>
+</div>
+</footer>
+</div>
+<div class="md-dialog" data-md-component="dialog">
+<div class="md-dialog__inner md-typeset"></div>
+</div>
+<script id="__config" type="application/json">{"base": ".", "features": ["navigation.sections"], "search": "assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+<script src="assets/javascripts/bundle.83f73b43.min.js"></script>
+<script type="module">import mermaid from "https://unpkg.com/mermaid@10.4.0/dist/mermaid.esm.min.mjs";
+mermaid.initialize({});</script></body>
+</html>

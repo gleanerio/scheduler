@@ -1,0 +1,856 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.44">
+    
+    
+      
+        <title>Scheduler Developement in Dagster - Gleaner IO Scheduler</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.0253249f.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#scheduler-developement-in-dagster" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Gleaner IO Scheduler" class="md-header__button md-logo" aria-label="Gleaner IO Scheduler" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Gleaner IO Scheduler
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Scheduler Developement in Dagster
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Gleaner IO Scheduler" class="md-nav__button md-logo" aria-label="Gleaner IO Scheduler" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Gleaner IO Scheduler
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_1" id="__nav_1_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Gleaner IO Scheduler
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_1">
+            <span class="md-nav__icon md-icon"></span>
+            Gleaner IO Scheduler
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Scheduler
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ingest_workflow/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Ingest Workflow
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../quick/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Quick
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../add_containers.md" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Add Containers
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../eco_deploy/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Scheduler Deployment
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_1_6" id="__nav_1_6_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Develeopment
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_1_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_1_6">
+            <span class="md-nav__icon md-icon"></span>
+            Develeopment
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../README_LOCAL_DEVELOPMENT/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Local Developement
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../developement.md" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Developing Schedules
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../monitoring_workflows/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Troubleshooting Workflows
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#about" class="md-nav__link">
+    <span class="md-ellipsis">
+      About
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="About">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#template-files" class="md-nav__link">
+    <span class="md-ellipsis">
+      Template files
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#steps-to-build-and-deploy" class="md-nav__link">
+    <span class="md-ellipsis">
+      Steps to build and deploy
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Steps to build and deploy">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#docker-compose-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      docker compose Configuration:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#editing-template" class="md-nav__link">
+    <span class="md-ellipsis">
+      Editing Template
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Editing Template">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#environment-files" class="md-nav__link">
+    <span class="md-ellipsis">
+      Environment files
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<h1 id="scheduler-developement-in-dagster">Scheduler Developement in Dagster</h1>
+<p><strong>NOTE: originally, a set of workflows was generated for each source. These were compiled into separate 'project' containers by a github workflo
+This is no longer needed. But these were the original instructions.</strong></p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>add <a href="https://plugins.jetbrains.com/plugin/7861-envfile">envfile</a> plug in to PyCharm to allow for easy debugging to code</p>
+</div>
+<h2 id="about">About</h2>
+<p>The following is a description of the steps and requirements for
+building and deploying the docker based workflow implemented in 
+dagster.</p>
+<p>when developing, you can use <code>dagster dev</code>
+you need to have the environment variables defined, so it's easist to do in a
+Pycharm run shell script.</p>
+<p>You can use a python module, dagster 
+with option dev
+load the runConfiguration dagster_eco_debug.run.xml</p>
+<h3 id="template-files">Template files</h3>
+<p>The template files define the Dagster Ops, Jobs and Schedules.  From these
+and a GleanerIO config file a set of Python scripts for Dagster are created in
+the output directory. </p>
+<p>These only need to be changed or used to regenerate if you wish to alter the 
+execution graph (ie, the ops, jobs and schedules) or change the config file.
+In the later case only a regeneration needs to be done.</p>
+<p>There are then Docker build scripts to build out new containers.  </p>
+<p>See:  <a href="./implnets/src/implnet-example/templates">template</a></p>
+<h2 id="steps-to-build-and-deploy">Steps to build and deploy</h2>
+<p>The deployment can be tested locally using docker.
+The production 'containers' are built with a github action, or using a makefile.</p>
+<p>This describes the local and container deployment
+We use portainer to manage our docker deployments.</p>
+<p>1) move to the the deployment directory
+2) copy the envFile.env to .env 
+3) edit the entries.
+4) for local, <code>./dagster_localrun.sh</code>
+5) go to http://localhost:3000/</p>
+<p>To deploy in portainer, use the deployment/compose_project.yaml docker stack.</p>
+<h3 id="docker-compose-configuration">docker compose Configuration:</h3>
+<p>1) there are three files that need to be installed into docker configs. </p>
+<table>
+<thead>
+<tr>
+<th>file</th>
+<th>local</th>
+<th>stack</th>
+<th>note</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>workspace</td>
+<td>configs/PROJECT/worksapce.yaml</td>
+<td>env ()</td>
+<td>used by dagster</td>
+</tr>
+<tr>
+<td>gleanerconfig.yaml</td>
+<td>configs/PROJECT/gleanerconfigs.yaml</td>
+<td>env ()</td>
+<td>needs to be in portainer</td>
+</tr>
+<tr>
+<td>nabuconfig.yaml</td>
+<td>configs/PROJECT/nabuconfigs.yaml</td>
+<td>env ()</td>
+<td>needs to be in portainer</td>
+</tr>
+<tr>
+<td>2)</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h2 id="editing-template">Editing Template</h2>
+<p>you can edit implnets/template</p>
+<p>then deploy with</p>
+<p>`pygen.py -cf ./configs/eco/gleanerconfig.yaml -od ./generatedCode/implnet-eco/output -td ./templates/v1 -d 7 ``</p>
+<p>If you are running using dagster_localrun.sh 
+1) go to the deployment at http://localhost:3000/locations
+2) click 'reload on gleaner@project_grpc'
+3) then if code is correct, then you will be able run the changed <a href="http://localhost:3000/overview/jobs">workflows</a></p>
+<p>(TODO NEEDS MORE
+)</p>
+<h3 id="environment-files">Environment files</h3>
+<p>1) cp deployment/envFile.env .env
+2) edit
+3) <code>export $(cat .env | xargs)</code>
+export $(cat .env | xargs)
+<pre class="highlight"><code class="language-bash">######
+# Nabu and Gleaner configs need to be in docker configs
+## docker config name GLEANER_GLEANER_DOCKER_CONFIG
+## docker config name GLEANER_NABU_DOCKER_CONFIG
+#        suggested DOCKER_CONFIG NAMING PATTERN (nabu||gleaner)-{PROJECT}
+########
+GLEANERIO_GLEANER_DOCKER_CONFIG=gleaner-eco
+GLEANERIO_NABU_DOCKER_CONFIG=nabu-eco
+
+# ###
+# workspace for dagster
+####
+GLEANERIO_WORKSPACE_CONFIG_PATH=/usr/src/app/workspace.yaml
+GLEANERIO_WORKSPACE_DOCKER_CONFIG=workspace-eco
+
+
+DEBUG=False
+GLEANERIO_CONTAINER_WAIT_SECONDS=300
+# debuggin set to 5 or 10 seconds
+PROJECT=eco
+CONTAINER_CODE_TAG=latest
+CONTAINER_DAGSTER_TAG=latest
+#PROJECT=iow
+#PROJECT=oih
+HOST=localhost
+PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python
+# port is required: https://portainer.{HOST}:443/api/endpoints/2/docker/
+PORTAINER_URL=
+PORTAINER_KEY=
+# if running dagster-dev, then this needs to be set ,
+#       defaults to "/scheduler/gleanerconfig.yaml" which is path to config mounted in containers
+# when debugging generated code "../../../configs/eco/gleanerconfig.yaml"
+# when debugging code in workflows "../../configs/eco/gleanerconfig.yaml"
+# DAGSTER_GLEANER_CONFIG_PATH=../../../configs/eco/gleanerconfig.yaml
+GLEANERIO_CONTAINER_WAIT_SECONDS=3600
+#GLEANERIO_CONTAINER_WAIT_SECONDS=30
+# Network
+GLEANERIO_HEADLESS_NETWORK=headless_gleanerio
+
+### GLEANER/NABU Dockers
+GLEANERIO_GLEANER_IMAGE=nsfearthcube/gleaner:latest
+GLEANERIO_NABU_IMAGE=nsfearthcube/nabu:latest
+
+##
+# path where configs are deployed/mounted
+####
+GLEANERIO_GLEANER_CONFIG_PATH=/gleaner/gleanerconfig.yaml
+GLEANERIO_NABU_CONFIG_PATH=/nabu/nabuconfig.yaml
+###
+#path in s3 for docker log files
+GLEANERIO_LOG_PREFIX=scheduler/logs/
+
+GLEANERIO_MINIO_ADDRESS=
+GLEANERIO_MINIO_PORT=80
+GLEANERIO_MINIO_USE_SSL=false
+GLEANERIO_MINIO_BUCKET=
+GLEANERIO_MINIO_ACCESS_KEY=
+GLEANERIO_MINIO_SECRET_KEY=
+GLEANERIO_HEADLESS_ENDPOINT=http://headless:9222
+
+# just the base address, no namespace https://graph.geocodes-aws-dev.earthcube.org/blazegraph
+GLEANERIO_GRAPH_URL=
+GLEANERIO_GRAPH_NAMESPACE=
+
+# example: https://graph.geocodes.ncsa.illinois.edu/blazegraph/namespace/yyearthcube2/sparql
+#graph endpoint will be GLEANERIO_GRAPH_URL
+GLEANERIO_SUMMARY_GRAPH_NAMESPACE=
+GLEANERIO_SUMMARIZE_GRAPH=True
+</code></pre></p>
+<h1 id="implementation-networks">Implementation Networks</h1>
+<p>This (<a href="https://github.com/sharmasagar25/dagster-docker-example">https://github.com/sharmasagar25/dagster-docker-example</a>) 
+is an example on how to structure a [Dagster] project in order to organize
+the jobs, repositories, schedules, and ops. The example also contains
+examples on unit-tests and a docker-compose deployment file that utilizes a
+Postgresql database for the run, event_log and schedule storage.</p>
+<p>This example should in no way be considered suitable for production and is
+merely my own example of a possible file structure. I personally felt that it
+was difficult to put the Dagster concepts to use since the projects own examples
+had widely different structure and was difficult to overview as a beginner.</p>
+<p>The example is based on the official [tutorial].</p>
+<h2 id="folders">Folders</h2>
+<ul>
+<li>build:  build directives for the docker containers</li>
+<li>configs</li>
+<li>src</li>
+<li>tooling</li>
+</ul>
+<h2 id="requirements">Requirements</h2>
+<p>At this point it is expected that you have a valid Gleaner config file named
+<em>gleanerconfig.yaml</em> located in some path within the <em>configs</em> directory.</p>
+<h2 id="building-the-dagster-code-from-templates">Building the dagster code from templates</h2>
+<p>The python program pygen will read a gleaner configuration file and a set of 
+template and build the Dagster code from there.  </p>
+<pre class="highlight"><code class="language-bash">python pygen.py -cf ./configs/nsdf/gleanerconfig.yaml -od ./src/implnet-nsdf/output  -td ./src/implnet-nsdf/templates  -d 7</code></pre>
+<h2 id="running">Running</h2>
+<p>There is an example on how to run a single pipeline in <code>src/main.py</code>. First
+install the dependencies in an isolated Python environment.</p>
+<pre class="highlight"><code class="language-bash">pip install -r requirements</code></pre>
+<p>The code built above can be run locally, though your templates may be set up 
+to reference services and other resources not present on your dev machine.  For 
+complex examples like these, it can be problematic.  </p>
+<p>If you are looking for some simple examples of Dagster, check out the directory
+examples for some smaller self-contained workflows.  There are good for testing
+things like sensors and other approaches. </p>
+<p>If you wish to still try the generated code cd into the output directory
+you specified in the pygen command.</p>
+<p>Then use:</p>
+<pre class="highlight"><code class="language-bash">dagit -h ghost.lan -w workspace.yaml</code></pre>
+<h2 id="building">Building</h2>
+<pre class="highlight"><code class="language-bash"> podman build  -t  docker.io/fils/dagster:0.0.24  .</code></pre>
+<pre class="highlight"><code class="language-bash"> podman push docker.io/fils/dagster:0.0.24</code></pre>
+<h1 id="appendix">Appendix</h1>
+<h2 id="setup">Setup</h2>
+<p><img alt="orchestration" src="../images/orchestrationInit.svg" /></p>
+<h2 id="docker-api-sequence">Docker API sequence</h2>
+<p><img alt="sequence" src="../docs/images/sequence.svg" /></p>
+<h2 id="appendix_1">Appendix</h2>
+<h3 id="portainer-api-setup">Portainer API setup</h3>
+<p>You will need to setup Portainer to allow for an API call.  To do this look 
+at the documentation for <a href="https://docs.portainer.io/api/access">Accessing the Portainer API</a></p>
+<h2 id="notes">Notes</h2>
+<p>Single file testing run</p>
+<pre class="highlight"><code class="language-bash"> dagit -h ghost.lan -f test1.py</code></pre>
+<ul>
+<li>Don't forget to set the DAGSTER_HOME dir like in </li>
+</ul>
+<pre class="highlight"><code class="language-bash"> export DAGSTER_HOME=/home/fils/src/Projects/gleaner.io/scheduler/python/dagster</code></pre>
+<pre class="highlight"><code>dagster-daemon run</code></pre>
+<p>Run from directory where workspace.yaml is.
+<pre class="highlight"><code>dagit --host 192.168.202.159</code></pre></p>
+<h2 id="cron-notes">Cron Notes</h2>
+<p>A useful on-line tool:  <a href="https://crontab.cronhub.io/">https://crontab.cronhub.io/</a></p>
+<pre class="highlight"><code>0 3 * * *   is at 3 AM each day
+
+0 3,5 * * * at 3 and 5 am each day
+
+0 3 * * 0  at 3 am on Sunday
+
+0 3 5 * *  At 03:00 AM, on day 5 of the month
+
+0 3 5,19 * * At 03:00 AM, on day 5 and 19 of the month
+
+0 3 1/4 * * At 03:00 AM, every 4 days</code></pre>
+<h2 id="indexing-approaches">Indexing Approaches</h2>
+<p>The following approaches</p>
+<ul>
+<li>Divide up the sources by sitemap and sitegraph</li>
+<li>Also divide by production and queue sources</li>
+</ul>
+<p>The above will result in at most 4 initial sets.</p>
+<p>We can then use the docker approach</p>
+<pre class="highlight"><code>./gleanerDocker.sh -cfg /gleaner/wd/rundir/oih_queue.yaml  --source cioosatlantic</code></pre>
+<p>to run indexes on specific sources in these configuration files.  </p>
+<h2 id="references">References</h2>
+<ul>
+<li><a href="https://bakerwho.github.io/posts/datascience/Deployable-Dagster-MVP/">Simple Dagster example</a></li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.sections"], "search": "../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.83f73b43.min.js"></script>
+      
+    
+  </body>
+</html>
