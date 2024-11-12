@@ -1,0 +1,27 @@
+# prototype tennants file
+
+tenant:
+  - community: dev
+    hostname: oih-dev
+    description: oih in progress set
+    name: Ocean InfoHub Dev
+    url: https://www.oceaninfohub.org
+    logo: https://raw.githubusercontent.com/iodepo/odis-arch/refs/heads/master/book/logo.png
+    graph:
+      main_namespace: oih_dev
+      summary_namespace: oih_dev_summary
+    sources:
+      - africaioc
+######
+  - community: oihall
+    hostname: oih-all
+    description: oih production set
+    name: Ocean InfoHub
+    url: https://www.oceaninfohub.org
+    logo: https://raw.githubusercontent.com/iodepo/odis-arch/refs/heads/master/book/logo.png
+    graph:
+      main_namespace: oih_prod
+      summary_namespace: oih_prod_summary
+    sources:
+      - all
+

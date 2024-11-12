@@ -45,16 +45,18 @@ def getSource(context, source_name):
 def validate_sitemap_url(context):
     source_name = context.asset_partition_key_for_output()
     source = getSource(context, source_name)
-    sm = Sitemap(source['url'], no_progress_bar=True)
-    if sm.validUrl():
-        return source['url']
-    else:
-        context.log.error(f"source: {source['name']} bad url: {source['url']}")
-        raise HTTPError(url=source['url'],
-                        code=404,
-                        hdrs=None,
-                        fp=None,
-                        msg=f"Bad URL ource: {source['name']} bad url: {source['url']}" )
+
+    if source['sourcetype'] == "sitemap": # ie, skip this for type sitegraph
+        sm = Sitemap(source['url'], no_progress_bar=True)
+        if sm.validUrl():
+            return source['url']
+        else:
+            context.log.error(f"source: {source['name']} bad url: {source['url']}")
+            raise HTTPError(url=source['url'],
+                            code=404,
+                            hdrs=None,
+                            fp=None,
+                            msg=f"Bad URL source: {source['name']} bad url: {source['url']}" )
 
 @asset(group_name="load",
 key_prefix="ingest",
@@ -225,7 +227,7 @@ def release_summarize(context) :
         bucket_name, object_name =s3Minio.putTextFileToStore(summaryttl, s3ObjectInfo)
         context.add_output_metadata(
             metadata={
-                "source": source,  # Metadata can be any key-value pair
+                "source": source_name,  # Metadata can be any key-value pair
                 "run": "release_summarize",
                 "bucket_name": bucket_name,  # Metadata can be any key-value pair
                 "object_name": object_name,
@@ -270,7 +272,7 @@ def identifier_stats(context):
     #r = str('identifier stats returned value:{}'.format(returned_value))
     report = returned_value.to_json()
     s3Minio.putReportFile(bucket, source_name, "identifier_stats.json", report)
-    get_dagster_logger().info(f"identifer stats report  returned  {r} ")
+    get_dagster_logger().info(f"identifier stats report  returned  {r} ")
     return
 
 @asset(group_name="load",key_prefix="ingest",

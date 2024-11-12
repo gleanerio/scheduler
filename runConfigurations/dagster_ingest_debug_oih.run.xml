@@ -1,17 +1,16 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="dagster_ingest_debug   (1)" type="PythonConfigurationType" factoryName="Python" folderName="ingest">
+  <configuration default="false" name="dagster_ingest_debug_oih" type="PythonConfigurationType" factoryName="Python" folderName="ingest">
     <module name="scheduler" />
     <option name="ENV_FILES" value="" />
     <option name="INTERPRETER_OPTIONS" value="" />
     <option name="PARENT_ENVS" value="true" />
     <envs>
-      <env name="GLEANERIO_GLEANER_CONFIG_PATH" value="$PROJECT_DIR$/dagster/implnets/configs/eco/gleanerconfig.yaml" />
       <env name="PYTHONUNBUFFERED" value="1" />
+      <env name="GLEANERIO_GLEANER_CONFIG_PATH" value="$PROJECT_DIR$/dagster/implnets/configs/oih/gleanerconfig.yaml" />
     </envs>
     <option name="SDK_HOME" value="$PROJECT_DIR$/venv/bin/python" />
-    <option name="SDK_NAME" value="Python 3.9 (scheduler) (2)" />
     <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/dagster/implnets/workflows/ingest" />
-    <option name="IS_MODULE_SDK" value="false" />
+    <option name="IS_MODULE_SDK" value="true" />
     <option name="ADD_CONTENT_ROOTS" value="true" />
     <option name="ADD_SOURCE_ROOTS" value="true" />
     <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
